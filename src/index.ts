@@ -23,4 +23,6 @@
  *
  */
 
-export {default as Character } from './entity/Character';
+/* eslint-disable import/prefer-default-export */
+
+export {default as Character } from './entity/Character'

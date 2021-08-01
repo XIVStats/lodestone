@@ -26,6 +26,7 @@ jobs:
       - run: npm install
       - run: npm test
       - run: npm run build
+      - run: npm run lint
 
   publish:
     needs: build

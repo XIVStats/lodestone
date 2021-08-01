@@ -24,12 +24,7 @@
  */
 
 export default class Character {
-
-	constructor() {
-	}
-
-	public hello(name: string) {
-		return `Hello ${name}`
-	}
-
+  public static hello(name: string): string {
+    return `Hello ${name}`;
+  }
 }
