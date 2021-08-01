@@ -33,7 +33,10 @@
     "url": "https://github.com/XIVStats/lodestone/issues"
   },
   "homepage": "https://github.com/XIVStats/lodestone#readme",
-  "dependencies": {},
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10"
+  },
   "devDependencies": {
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.28.5",

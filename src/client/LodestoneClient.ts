@@ -23,10 +23,27 @@
  *
  */
 
-module.exports = {
-	preset: 'ts-jest',
-	transform: {
-		'^.+\\.(ts|tsx)?$': 'ts-jest',
-		"^.+\\.(js|jsx)$": "babel-jest",
-	}
-};
+import Axios, { AxiosInstance } from 'axios'
+import Cheerio, { CheerioAPI } from 'cheerio'
+import Character from '../entity/Character'
+
+export default class LodestoneClient {
+  private readonly axiosInstance: AxiosInstance
+
+  private readonly cheerioInstance: CheerioAPI
+
+  constructor(axiosInstance?: AxiosInstance) {
+    this.axiosInstance =
+      axiosInstance ||
+      Axios.create({
+        baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
+        timeout: 5000,
+      })
+    this.cheerioInstance = Cheerio
+  }
+
+  public async getCharacter(id: number): Promise<Character> {
+    const response = await this.axiosInstance.get(`/character/${id}`)
+    return Character.fromPage(id, response.data, this.cheerioInstance)
+  }
+}

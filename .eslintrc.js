@@ -45,5 +45,13 @@ module.exports = {
 				'mustMatch':"MIT License"
 			}
 		]
-	}
+	},
+	overrides: [
+		{
+			files: ["src/**/*.test.ts"],
+			rules: {
+				'@typescript-eslint/ban-ts-comment': 'off'
+			}
+		}
+	]
 };

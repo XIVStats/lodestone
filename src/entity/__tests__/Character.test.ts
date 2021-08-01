@@ -22,11 +22,48 @@
  * SOFTWARE.
  *
  */
+import {readFile} from 'fs'
+import {join} from 'path'
+import Cheerio from 'cheerio'
+import Character from '../Character'
 
-module.exports = {
-	preset: 'ts-jest',
-	transform: {
-		'^.+\\.(ts|tsx)?$': 'ts-jest',
-		"^.+\\.(js|jsx)$": "babel-jest",
-	}
-};
+describe('Character', ()=>{
+
+	describe('when loading character information from HTML', ()=>{
+
+		const expectedCharacterOne : Character = {
+			id: 11886902,
+			name: 'P\'tajha Rihll',
+			server: 'Cerberus',
+			dataCenter: 'Chaos',
+			// race: 'Elezen',
+			//
+			// nameDay: '29th Sun of the 3rd Astral Moon',
+			// guardian: 'Thaliak, the Scholar'
+		}
+
+		describe.each([
+			[11886902, 'P\'tajha Rihll' , expectedCharacterOne]
+		])('for stored payload %s - %s', (charId, name, expected) => {
+			let resultantCharacter: Character
+
+			beforeAll( (done)=>{
+				readFile(join(__dirname, 'resources', `${charId}.html` ), 'utf8', (err, data)=>{
+					const testString = Buffer.from(data)
+					resultantCharacter = Character.fromPage(11886902, testString.toString(), Cheerio)
+					done()
+				})
+			})
+
+
+			it.each(Object.keys(expected))('should load %s correctly', ((key) =>{
+				// @ts-ignore
+				expect(resultantCharacter[key]).toEqual(expected[key])
+			}))
+
+		})
+
+
+	})
+
+})

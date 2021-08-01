@@ -23,10 +23,62 @@
  *
  */
 
-import { Character } from '../index'
+export default interface IClassLevels {
+  readonly gladiator: number | string
 
-describe('Exports', () => {
-  it('basic test', () => {
-    expect(Character.hello('Peter')).toEqual('Hello Peter')
-  })
-})
+  readonly marauder: number | string
+
+  readonly darkKnight: number | string
+
+  readonly gunbreaker: number | string
+
+  readonly conjurer: number | string
+
+  readonly scholar: number | string
+
+  readonly astrologian: number | string
+
+  readonly pugilist: number | string
+
+  readonly lancer: number | string
+
+  readonly rogue: number | string
+
+  readonly samurai: number | string
+
+  readonly archer: number | string
+
+  readonly machinist: number | string
+
+  readonly dancer: number | string
+
+  readonly thaumaturge: number | string
+
+  readonly arcanist: number | string
+
+  readonly redMage: number | string
+
+  readonly blueMage: number | string
+
+  readonly carpenter: number | string
+
+  readonly blacksmith: number | string
+
+  readonly armorer: number | string
+
+  readonly goldsmith: number | string
+
+  readonly leatherworker: number | string
+
+  readonly weaver: number | string
+
+  readonly alchemist: number | string
+
+  readonly culinarian: number | string
+
+  readonly miner: number | string
+
+  readonly botanist: number | string
+
+  readonly fisher: number | string | string
+}

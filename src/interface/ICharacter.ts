@@ -23,10 +23,43 @@
  *
  */
 
-module.exports = {
-	preset: 'ts-jest',
-	transform: {
-		'^.+\\.(ts|tsx)?$': 'ts-jest',
-		"^.+\\.(js|jsx)$": "babel-jest",
-	}
-};
+import IClassLevels from './IClassLevels'
+import IGearSet from './IGearSet'
+
+export default interface ICharacter {
+  readonly name: string
+
+  readonly server?: string
+
+  readonly dataCenter?: string
+
+  readonly race?: string
+
+  readonly clan?: string
+
+  readonly gender?: string
+
+  readonly guardian?: string
+
+  readonly nameDay?: string
+
+  readonly activeClass?: string
+
+  readonly classes?: IClassLevels
+
+  readonly gear?: IGearSet
+
+  readonly title?: string
+
+  readonly cityState?: string
+
+  readonly grandCompany?: string
+
+  readonly grandCompanyRank?: string
+
+  readonly freeCompany?: string
+
+  readonly minionIds?: string[]
+
+  readonly mountIds?: string[]
+}

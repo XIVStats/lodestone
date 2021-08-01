@@ -23,8 +23,59 @@
  *
  */
 
-export default class Character {
-  public static hello(name: string): string {
-    return `Hello ${name}`
+import { CheerioAPI } from 'cheerio'
+import DomConfig from '../config/DomConfig'
+import ICharacter from '../interface/ICharacter'
+import IClassLevels from '../interface/IClassLevels'
+import IGearSet from '../interface/IGearSet'
+
+export default class Character implements ICharacter {
+  constructor(readonly id: number, readonly name: string) {}
+
+  server?: string
+
+  dataCenter?: string
+
+  race?: string
+
+  clan?: string
+
+  gender?: string
+
+  guardian?: string
+
+  nameDay?: string
+
+  activeClass?: string
+
+  classes?: IClassLevels | undefined
+
+  gear?: IGearSet | undefined
+
+  title?: string | undefined
+
+  cityState?: string | undefined
+
+  grandCompany?: string | undefined
+
+  grandCompanyRank?: string | undefined
+
+  freeCompany?: string | undefined
+
+  minionIds?: string[] | undefined
+
+  mountIds?: string[] | undefined
+
+  static fromPage(id: number, data: string, cheerio: CheerioAPI): Character {
+    const $ = cheerio.load(data)
+    const characterConfig = DomConfig.getCharacterConfig()
+
+    const character = new Character(id, $(characterConfig.name).text())
+
+    const serverDataCenterText = $(characterConfig.dataCenter).text().split('(')
+    character.server = serverDataCenterText[0].trim()
+    character.dataCenter = serverDataCenterText[1].replace(')', '').trim()
+
+    return character
   }
 }
