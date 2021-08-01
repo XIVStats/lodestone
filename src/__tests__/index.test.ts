@@ -23,10 +23,10 @@
  *
  */
 
-import { Character } from '../index';
+import { Character } from '../index'
 
 describe('Exports', () => {
   it('basic test', () => {
-    expect(Character.hello('Peter')).toEqual('Hello Peter');
-  });
-});
+    expect(Character.hello('Peter')).toEqual('Hello Peter')
+  })
+})

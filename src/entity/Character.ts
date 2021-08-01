@@ -25,6 +25,6 @@
 
 export default class Character {
   public static hello(name: string): string {
-    return `Hello ${name}`;
+    return `Hello ${name}`
   }
 }
