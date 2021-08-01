@@ -4,8 +4,9 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  push:
-    branches: [ main ]
+  release:
+    types: # This configuration does not affect the page_build event above
+      - created
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -43,16 +44,10 @@ jobs:
       - run: git config --global user.email "automation@reidweb.com"
       - run: git config --global user.name "GitHub Actions"
       - run: npm prune --production
-      - run: 'VERSION=$(npm version patch -m "chore: release version %s")'
+      - run: 'VERSION=$(npm version ${{ github.event.release.tag_name }} -m "chore: release version %s")'
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Create a Release
-        uses: elgohr/Github-Release-Action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-        with:
-          args: ${{ env.VERSION }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
