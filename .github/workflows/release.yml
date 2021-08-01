@@ -40,6 +40,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: npm run build
+      - run: git config --global user.email "automation@reidweb.com"
+      - run: git config --global user.name "GitHub Actions"
       - run: npm prune --production
       - run: 'VERSION=$(npm version patch -m "chore: release version %s")'
       - run: npm publish --access public
