@@ -29,32 +29,6 @@ jobs:
       - run: npm test
       - run: npm run build
 
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run build
-      - run: git config --global user.email "automation@reidweb.com"
-      - run: git config --global user.name "GitHub Actions"
-      - run: npm prune --production
-      - run: 'VERSION=$(npm version ${{ github.event.release.tag_name }} -m "chore: release version %s")'
-      - run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-
 
 
 
