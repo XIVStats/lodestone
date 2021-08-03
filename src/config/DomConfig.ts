@@ -62,10 +62,20 @@ export default class DomConfig {
           return gender === '♀' ? 'Female' : 'Male'
         },
       },
-      grandCompany:
-        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
-      grandCompanyRank:
-        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
+      grandCompany: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
+        transformationFunction: (value: string) => {
+          return value.split('/')[0].trim()
+        },
+      },
+      grandCompanyRank: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
+        transformationFunction: (value: string) => {
+          return value.split('/')[1].trim()
+        },
+      },
       guardian:
         '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(2) > div > p.character-block__name',
       nameDay:

@@ -40,7 +40,9 @@ describe('Character', ()=>{
 			clan: 'Wildwood',
 			gender: 'Female',
 			nameDay: '29th Sun of the 3rd Astral Moon',
-			guardian: 'Thaliak, the Scholar'
+			guardian: 'Thaliak, the Scholar',
+			grandCompany: 'Order of the Twin Adder',
+			grandCompanyRank: 'First Serpent Lieutenant'
 		}
 
 		describe.each([

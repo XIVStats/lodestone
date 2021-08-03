@@ -54,9 +54,9 @@ export interface IMappableCharacter {
 
   readonly cityState?: string
 
-  readonly grandCompany?: string
+  readonly grandCompany?: string | IAttributeMapping
 
-  readonly grandCompanyRank?: string
+  readonly grandCompanyRank?: string | IAttributeMapping
 
   readonly freeCompany?: string
 
