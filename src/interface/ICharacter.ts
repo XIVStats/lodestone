@@ -25,12 +25,12 @@
 
 import IClassLevels from './IClassLevels'
 import IGearSet from './IGearSet'
-import {IMappableCharacter} from './IMappableCharacter'
+import { IMappableCharacter } from './IMappableCharacter'
 
 export default interface ICharacter extends IMappableCharacter {
   readonly name: string
 
-  readonly server?: string
+  readonly realm?: string
 
   readonly dataCenter?: string
 

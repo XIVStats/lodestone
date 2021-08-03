@@ -33,7 +33,7 @@ import IAttributeMapping from '../interface/IAttributeMapping'
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
 
-  server?: string
+  realm?: string
 
   dataCenter?: string
 
@@ -67,37 +67,37 @@ export default class Character implements ICharacter {
 
   mountIds?: string[] | undefined
 
-	private static processAttribute($: CheerioAPI, config: IAttributeMapping | string) {
-  		if(typeof config === 'object') {
-			const transformConfig : IAttributeMapping  = config
+  private static processAttribute($: CheerioAPI, config: string | IAttributeMapping | undefined) {
+    if (typeof config === 'object') {
+      const transformConfig: IAttributeMapping = config
 
-			let text
-			if (config.useHtml) {
-				text = $(config.selector).html() || $(config.selector).text()
-			} else {
-				text = $(config.selector).text()
-			}
+      let text
+      if (config.useHtml) {
+        text = $(config.selector).html() || $(config.selector).text()
+      } else {
+        text = $(config.selector).text()
+      }
 
-			if (transformConfig.transformationFunction) {
-				return transformConfig.transformationFunction(text)
-			}
-				return text
-
-		}
-  			return $(config).text()
-
-	}
+      if (transformConfig.transformationFunction) {
+        return transformConfig.transformationFunction(text)
+      }
+      return text
+    }
+    return $(config).text()
+  }
 
   static fromPage(id: number, data: string, cheerio: CheerioAPI): Character {
     const $ = cheerio.load(data)
     const characterConfig = DomConfig.getCharacterConfig()
 
     const character = new Character(id, $(characterConfig.name).text())
-
- 	Object.keys(characterConfig).forEach((key) => {
- 		// @ts-ignore
-		character[key] = Character.processAttribute($, characterConfig[key])
-	})
+    character.realm = Character.processAttribute($, characterConfig.realm)
+    character.dataCenter = Character.processAttribute($, characterConfig.dataCenter)
+    character.race = Character.processAttribute($, characterConfig.race)
+    character.clan = Character.processAttribute($, characterConfig.clan)
+    character.gender = Character.processAttribute($, characterConfig.gender)
+    character.nameDay = Character.processAttribute($, characterConfig.nameDay)
+    character.guardian = Character.processAttribute($, characterConfig.guardian)
 
     return character
   }

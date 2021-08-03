@@ -28,40 +28,39 @@ import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
 
 export interface IMappableCharacter {
-	readonly name: string
+  readonly name: string
 
-	readonly server?: string | IAttributeMapping
+  readonly realm?: string | IAttributeMapping
 
-	readonly dataCenter?: string | IAttributeMapping
+  readonly dataCenter?: string | IAttributeMapping
 
-	readonly race?: string | IAttributeMapping
+  readonly race?: string | IAttributeMapping
 
-	readonly clan?: string
+  readonly clan?: string | IAttributeMapping
 
-	readonly gender?: string | IAttributeMapping
+  readonly gender?: string | IAttributeMapping
 
-	readonly guardian?: string
+  readonly guardian?: string
 
-	readonly nameDay?: string
+  readonly nameDay?: string
 
-	readonly activeClass?: string
+  readonly activeClass?: string
 
-	readonly classes?: IClassLevels
+  readonly classes?: IClassLevels
 
-	readonly gear?: IGearSet
+  readonly gear?: IGearSet
 
-	readonly title?: string
+  readonly title?: string
 
-	readonly cityState?: string
+  readonly cityState?: string
 
-	readonly grandCompany?: string
+  readonly grandCompany?: string
 
-	readonly grandCompanyRank?: string
+  readonly grandCompanyRank?: string
 
-	readonly freeCompany?: string
+  readonly freeCompany?: string
 
-	readonly minionIds?: string[]
+  readonly minionIds?: string[]
 
-	readonly mountIds?: string[]
-
+  readonly mountIds?: string[]
 }

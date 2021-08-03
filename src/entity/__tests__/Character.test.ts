@@ -34,13 +34,13 @@ describe('Character', ()=>{
 		const expectedCharacterOne : Character = {
 			id: 11886902,
 			name: 'P\'tajha Rihll',
-			server: 'Cerberus',
+			realm: 'Cerberus',
 			dataCenter: 'Chaos',
 			race: 'Elezen',
+			clan: 'Wildwood',
 			gender: 'Female',
-			//
 			nameDay: '29th Sun of the 3rd Astral Moon',
-			// guardian: 'Thaliak, the Scholar'
+			guardian: 'Thaliak, the Scholar'
 		}
 
 		describe.each([

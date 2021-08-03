@@ -23,51 +23,59 @@
  *
  */
 
-import {IMappableCharacter} from '../interface/IMappableCharacter'
+import { IMappableCharacter } from '../interface/IMappableCharacter'
 
 export default class DomConfig {
-	public static getCharacterConfig(): IMappableCharacter {
-		return {
-			name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
-			activeClass:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__detail > div.character__view.clearfix > div.character__class > div.character__class__data > img',
-			cityState:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(3) > div > p.character-block__name',
-			clan: '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
-			server: {
-				selector: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
-				transformationFunction: (value: string) => value.split('(')[0].trim()
-			},
-			title:
-				'#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__title',
-			dataCenter: {
-				selector: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
-				transformationFunction: (value: string) => value.split('(')[1].replace(')', '').trim()
-			},
-			freeCompany:
-				'#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
-			gear: {},
-			gender:{
-				selector: '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
-				useHtml: true,
-				transformationFunction: (value: string) => {
-					const gender = value.split('<br>')[1].split('/')[1].trim()
-					return gender === '♀' ? 'Female' : 'Male'
-				}
-			},
-			grandCompany:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
-			grandCompanyRank:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
-			guardian:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(2) > div > p.character-block__name',
-			nameDay:
-				'#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(2) > div > p.character-block__birth',
-			race: {
-				selector: '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
-				useHtml: true,
-				transformationFunction: (value: string) => value.split('<br>')[0].trim()
-			},
-		}
-	}
+  public static getCharacterConfig(): IMappableCharacter {
+    return {
+      name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
+      activeClass:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__detail > div.character__view.clearfix > div.character__class > div.character__class__data > img',
+      cityState:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(3) > div > p.character-block__name',
+      clan: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
+        useHtml: true,
+        transformationFunction: (value: string) => value.split('<br>')[1].split('/')[0].trim(),
+      },
+      realm: {
+        selector:
+          '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
+        transformationFunction: (value: string) => value.split('(')[0].trim(),
+      },
+      title: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__title',
+      dataCenter: {
+        selector:
+          '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
+        transformationFunction: (value: string) => value.split('(')[1].replace(')', '').trim(),
+      },
+      freeCompany:
+        '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
+      gear: {},
+      gender: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
+        useHtml: true,
+        transformationFunction: (value: string) => {
+          const gender = value.split('<br>')[1].split('/')[1].trim()
+          return gender === '♀' ? 'Female' : 'Male'
+        },
+      },
+      grandCompany:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
+      grandCompanyRank:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
+      guardian:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(2) > div > p.character-block__name',
+      nameDay:
+        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(2) > div > p.character-block__birth',
+      race: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',
+        useHtml: true,
+        transformationFunction: (value: string) => value.split('<br>')[0].trim(),
+      },
+    }
+  }
 }
