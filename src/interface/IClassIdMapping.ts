@@ -23,45 +23,9 @@
  *
  */
 
-import IClassLevels from './IClassLevels'
-import IGearSet from './IGearSet'
-import { IMappableCharacter } from './IMappableCharacter'
-import { Class } from '../entity/Class'
+import {Class} from '../entity/Class'
 
-export default interface ICharacter extends IMappableCharacter {
-  readonly name: string
-
-  readonly realm?: string
-
-  readonly dataCenter?: string
-
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: Class
-
-  readonly classes?: IClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: string
-
-  readonly minionIds?: string[]
-
-  readonly mountIds?: string[]
+export interface IClassIdMapping {
+	className: Class,
+	imagePath: string
 }

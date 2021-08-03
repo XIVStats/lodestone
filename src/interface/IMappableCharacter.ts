@@ -26,7 +26,7 @@
 import IClassLevels from './IClassLevels'
 import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
-import { Class } from '../../lib/entity/Class'
+import { Class } from '../entity/Class'
 
 export interface IMappableCharacter {
   readonly name: string

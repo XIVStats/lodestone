@@ -22,30 +22,11 @@
  * SOFTWARE.
  *
  */
-import {IClassIdMapping} from "../interface/IClassIdMapping";
-import {Class} from "../entity/Class";
 
-export class ClassConfig {
 
-	private static  mappings : IClassIdMapping[] = [
-		{
-			className: Class.WhiteMage,
-			imagePath: 'lds/h/x/tAdErIw5tUrachDbHXRmbS4wz8.png'
-		},
-		{
-			className: Class.Scholar,
-			imagePath: 'lds/h/N/r_T2Y5aKI0A8RytpzhdBBLtRdE.png'
-		}
-	]
-
-	//TODO: test not found scenario!
-	static getClassForImage(imagePath: string) : Class {
-		const found = this.mappings.find(item => item.imagePath === imagePath)
-		if (found) {
-			return found.className
-		} else {
-			throw new Error('Could not find a mapping for the provided id')
-		}
-	}
-
+export enum Class {
+	WhiteMage = 'White Mage',
+	Scholar = 'Scholar'
 }
+
+export  default Class

@@ -26,7 +26,7 @@ import {readFile} from 'fs'
 import {join} from 'path'
 import Cheerio from 'cheerio'
 import Character from '../Character'
-import {Class} from '../../../lib/entity/Class'
+import {Class} from '../Class'
 
 describe('Character', ()=>{
 

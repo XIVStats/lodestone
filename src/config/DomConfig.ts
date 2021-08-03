@@ -24,7 +24,7 @@
  */
 
 import { IMappableCharacter } from '../interface/IMappableCharacter'
-import { ClassConfig } from '../../lib/config/ClassConfig'
+import ClassConfig from './ClassConfig'
 
 export default class DomConfig {
   public static getCharacterConfig(): IMappableCharacter {

@@ -29,7 +29,7 @@ import ICharacter from '../interface/ICharacter'
 import IClassLevels from '../interface/IClassLevels'
 import IGearSet from '../interface/IGearSet'
 import IAttributeMapping from '../interface/IAttributeMapping'
-import { Class } from '../../lib/entity/Class'
+import { Class } from './Class'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
