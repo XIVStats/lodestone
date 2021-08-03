@@ -26,5 +26,5 @@
 export default interface IAttributeMapping {
   selector: string
   useHtml?: boolean
-  transformationFunction?(text: string): string
+  transformationFunction?(value: string): string
 }

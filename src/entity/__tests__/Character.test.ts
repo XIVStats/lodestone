@@ -47,7 +47,7 @@ describe('Character', ()=>{
 
 		describe.each([
 			[11886902, 'P\'tajha Rihll' , expectedCharacterOne]
-		])('for stored payload %s - %s', (charId, name, expected) => {
+		])('for character %s - %s', (charId, name, expected) => {
 			let resultantCharacter: Character
 
 			beforeAll( (done)=>{
@@ -59,7 +59,7 @@ describe('Character', ()=>{
 			})
 
 
-			it.each(Object.keys(expected))('should load %s correctly', ((key) =>{
+			it.each(Object.entries(expected))('should evaluate %s as \'%s\'', (([key, value]) =>{
 				// @ts-ignore
 				expect(resultantCharacter[key]).toEqual(expected[key])
 			}))
