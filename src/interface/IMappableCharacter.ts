@@ -26,6 +26,7 @@
 import IClassLevels from './IClassLevels'
 import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
+import { Class } from '../../lib/entity/Class'
 
 export interface IMappableCharacter {
   readonly name: string
@@ -44,7 +45,7 @@ export interface IMappableCharacter {
 
   readonly nameDay?: string
 
-  readonly activeClass?: string
+  readonly activeClass?: Class | IAttributeMapping
 
   readonly classes?: IClassLevels
 

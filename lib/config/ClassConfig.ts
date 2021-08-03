@@ -22,46 +22,30 @@
  * SOFTWARE.
  *
  */
+import {IClassIdMapping} from "../interface/IClassIdMapping";
+import {Class} from "../entity/Class";
 
-import IClassLevels from './IClassLevels'
-import IGearSet from './IGearSet'
-import { IMappableCharacter } from './IMappableCharacter'
-import { Class } from '../../lib/entity/Class'
+export class ClassConfig {
 
-export default interface ICharacter extends IMappableCharacter {
-  readonly name: string
+	private static  mappings : IClassIdMapping[] = [
+		{
+			className: Class.WhiteMage,
+			imagePath: 'lds/h/x/tAdErIw5tUrachDbHXRmbS4wz8.png'
+		},
+		{
+			className: Class.Scholar,
+			imagePath: 'lds/h/N/r_T2Y5aKI0A8RytpzhdBBLtRdE.png'
+		}
+	]
 
-  readonly realm?: string
+	//TODO: test not found scenario!
+	static getClassForImage(imagePath: string) : Class {
+		const found = this.mappings.find(item => item.imagePath === imagePath)
+		if (found) {
+			return found.className
+		} else {
+			throw new Error('Could not find a mapping for the provided id')
+		}
+	}
 
-  readonly dataCenter?: string
-
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: Class
-
-  readonly classes?: IClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: string
-
-  readonly minionIds?: string[]
-
-  readonly mountIds?: string[]
 }

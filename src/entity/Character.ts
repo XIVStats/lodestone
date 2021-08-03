@@ -29,6 +29,7 @@ import ICharacter from '../interface/ICharacter'
 import IClassLevels from '../interface/IClassLevels'
 import IGearSet from '../interface/IGearSet'
 import IAttributeMapping from '../interface/IAttributeMapping'
+import { Class } from '../../lib/entity/Class'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -47,7 +48,7 @@ export default class Character implements ICharacter {
 
   nameDay?: string
 
-  activeClass?: string
+  activeClass?: Class
 
   classes?: IClassLevels | undefined
 
@@ -74,6 +75,11 @@ export default class Character implements ICharacter {
       let text
       if (config.useHtml) {
         text = $(config.selector).html() || $(config.selector).text()
+      } else if (config.getAttr) {
+        text = $(config.selector).attr(config.getAttr)
+        if (text === undefined) {
+          throw new Error()
+        }
       } else {
         text = $(config.selector).text()
       }

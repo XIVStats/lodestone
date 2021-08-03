@@ -24,13 +24,19 @@
  */
 
 import { IMappableCharacter } from '../interface/IMappableCharacter'
+import { ClassConfig } from '../../lib/config/ClassConfig'
 
 export default class DomConfig {
   public static getCharacterConfig(): IMappableCharacter {
     return {
       name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
-      activeClass:
-        '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__detail > div.character__view.clearfix > div.character__class > div.character__class__data > img',
+      activeClass: {
+        selector:
+          '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__detail > div.character__view.clearfix > div.character__class > div.character__class__data > img',
+        getAttr: 'src',
+        transformationFunction: (value: string) =>
+          ClassConfig.getClassForImage(value.replace('https://img.finalfantasyxiv.com/', '')),
+      },
       cityState:
         '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(3) > div > p.character-block__name',
       clan: {

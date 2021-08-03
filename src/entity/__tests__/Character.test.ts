@@ -26,6 +26,7 @@ import {readFile} from 'fs'
 import {join} from 'path'
 import Cheerio from 'cheerio'
 import Character from '../Character'
+import {Class} from '../../../lib/entity/Class'
 
 describe('Character', ()=>{
 
@@ -43,7 +44,8 @@ describe('Character', ()=>{
 			guardian: 'Thaliak, the Scholar',
 			grandCompany: 'Order of the Twin Adder',
 			grandCompanyRank: 'First Serpent Lieutenant',
-			freeCompany: 'Archadian Moogles'
+			freeCompany: 'Archadian Moogles',
+			activeClass: Class.WhiteMage
 		}
 
 		describe.each([
