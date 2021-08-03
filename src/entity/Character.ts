@@ -95,6 +95,7 @@ export default class Character implements ICharacter {
     const character = new Character(id, $(characterConfig.name).text())
 
  	Object.keys(characterConfig).forEach((key) => {
+ 		// @ts-ignore
 		character[key] = Character.processAttribute($, characterConfig[key])
 	})
 

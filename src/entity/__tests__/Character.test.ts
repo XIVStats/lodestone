@@ -39,7 +39,7 @@ describe('Character', ()=>{
 			race: 'Elezen',
 			gender: 'Female',
 			//
-			// nameDay: '29th Sun of the 3rd Astral Moon',
+			nameDay: '29th Sun of the 3rd Astral Moon',
 			// guardian: 'Thaliak, the Scholar'
 		}
 
