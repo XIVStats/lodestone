@@ -36,7 +36,8 @@ describe('Character', ()=>{
 			name: 'P\'tajha Rihll',
 			server: 'Cerberus',
 			dataCenter: 'Chaos',
-			// race: 'Elezen',
+			race: 'Elezen',
+			gender: 'Female',
 			//
 			// nameDay: '29th Sun of the 3rd Astral Moon',
 			// guardian: 'Thaliak, the Scholar'

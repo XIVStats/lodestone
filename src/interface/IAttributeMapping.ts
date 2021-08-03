@@ -23,44 +23,9 @@
  *
  */
 
-import IClassLevels from './IClassLevels'
-import IGearSet from './IGearSet'
-import {IMappableCharacter} from './IMappableCharacter'
+export default interface IAttributeMapping {
 
-export default interface ICharacter extends IMappableCharacter {
-  readonly name: string
-
-  readonly server?: string
-
-  readonly dataCenter?: string
-
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: string
-
-  readonly classes?: IClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: string
-
-  readonly minionIds?: string[]
-
-  readonly mountIds?: string[]
+	selector: string
+	useHtml?: boolean,
+	transformationFunction?(text: string) : string
 }

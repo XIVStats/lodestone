@@ -28,6 +28,7 @@ import DomConfig from '../config/DomConfig'
 import ICharacter from '../interface/ICharacter'
 import IClassLevels from '../interface/IClassLevels'
 import IGearSet from '../interface/IGearSet'
+import IAttributeMapping from '../interface/IAttributeMapping'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -66,15 +67,36 @@ export default class Character implements ICharacter {
 
   mountIds?: string[] | undefined
 
+	private static processAttribute($: CheerioAPI, config: IAttributeMapping | string) {
+  		if(typeof config === 'object') {
+			const transformConfig : IAttributeMapping  = config
+
+			let text
+			if (config.useHtml) {
+				text = $(config.selector).html() || $(config.selector).text()
+			} else {
+				text = $(config.selector).text()
+			}
+
+			if (transformConfig.transformationFunction) {
+				return transformConfig.transformationFunction(text)
+			}
+				return text
+
+		}
+  			return $(config).text()
+
+	}
+
   static fromPage(id: number, data: string, cheerio: CheerioAPI): Character {
     const $ = cheerio.load(data)
     const characterConfig = DomConfig.getCharacterConfig()
 
     const character = new Character(id, $(characterConfig.name).text())
 
-    const serverDataCenterText = $(characterConfig.dataCenter).text().split('(')
-    character.server = serverDataCenterText[0].trim()
-    character.dataCenter = serverDataCenterText[1].replace(')', '').trim()
+ 	Object.keys(characterConfig).forEach((key) => {
+		character[key] = Character.processAttribute($, characterConfig[key])
+	})
 
     return character
   }
