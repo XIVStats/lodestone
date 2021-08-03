@@ -59,7 +59,7 @@ describe('Character', ()=>{
 			})
 
 
-			it.each(Object.entries(expected))('should evaluate %s as \'%s\'', (([key, value]) =>{
+			it.each(Object.entries(expected))('should evaluate %s as \'%s\'', (([key]) =>{
 				// @ts-ignore
 				expect(resultantCharacter[key]).toEqual(expected[key])
 			}))
