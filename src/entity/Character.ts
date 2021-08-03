@@ -91,13 +91,10 @@ export default class Character implements ICharacter {
     const characterConfig = DomConfig.getCharacterConfig()
 
     const character = new Character(id, $(characterConfig.name).text())
-    character.realm = Character.processAttribute($, characterConfig.realm)
-    character.dataCenter = Character.processAttribute($, characterConfig.dataCenter)
-    character.race = Character.processAttribute($, characterConfig.race)
-    character.clan = Character.processAttribute($, characterConfig.clan)
-    character.gender = Character.processAttribute($, characterConfig.gender)
-    character.nameDay = Character.processAttribute($, characterConfig.nameDay)
-    character.guardian = Character.processAttribute($, characterConfig.guardian)
+
+    Object.entries(characterConfig).forEach(([key, value]) => {
+      Object.assign(character, { [key]: Character.processAttribute($, value) })
+    })
 
     return character
   }
