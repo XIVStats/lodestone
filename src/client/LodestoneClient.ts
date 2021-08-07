@@ -23,15 +23,16 @@
  *
  */
 
-import Axios, { AxiosInstance } from 'axios'
+import Axios, { AxiosError, AxiosInstance } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import Character from '../entity/Character'
 import Servers from '../entity/Servers'
+import CharacterNotFoundError from '../errors/CharacterNotFoundError'
 
 export default class LodestoneClient {
-  private readonly axiosInstance: AxiosInstance
+  axiosInstance: AxiosInstance
 
-  private readonly cheerioInstance: CheerioAPI
+  cheerioInstance: CheerioAPI
 
   constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
     this.axiosInstance =
@@ -44,8 +45,20 @@ export default class LodestoneClient {
   }
 
   public async getCharacter(id: number): Promise<Character> {
-    const response = await this.axiosInstance.get(`/character/${id}`)
-    return Character.fromPage(id, response.data, this.cheerioInstance)
+    try {
+      const response = await this.axiosInstance.get(`/character/${id}`)
+      return Character.fromPage(id, response.data, this.cheerioInstance)
+    } catch (e) {
+      if (Axios.isAxiosError(e)) {
+        const ae: AxiosError = e
+        if (ae.response && ae.response?.status === 404) {
+          throw new CharacterNotFoundError(id)
+        }
+      } else {
+        throw e
+      }
+    }
+    throw new Error(`Error processing character with id ${id}`)
   }
 
   public async getRealms(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {

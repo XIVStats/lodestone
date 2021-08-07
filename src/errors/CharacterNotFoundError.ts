@@ -23,43 +23,12 @@
  *
  */
 
-const enum Class {
-  // Tank
-  Paladin = 'Paladin',
-  Warrior = 'Warrior',
-  DarkKnight = 'Dark Knight',
-  Gunbreaker = 'Gunbreaker',
-  // Healer
-  WhiteMage = 'White Mage',
-  Scholar = 'Scholar',
-  Astrologian = 'Astrologian',
-  // Sage = 'Sage', (Not enabling until Endwalker release)
-  // DPS
-  Monk = 'Monk',
-  Dragoon = 'Dragoon',
-  Ninja = 'Ninja',
-  Samurai = 'Samurai',
-  Bard = 'Bard',
-  Machinist = 'Machinist',
-  Dancer = 'Dancer',
-  BlackMage = 'BlackMage',
-  Summoner = 'Summoner',
-  RedMage = 'Red Mage',
-  BlueMage = 'Blue Mage',
-  // Reaper = 'Reaper', (Not enabling until Endwalker release)
-  // DoH
-  Carpenter = 'Carpenter',
-  Blacksmith = 'Blacksmith',
-  Armorer = 'Armorer',
-  Goldsmith = 'Goldsmith',
-  Leatherworker = 'Leatherworker',
-  Weaver = 'Weaver',
-  Alchemist = 'Alchemist',
-  Culinarian = 'Culinarian',
-  // DoL
-  Miner = 'Miner',
-  Botanist = 'Botanist',
-  Fisher = 'Fisher',
-}
+export default class CharacterNotFoundError extends Error {
+  readonly characterId: number
 
-export default Class
+  constructor(characterId: number) {
+    super(`Could not find character with id ${characterId}`)
+    this.characterId = characterId
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}
