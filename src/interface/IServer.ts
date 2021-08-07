@@ -23,33 +23,14 @@
  *
  */
 
-import Axios, { AxiosInstance } from 'axios'
-import Cheerio, { CheerioAPI } from 'cheerio'
-import Character from '../entity/Character'
-import Servers from '../entity/Servers'
+import ServerStatus from '../entity/ServerStatus'
+import ServerCategory from '../entity/ServerCategory'
+import Region from '../entity/Region'
 
-export default class LodestoneClient {
-  private readonly axiosInstance: AxiosInstance
-
-  private readonly cheerioInstance: CheerioAPI
-
-  constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
-    this.axiosInstance =
-      axiosInstance ||
-      Axios.create({
-        baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
-        timeout: 5000,
-      })
-    this.cheerioInstance = cheerioInstance || Cheerio
-  }
-
-  public async getCharacter(id: number): Promise<Character> {
-    const response = await this.axiosInstance.get(`/character/${id}`)
-    return Character.fromPage(id, response.data, this.cheerioInstance)
-  }
-
-  public async getRealms(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
-    const response = await this.axiosInstance.get('/worldstatus')
-    return Servers.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
-  }
+export default interface IServer {
+  name: string
+  dataCenter: string
+  region: Region
+  status?: ServerStatus
+  category?: ServerCategory
 }

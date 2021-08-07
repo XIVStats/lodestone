@@ -23,10 +23,9 @@
  *
  */
 
-
 export enum Class {
-	WhiteMage = 'White Mage',
-	Scholar = 'Scholar'
+  WhiteMage = 'White Mage',
+  Scholar = 'Scholar',
 }
 
-export  default Class
+export default Class

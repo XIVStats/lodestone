@@ -23,9 +23,9 @@
  *
  */
 
-import {Class} from '../entity/Class'
+import { Class } from '../entity/Class'
 
 export interface IClassIdMapping {
-	className: Class,
-	imagePath: string
+  className: Class
+  imagePath: string
 }

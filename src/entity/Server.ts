@@ -23,33 +23,38 @@
  *
  */
 
-import Axios, { AxiosInstance } from 'axios'
-import Cheerio, { CheerioAPI } from 'cheerio'
-import Character from '../entity/Character'
-import Servers from '../entity/Servers'
+import { CheerioAPI, Node } from 'cheerio'
+import IServer from '../interface/IServer'
+import ServerCategory from './ServerCategory'
+import ServerStatus from './ServerStatus'
+import Region from './Region'
 
-export default class LodestoneClient {
-  private readonly axiosInstance: AxiosInstance
+export default class Server implements IServer {
+  public status?: ServerStatus
 
-  private readonly cheerioInstance: CheerioAPI
+  public category?: ServerCategory
 
-  constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
-    this.axiosInstance =
-      axiosInstance ||
-      Axios.create({
-        baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
-        timeout: 5000,
-      })
-    this.cheerioInstance = cheerioInstance || Cheerio
-  }
+  constructor(public readonly name: string, public readonly dataCenter: string, public readonly region: Region) {}
 
-  public async getCharacter(id: number): Promise<Character> {
-    const response = await this.axiosInstance.get(`/character/${id}`)
-    return Character.fromPage(id, response.data, this.cheerioInstance)
-  }
+  static fromElement(
+    $: CheerioAPI,
+    cheerioNode: Node,
+    dataCenter: string,
+    region: Region,
+    loadCategory?: boolean,
+    loadStatus?: boolean
+  ): Server {
+    const localScope = $(cheerioNode)
+    const name = localScope.find('.world-list__world_name').text().trim()
 
-  public async getRealms(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
-    const response = await this.axiosInstance.get('/worldstatus')
-    return Servers.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
+    const server = new Server(name, dataCenter, region)
+    if (loadCategory) {
+      server.category = localScope.find('.world-list__world_category').text().trim() as ServerCategory
+    }
+    if (loadStatus) {
+      server.status = localScope.find('.world-list__create_character i').attr('data-tooltip') as ServerStatus
+    }
+
+    return server
   }
 }
