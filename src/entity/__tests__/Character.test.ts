@@ -36,7 +36,7 @@ describe('Character', ()=>{
 		const expectedCharacterOne : Character = {
 			id: 11886902,
 			name: 'P\'tajha Rihll',
-			realm: 'Cerberus',
+			server: 'Cerberus',
 			dataCenter: 'Chaos',
 			race: 'Elezen',
 			clan: 'Wildwood',
@@ -57,14 +57,31 @@ describe('Character', ()=>{
 			}
 		}
 
+		const expectedCharacterTwo : Character = {
+			id: 38531003,
+			name: 'Aurora Nyx',
+			server: 'Omega',
+			dataCenter: 'Chaos',
+			race: 'Elezen',
+			clan: 'Wildwood',
+			nameDay: '4th Sun of the 4th Astral Moon',
+			guardian: 'Nymeia, the Spinner',
+			gender: 'Female',
+			freeCompany: 'Gandalf\'s Gangstas',
+			activeClass: Class.Arcanist,
+			grandCompany: undefined
+		}
+
 		// TODO: Test character with shield
 		// TODO: test character with no grand company
 		// TODO: test character with no free company
 
 
 		describe.each([
-			[11886902, 'P\'tajha Rihll' , expectedCharacterOne]
-		])('for character %s - %s', (charId, name, expected) => {
+			[11886902, 'P\'tajha Rihll' , expectedCharacterOne],
+			[38531003, 'Aurora Nyxx', expectedCharacterTwo]
+		]
+		)('for character %s - %s', (charId, name, expected) => {
 			let resultantCharacter: Character
 
 			beforeAll( (done)=>{

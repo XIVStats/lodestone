@@ -35,7 +35,7 @@ import GearCategory from './GearCategory'
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
 
-  realm?: string
+  server?: string
 
   dataCenter?: string
 
@@ -100,13 +100,13 @@ export default class Character implements ICharacter {
   private static processGear($: CheerioAPI): IGearSet {
     const elements = $('.ic_reflection_box').toArray()
     const gear: IGearSet = {}
-    elements.forEach((element) => {
+    elements.forEach((element, index) => {
       const local$ = $(element)
       const id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
 
       let categoryStr = local$.find('.db-tooltip__item__category').text()
       if (categoryStr !== '') {
-        if (categoryStr.includes('Arm')) {
+        if (index === 0) {
           categoryStr = 'Arm'
         }
         const category: GearCategory = categoryStr as GearCategory
