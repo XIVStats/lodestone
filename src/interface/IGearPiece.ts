@@ -23,9 +23,11 @@
  *
  */
 
+import GearCategory from '../entity/GearCategory'
+
 export default interface IGearPiece {
+  category: GearCategory
   id: string
   name: string
   iLvl: number
-  class: string
 }

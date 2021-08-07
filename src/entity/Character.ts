@@ -30,6 +30,7 @@ import IClassLevels from '../interface/IClassLevels'
 import IGearSet from '../interface/IGearSet'
 import IAttributeMapping from '../interface/IAttributeMapping'
 import Class from './Class'
+import GearCategory from './GearCategory'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -96,6 +97,34 @@ export default class Character implements ICharacter {
     return $(config).text()
   }
 
+  private static processGear($: CheerioAPI): IGearSet {
+    const elements = $('.ic_reflection_box').toArray()
+    const gear: IGearSet = {}
+    elements.forEach((element) => {
+      const local$ = $(element)
+      const id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
+
+      let categoryStr = local$.find('.db-tooltip__item__category').text()
+      if (categoryStr !== '') {
+        if (categoryStr.includes('Arm')) {
+          categoryStr = 'Arm'
+        }
+        const category: GearCategory = categoryStr as GearCategory
+
+        const categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
+        Object.assign(gear, {
+          [categoryAsLowerCase]: {
+            category,
+            name: local$.find('.db-tooltip__item_equipment__class').text(),
+            id: id.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
+            iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
+          },
+        })
+      }
+    })
+    return gear
+  }
+
   static fromPage(id: number, data: string, cheerio: CheerioAPI): Character {
     const $ = cheerio.load(data)
     const characterConfig = DomConfig.getCharacterConfig()
@@ -105,6 +134,8 @@ export default class Character implements ICharacter {
     Object.entries(characterConfig).forEach(([key, value]) => {
       Object.assign(character, { [key]: Character.processAttribute($, value) })
     })
+
+    character.gear = Character.processGear($)
 
     return character
   }

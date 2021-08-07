@@ -23,34 +23,20 @@
  *
  */
 
-import IGearPiece from './IGearPiece'
-
-export default interface IGearSet {
-  readonly arm?: string | IGearPiece
-
-  readonly head?: string | IGearPiece
-
-  readonly body?: string | IGearPiece
-
-  readonly hands?: string | IGearPiece
-
-  readonly waist?: string | IGearPiece
-
-  readonly legs?: string | IGearPiece
-
-  readonly feet?: string | IGearPiece
-
-  readonly shield?: string | IGearPiece
-
-  readonly earrings?: string | IGearPiece
-
-  readonly necklace?: string | IGearPiece
-
-  readonly bracelets?: string | IGearPiece
-
-  readonly ringOne?: string | IGearPiece
-
-  readonly ringTwo?: string | IGearPiece
-
-  readonly soulCrystal?: string | IGearPiece
+const enum GearCategory {
+  Arm = 'Arm',
+  Head = 'Head',
+  Body = 'Body',
+  Hands = 'Hands',
+  Waist = 'Waist',
+  Legs = 'Legs',
+  Feet = 'Feet',
+  Shield = 'Shield',
+  Earrings = 'Earrings',
+  Necklace = 'Necklace',
+  Bracelets = 'Bracelets',
+  Ring = 'Ring',
+  SoulCrystal = 'Soul Crystal',
 }
+
+export default GearCategory

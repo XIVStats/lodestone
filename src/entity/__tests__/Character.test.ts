@@ -27,6 +27,7 @@ import {join} from 'path'
 import Cheerio from 'cheerio'
 import Character from '../Character'
 import Class from '../Class'
+import GearCategory from '../GearCategory'
 
 describe('Character', ()=>{
 
@@ -45,8 +46,21 @@ describe('Character', ()=>{
 			grandCompany: 'Order of the Twin Adder',
 			grandCompanyRank: 'First Serpent Lieutenant',
 			freeCompany: 'Archadian Moogles',
-			activeClass: Class.Conjurer
+			activeClass: Class.Conjurer,
+			gear: {
+				hands: {
+					category: GearCategory.Arm,
+					iLvl: 430,
+					id: '000c99173df',
+					name: 'Weathered Tishrya'
+				}
+			}
 		}
+
+		// TODO: Test character with shield
+		// TODO: test character with no grand company
+		// TODO: test character with no free company
+
 
 		describe.each([
 			[11886902, 'P\'tajha Rihll' , expectedCharacterOne]
