@@ -61,7 +61,15 @@ export default class LodestoneClient {
     throw new Error(`Error processing character with id ${id}`)
   }
 
-  public async getRealms(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
+  public async getCharacters(start: number, end: number): Promise<Character[]> {
+    const characters: Promise<Character>[] = []
+    for (let index = start; index < end; index += 1) {
+      characters.push(this.getCharacter(index))
+    }
+    return Promise.all(characters)
+  }
+
+  public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
     const response = await this.axiosInstance.get('/worldstatus')
     return Servers.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
   }
