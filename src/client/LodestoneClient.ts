@@ -67,12 +67,11 @@ export default class LodestoneClient {
         throw new CharacterFetchError(id, e)
       }
     }
-    throw new Error(`Error processing character with id ${id}`)
+    throw new CharacterFetchError(id, new Error('Unknown error occurred processing character'))
   }
 
   public async getCharacters(
-    start: number,
-    end: number,
+    characterIds: number[],
     parallelismLimit: number,
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
@@ -81,9 +80,9 @@ export default class LodestoneClient {
     const limit = pLimit(parallelismLimit)
 
     const promises: Promise<Character>[] = []
-    for (let currentId = start; currentId < end; currentId += 1) {
+    characterIds.forEach((currentId) => {
       promises.push(limit(() => this.getCharacter(currentId)))
-    }
+    })
     const successfulCharacters: Character[] = []
     const failedCharacters: ICharacterFetchError[] = []
     const results = await Promise.allSettled(promises)
@@ -108,6 +107,21 @@ export default class LodestoneClient {
       }
     })
     return [successfulCharacters, failedCharacters]
+  }
+
+  public async getCharacterRange(
+    start: number,
+    end: number,
+    parallelismLimit: number,
+    onSuccess?: OnSuccessFunction,
+    onDeleted?: OnSuccessFunction,
+    onError?: OnErrorFunction
+  ): Promise<[Character[], ICharacterFetchError[]]> {
+    const ids: number[] = []
+    for (let currentId = start; currentId < end; currentId += 1) {
+      ids.push(currentId)
+    }
+    return this.getCharacters(ids, parallelismLimit, onSuccess, onDeleted, onError)
   }
 
   public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
