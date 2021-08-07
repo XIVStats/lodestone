@@ -33,7 +33,11 @@ export default class ClassConfig {
       imagePath: 'lds/h/1/3wQqdIwC4pyH2mWSQRYrw85nqU.png',
     },
     {
-      className: Class.Warrior,
+      className: Class.Marauder,
+      imagePath: 'lds/h/f/_imrmFDN5Xsm-ARCpZiKi-2Aa0.png',
+    },
+    {
+      className: Class.Marauder, // Warrior
       imagePath: 'lds/h/v/AysNLTCa0UlF57pGIceCfUPHXQ.png',
     },
     {
@@ -45,6 +49,10 @@ export default class ClassConfig {
       imagePath: 'lds/h/J/MzT8DqZtAQxrjWTCJTPJG4M8E8.png',
     },
     // Healer
+    {
+      className: Class.Conjurer, // Conjurer
+      imagePath: 'lds/h/y/GXIAHRFMlNyJUNf5zD40CnpP_M.png',
+    },
     {
       className: Class.Conjurer, // White Mage
       imagePath: 'lds/h/x/tAdErIw5tUrachDbHXRmbS4wz8.png',
@@ -88,6 +96,10 @@ export default class ClassConfig {
       imagePath: 'lds/h/T/gCoz6IP00aPoN2KTzGtwC4ayks.png',
     },
     {
+      className: Class.Archer, // Archer
+      imagePath: 'lds/h/C/96HpzsjDgZ7iXVOjApaTxvhJCI.png',
+    },
+    {
       className: Class.Archer, // Bard
       imagePath: 'lds/h/z/VR1-x75nlmjA254HNDxF1SPEH0.png',
     },
@@ -98,6 +110,10 @@ export default class ClassConfig {
     {
       className: Class.Dancer,
       imagePath: 'lds/h/2/VyHSnYXdwvrayQYs94OQn5Sf5c.png',
+    },
+    {
+      className: Class.Thaumaturge, // Thaumaturge
+      imagePath: 'lds/h/V/Hjab7psI190gJL7Dwfv6lRN_IY.png',
     },
     {
       className: Class.Thaumaturge, // Black Mage

@@ -25,11 +25,13 @@
 
 import Axios, { AxiosError, AxiosInstance } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
+import pLimit from 'p-limit'
 import Character from '../entity/Character'
 import Servers from '../entity/Servers'
 import CharacterNotFoundError from '../errors/CharacterNotFoundError'
 import { ICharacterFetchError } from '../interface/ICharacterFetchError'
 import CharacterFetchError from '../errors/CharacterFetchError'
+import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -58,6 +60,8 @@ export default class LodestoneClient {
         const ae: AxiosError = e
         if (ae.response && ae.response?.status === 404) {
           throw new CharacterNotFoundError(id)
+        } else if (ae.response && ae.code === 'ECONNABORTED') {
+          throw new CharacterFetchTimeoutError(id)
         }
       } else {
         throw new CharacterFetchError(id, e)
@@ -69,13 +73,16 @@ export default class LodestoneClient {
   public async getCharacters(
     start: number,
     end: number,
+    parallelismLimit: number,
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
     onError?: OnErrorFunction
   ): Promise<[Character[], ICharacterFetchError[]]> {
+    const limit = pLimit(parallelismLimit)
+
     const promises: Promise<Character>[] = []
     for (let currentId = start; currentId < end; currentId += 1) {
-      promises.push(this.getCharacter(currentId))
+      promises.push(limit(() => this.getCharacter(currentId)))
     }
     const successfulCharacters: Character[] = []
     const failedCharacters: ICharacterFetchError[] = []
@@ -87,11 +94,7 @@ export default class LodestoneClient {
           onSuccess(result.value.id, result.value)
         }
         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-      } else if (
-        result.status === 'rejected' &&
-        typeof result.reason === 'object' &&
-        result.reason.code === 'ENOTFOUND'
-      ) {
+      } else if (result.status === 'rejected' && result.reason.code === 'ENOTFOUND') {
         if (onDeleted) {
           onDeleted(result.reason.id)
         }

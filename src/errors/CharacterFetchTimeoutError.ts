@@ -23,43 +23,18 @@
  *
  */
 
-const enum Class {
-  // Tank
-  Gladiator = 'Paladin / Gladiator',
-  Marauder = 'Warrior / Marauder',
-  DarkKnight = 'Dark Knight',
-  Gunbreaker = 'Gunbreaker',
-  // Healer
-  Conjurer = 'White Mage / Conjurer',
-  Scholar = 'Scholar',
-  Astrologian = 'Astrologian',
-  // Sage = 'Sage', (Not enabling until Endwalker release)
-  // DPS
-  Pugilist = 'Monk / Pugilist',
-  Lancer = 'Dragoon / Lancer',
-  Ninja = 'Ninja',
-  Samurai = 'Samurai',
-  Archer = 'Bard / Archer',
-  Machinist = 'Machinist',
-  Dancer = 'Dancer',
-  Thaumaturge = 'Black Mage / Thaumaturge',
-  Arcanist = 'Summoner / Arcanist',
-  RedMage = 'Red Mage',
-  BlueMage = 'Blue Mage',
-  // Reaper = 'Reaper', (Not enabling until Endwalker release)
-  // DoH
-  Carpenter = 'Carpenter',
-  Blacksmith = 'Blacksmith',
-  Armorer = 'Armorer',
-  Goldsmith = 'Goldsmith',
-  Leatherworker = 'Leatherworker',
-  Weaver = 'Weaver',
-  Alchemist = 'Alchemist',
-  Culinarian = 'Culinarian',
-  // DoL
-  Miner = 'Miner',
-  Botanist = 'Botanist',
-  Fisher = 'Fisher',
-}
+export default class CharacterFetchTimeoutError extends Error {
+  readonly characterId: number
 
-export default Class
+  readonly code: string
+
+  readonly reason: string
+
+  constructor(characterId: number) {
+    super(`Error fetching character with id ${characterId}, timeout exceeded`)
+    this.characterId = characterId
+    this.code = 'TIMEOUT_EXCEEDED'
+    this.reason = 'timeout exceeded'
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}
