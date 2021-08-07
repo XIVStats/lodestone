@@ -26,9 +26,12 @@
 export default class CharacterNotFoundError extends Error {
   readonly characterId: number
 
+  readonly code: string
+
   constructor(characterId: number) {
     super(`Could not find character with id ${characterId}`)
     this.characterId = characterId
+    this.code = 'ENOTFOUND'
     Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
   }
 }

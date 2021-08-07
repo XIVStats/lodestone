@@ -29,7 +29,7 @@ export default class ClassConfig {
   private static mappings: IClassIdMapping[] = [
     // Tank
     {
-      className: Class.Paladin,
+      className: Class.Gladiator, // Paladin
       imagePath: 'lds/h/1/3wQqdIwC4pyH2mWSQRYrw85nqU.png',
     },
     {
@@ -46,7 +46,7 @@ export default class ClassConfig {
     },
     // Healer
     {
-      className: Class.WhiteMage,
+      className: Class.Conjurer, // White Mage
       imagePath: 'lds/h/x/tAdErIw5tUrachDbHXRmbS4wz8.png',
     },
     {
@@ -64,12 +64,20 @@ export default class ClassConfig {
     // },
     // DPS
     {
-      className: Class.Monk,
+      className: Class.Pugilist, // Monk
       imagePath: 'lds/h/I/-FYU8hC0lIOJPGa_Di0O8ntJF8.png',
     },
     {
-      className: Class.Dragoon,
+      className: Class.Pugilist, // Pugilist
+      imagePath: 'lds/h/9/kmphx3Uu-rhnFhqferPfKxAwSQ.png',
+    },
+    {
+      className: Class.Lancer, // Lancer
       imagePath: 'lds/h/T/a6uZpYkPOUw80addNWrfY7vPdY.png',
+    },
+    {
+      className: Class.Lancer, // Lancer
+      imagePath: 'lds/h/R/yC5PNbFqbqxDn8OxiW4jYEYtuc.png',
     },
     {
       className: Class.Ninja,
@@ -80,7 +88,7 @@ export default class ClassConfig {
       imagePath: 'lds/h/T/gCoz6IP00aPoN2KTzGtwC4ayks.png',
     },
     {
-      className: Class.Bard,
+      className: Class.Archer, // Bard
       imagePath: 'lds/h/z/VR1-x75nlmjA254HNDxF1SPEH0.png',
     },
     {
@@ -92,12 +100,16 @@ export default class ClassConfig {
       imagePath: 'lds/h/2/VyHSnYXdwvrayQYs94OQn5Sf5c.png',
     },
     {
-      className: Class.BlackMage,
+      className: Class.Thaumaturge, // Black Mage
       imagePath: 'lds/h/V/iQGQZkgIcSv9ron84usFHDIi48.png',
     },
     {
-      className: Class.Summoner,
+      className: Class.Arcanist, // Summoner
       imagePath: 'lds/h/r/Py4k_3kd_jMlNBOakIwi3EUP4U.png',
+    },
+    {
+      className: Class.Arcanist, // Arcanist,
+      imagePath: 'lds/h/2/V4RyOObRXzrVRraLoPhMui_Atg.png',
     },
     {
       className: Class.RedMage,
@@ -166,6 +178,6 @@ export default class ClassConfig {
     if (found) {
       return found.className
     }
-    throw new Error('Could not find a mapping for the provided id')
+    throw new Error(`Could not find a mapping for the provided imagePath ${imagePath}`)
   }
 }

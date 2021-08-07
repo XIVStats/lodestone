@@ -25,25 +25,25 @@
 
 const enum Class {
   // Tank
-  Paladin = 'Paladin',
+  Gladiator = 'Paladin / Gladiator',
   Warrior = 'Warrior',
   DarkKnight = 'Dark Knight',
   Gunbreaker = 'Gunbreaker',
   // Healer
-  WhiteMage = 'White Mage',
+  Conjurer = 'White Mage / Conjurer',
   Scholar = 'Scholar',
   Astrologian = 'Astrologian',
   // Sage = 'Sage', (Not enabling until Endwalker release)
   // DPS
-  Monk = 'Monk',
-  Dragoon = 'Dragoon',
+  Pugilist = 'Monk / Pugilist',
+  Lancer = 'Dragoon / Lancer',
   Ninja = 'Ninja',
   Samurai = 'Samurai',
-  Bard = 'Bard',
+  Archer = 'Bard / Archer',
   Machinist = 'Machinist',
   Dancer = 'Dancer',
-  BlackMage = 'BlackMage',
-  Summoner = 'Summoner',
+  Thaumaturge = 'Black Mage / Thaumaturge',
+  Arcanist = 'Summoner / Arcanist',
   RedMage = 'Red Mage',
   BlueMage = 'Blue Mage',
   // Reaper = 'Reaper', (Not enabling until Endwalker release)

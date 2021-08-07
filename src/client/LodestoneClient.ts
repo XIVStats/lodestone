@@ -28,6 +28,11 @@ import Cheerio, { CheerioAPI } from 'cheerio'
 import Character from '../entity/Character'
 import Servers from '../entity/Servers'
 import CharacterNotFoundError from '../errors/CharacterNotFoundError'
+import { ICharacterFetchError } from '../interface/ICharacterFetchError'
+import CharacterFetchError from '../errors/CharacterFetchError'
+
+export type OnSuccessFunction = (id: number, character?: Character) => void
+export type OnErrorFunction = (id: number, error: Error) => void
 
 export default class LodestoneClient {
   axiosInstance: AxiosInstance
@@ -55,18 +60,51 @@ export default class LodestoneClient {
           throw new CharacterNotFoundError(id)
         }
       } else {
-        throw e
+        throw new CharacterFetchError(id, e)
       }
     }
     throw new Error(`Error processing character with id ${id}`)
   }
 
-  public async getCharacters(start: number, end: number): Promise<Character[]> {
-    const characters: Promise<Character>[] = []
-    for (let index = start; index < end; index += 1) {
-      characters.push(this.getCharacter(index))
+  public async getCharacters(
+    start: number,
+    end: number,
+    onSuccess?: OnSuccessFunction,
+    onDeleted?: OnSuccessFunction,
+    onError?: OnErrorFunction
+  ): Promise<[Character[], ICharacterFetchError[]]> {
+    const promises: Promise<Character>[] = []
+    for (let currentId = start; currentId < end; currentId += 1) {
+      promises.push(this.getCharacter(currentId))
     }
-    return Promise.all(characters)
+    const successfulCharacters: Character[] = []
+    const failedCharacters: ICharacterFetchError[] = []
+    const results = await Promise.allSettled(promises)
+    results.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        successfulCharacters.push(result.value)
+        if (onSuccess) {
+          onSuccess(result.value.id, result.value)
+        }
+        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+      } else if (
+        result.status === 'rejected' &&
+        typeof result.reason === 'object' &&
+        result.reason.code === 'ENOTFOUND'
+      ) {
+        if (onDeleted) {
+          onDeleted(result.reason.id)
+        }
+        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+      } else if (result.status === 'rejected') {
+        failedCharacters.push(result.reason)
+        if (onError) {
+          /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+          onError(result.reason.id, result.reason.error)
+        }
+      }
+    })
+    return [successfulCharacters, failedCharacters]
   }
 
   public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {

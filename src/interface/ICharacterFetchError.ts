@@ -23,10 +23,8 @@
  *
  */
 
-export default interface IAttributeMapping {
-  selector: string
-  canBeNull?: boolean
-  useHtml?: boolean
-  getAttr?: string
-  transformationFunction?(value: string): string
+export interface ICharacterFetchError {
+  id: number
+  reason: string
+  error?: Error
 }

@@ -84,7 +84,11 @@ export default class Character implements ICharacter {
         text = $(config.selector).text()
       }
 
-      if (transformConfig.transformationFunction) {
+      if ((text === undefined || text === '') && !config.canBeNull && transformConfig.transformationFunction) {
+        throw new Error('Non-nullable mapping has null value for attribute')
+      } else if (config.canBeNull && (text === undefined || text === '')) {
+        return null
+      } else if (transformConfig.transformationFunction) {
         return transformConfig.transformationFunction(text)
       }
       return text

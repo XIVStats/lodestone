@@ -69,11 +69,13 @@ export default class DomConfig {
         },
       },
       grandCompany: {
+        canBeNull: true,
         selector:
           '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
         transformationFunction: (value: string) => value.split('/')[0].trim(),
       },
       grandCompanyRank: {
+        canBeNull: true,
         selector:
           '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(4) > div > p.character-block__name',
         transformationFunction: (value: string) => value.split('/')[1].trim(),

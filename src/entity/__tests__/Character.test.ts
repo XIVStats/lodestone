@@ -45,7 +45,7 @@ describe('Character', ()=>{
 			grandCompany: 'Order of the Twin Adder',
 			grandCompanyRank: 'First Serpent Lieutenant',
 			freeCompany: 'Archadian Moogles',
-			activeClass: Class.WhiteMage
+			activeClass: Class.Conjurer
 		}
 
 		describe.each([

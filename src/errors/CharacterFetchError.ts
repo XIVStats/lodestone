@@ -23,10 +23,21 @@
  *
  */
 
-export default interface IAttributeMapping {
-  selector: string
-  canBeNull?: boolean
-  useHtml?: boolean
-  getAttr?: string
-  transformationFunction?(value: string): string
+export default class CharacterFetchError extends Error {
+  readonly characterId: number
+
+  readonly code: string
+
+  readonly error: Error
+
+  readonly reason: string
+
+  constructor(characterId: number, error: Error) {
+    super(`Error fetching character with id ${characterId}, ${error.message}`)
+    this.characterId = characterId
+    this.error = error
+    this.code = 'UNHANDLED_ERROR'
+    this.reason = error.message
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
 }
