@@ -23,7 +23,7 @@
  *
  */
 import { IClassIdMapping } from '../interface/IClassIdMapping'
-import { Class } from '../entity/Class'
+import Class from '../entity/Class'
 
 export default class ClassConfig {
 
