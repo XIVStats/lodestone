@@ -63,8 +63,8 @@ export default class LodestoneClient {
         } else if (ae.response && ae.code === 'ECONNABORTED') {
           throw new CharacterFetchTimeoutError(id)
         } else {
-        	throw new CharacterFetchError(id, ae)
-		}
+          throw new CharacterFetchError(id, ae)
+        }
       } else {
         throw new CharacterFetchError(id, e)
       }
