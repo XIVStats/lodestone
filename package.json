@@ -10,6 +10,7 @@
 		"build": "tsc",
 		"test": "jest",
 		"format": "prettier --write src/**/*.ts src/**/*.test.ts",
+		"format:check": "prettier --check src/**/*.ts src/**/*.test.ts",
 		"lint": "eslint --ext .ts --ext .js src --color",
 		"lint:fix": "eslint --fix --ext .ts --ext .js src --color",
 		"prepare": "husky install"
@@ -31,7 +32,7 @@
 	"author": {
 		"name": "Final Fantasy XIV Statistics Project",
 		"email": "hello@ffxivcensus.com",
-		"url": "ffxivcensus.com"
+		"url": "https:/ffxivcensus.com"
 	},
 	"contributors": [
 		{

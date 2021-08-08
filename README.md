@@ -11,7 +11,7 @@
 Jump To:
 [API Reference](docs/API.md) |
 [Getting Started](#getting-started) |
-[Contributing](#contributing) |
+[Contributing](#contributing)
 
 -------
 

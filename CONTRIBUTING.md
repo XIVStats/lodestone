@@ -139,7 +139,7 @@ Work your magic. Here are some guidelines:
 * Every change requires a unit test
 * If you change APIs, make sure to update the README
 
-When you create a commit, hooks should run to lint & format your code, and check your commit message. If any of these checks fail your commit will not be created. If the formatter applies changes, create a follow up commit to correct them.
+When you create a commit, hooks should run to lint & format your code, and check your commit message. If any of these checks fail your commit will not be created.
 
 When you push hooks will run to execute the build and tests, be sure to correct any failures.
 
