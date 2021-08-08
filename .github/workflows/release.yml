@@ -44,6 +44,7 @@ jobs:
       - run: git config --global user.email "automation@reidweb.com"
       - run: git config --global user.name "GitHub Actions"
       - run: npm prune --production
+      - run: git diff package.json
       - run: 'VERSION=$(npm version --no-commit-hook ${{ github.event.release.tag_name }} -m "chore: release version %s")'
       - run: npm publish --access public
         env:
