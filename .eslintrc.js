@@ -24,34 +24,35 @@
  */
 
 module.exports = {
-	plugins: ['@typescript-eslint', 'prettier', 'notice'],
-	extends: [
-		'eslint:recommended',
-		'airbnb-typescript',
-		'prettier',
-		'plugin:@typescript-eslint/recommended',
-		'plugin:@typescript-eslint/recommended-requiring-type-checking'
-	],
-	parser: '@typescript-eslint/parser',
-	parserOptions: {
-		project: './tsconfig.eslint.json'
-	},
-	rules: {
-		'@typescript-eslint/explicit-module-boundary-types': ['error'],
-		'quotes': ['error', 'single'],
-		'semi': ['error', 'never'],
-		'notice/notice':['error',
-			{
-				'mustMatch':'MIT License'
-			}
-		]
-	},
-	overrides: [
-		{
-			files: ['src/**/*.test.ts'],
-			rules: {
-				'@typescript-eslint/ban-ts-comment': 'off'
-			}
-		}
-	]
-};
+  plugins: ['@typescript-eslint', 'prettier', 'notice'],
+  extends: [
+    'eslint:recommended',
+    'airbnb-typescript',
+    'prettier',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.eslint.json',
+  },
+  rules: {
+    '@typescript-eslint/explicit-module-boundary-types': ['error'],
+    quotes: ['error', 'single', { avoidEscape: true }],
+    semi: ['error', 'never'],
+    'notice/notice': [
+      'error',
+      {
+        mustMatch: 'MIT License',
+      },
+    ],
+  },
+  overrides: [
+    {
+      files: ['src/**/*.test.ts'],
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'off',
+      },
+    },
+  ],
+}
