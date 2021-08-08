@@ -10,7 +10,9 @@
 Jump To:
 [API Reference](docs/API.md) |
 [Getting Started](#getting-started) |
-[Contributing](CONTRIBUTING.md) |
+[Contributing](#contributing) |
+
+-------
 
 ## Getting-Started
 
@@ -27,3 +29,15 @@ $ yarn install @xivstats/lodestone
 ```
 
 ### 2. Imports
+
+TODO
+
+## Contributing
+
+We welcome community contributions and pull requests. See
+[CONTRIBUTING.md](./CONTRIBUTING.md) for information on how to set up a development
+environment and submit code.
+
+## More resources
+* [Changelog](./CHANGELOG.md)
+* [License](./LICENSE)
