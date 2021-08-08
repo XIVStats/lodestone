@@ -32,6 +32,7 @@ import CharacterNotFoundError from '../errors/CharacterNotFoundError'
 import { ICharacterFetchError } from '../interface/ICharacterFetchError'
 import CharacterFetchError from '../errors/CharacterFetchError'
 import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
+import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -69,7 +70,6 @@ export default class LodestoneClient {
         throw new CharacterFetchError(id, e)
       }
     }
-    throw new CharacterFetchError(id, new Error('Unknown error occurred processing character'))
   }
 
   public async getCharacters(
@@ -78,7 +78,7 @@ export default class LodestoneClient {
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
     onError?: OnErrorFunction
-  ): Promise<[Character[], ICharacterFetchError[]]> {
+  ): Promise<ICharacterSetFetchResult> {
     const limit = pLimit(parallelismLimit)
 
     const promises: Promise<Character>[] = []
@@ -87,6 +87,7 @@ export default class LodestoneClient {
     })
     const successfulCharacters: Character[] = []
     const failedCharacters: ICharacterFetchError[] = []
+    const notFoundCharacters: number[] = []
     const results = await Promise.allSettled(promises)
     results.forEach((result) => {
       if (result.status === 'fulfilled') {
@@ -96,8 +97,9 @@ export default class LodestoneClient {
         }
         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       } else if (result.status === 'rejected' && result.reason.code === 'ENOTFOUND') {
+        notFoundCharacters.push(result.reason.characterId)
         if (onDeleted) {
-          onDeleted(result.reason.id)
+          onDeleted(result.reason.characterId)
         }
         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       } else if (result.status === 'rejected') {
@@ -108,7 +110,11 @@ export default class LodestoneClient {
         }
       }
     })
-    return [successfulCharacters, failedCharacters]
+    return {
+      found: successfulCharacters,
+      notFound: notFoundCharacters,
+      errored: failedCharacters,
+    }
   }
 
   public async getCharacterRange(
@@ -118,7 +124,7 @@ export default class LodestoneClient {
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
     onError?: OnErrorFunction
-  ): Promise<[Character[], ICharacterFetchError[]]> {
+  ): Promise<ICharacterSetFetchResult> {
     const ids: number[] = []
     for (let currentId = start; currentId < end; currentId += 1) {
       ids.push(currentId)

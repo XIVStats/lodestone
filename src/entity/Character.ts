@@ -113,18 +113,18 @@ export default class Character implements ICharacter {
         id = id.replace('/lodestone/playguide/db/item/', '').replace('/', '')
 
         const categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
-		  if (idsOnly) {
-			Object.assign(gear, {[categoryAsLowerCase]: id})
-		  } else {
-			  Object.assign(gear, {
-				  [categoryAsLowerCase]: {
-					  category,
-					  name: local$.find('.db-tooltip__item_equipment__class').text(),
-					  id,
-					  iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
-				  },
-			  })
-		  }
+        if (idsOnly) {
+          Object.assign(gear, { [categoryAsLowerCase]: id })
+        } else {
+          Object.assign(gear, {
+            [categoryAsLowerCase]: {
+              category,
+              name: local$.find('.db-tooltip__item_equipment__class').text(),
+              id,
+              iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
+            },
+          })
+        }
       }
     })
     return gear
