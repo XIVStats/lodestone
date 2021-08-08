@@ -1,6 +1,6 @@
 # Contributing to this package
 
-Thanks for your interest ❤️ in helping us out.
+Thanks for your interest in helping us out ❤️ .
 
 We highly value community contributions. We want to recognize all your hard work by getting your code merged as quickly as we can, so please read the guidance here carefully to make sure the review process goes smoothly.
 
@@ -137,7 +137,11 @@ Work your magic. Here are some guidelines:
 	* We have a number of linters that run during pre-commit hooks that will enforce coding consistency and correctness.
 	  Watch out for their error messages and adjust your code accordingly.
 * Every change requires a unit test
-* If you change APIs, make sure to update the
+* If you change APIs, make sure to update the README
+
+When you create a commit, hooks should run to lint & format your code, and check your commit message. If any of these checks fail your commit will not be created. If the formatter applies changes, create a follow up commit to correct them.
+
+When you push hooks will run to execute the build and tests, be sure to correct any failures.
 
 ### Step 4: Pull Request
 
