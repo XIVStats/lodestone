@@ -97,12 +97,12 @@ export default class Character implements ICharacter {
     return $(config).text()
   }
 
-  private static processGear($: CheerioAPI): IGearSet {
+  private static processGear($: CheerioAPI, idsOnly?: boolean): IGearSet {
     const elements = $('.ic_reflection_box').toArray()
     const gear: IGearSet = {}
     elements.forEach((element, index) => {
       const local$ = $(element)
-      const id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
+      let id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
 
       let categoryStr = local$.find('.db-tooltip__item__category').text()
       if (categoryStr !== '') {
@@ -110,22 +110,27 @@ export default class Character implements ICharacter {
           categoryStr = 'Arm'
         }
         const category: GearCategory = categoryStr as GearCategory
+        id = id.replace('/lodestone/playguide/db/item/', '').replace('/', '')
 
         const categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
-        Object.assign(gear, {
-          [categoryAsLowerCase]: {
-            category,
-            name: local$.find('.db-tooltip__item_equipment__class').text(),
-            id: id.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
-            iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
-          },
-        })
+		  if (idsOnly) {
+			Object.assign(gear, {[categoryAsLowerCase]: id})
+		  } else {
+			  Object.assign(gear, {
+				  [categoryAsLowerCase]: {
+					  category,
+					  name: local$.find('.db-tooltip__item_equipment__class').text(),
+					  id,
+					  iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
+				  },
+			  })
+		  }
       }
     })
     return gear
   }
 
-  static fromPage(id: number, data: string, cheerio: CheerioAPI): Character {
+  static fromPage(id: number, data: string, cheerio: CheerioAPI, gearIdsOnly?: boolean): Character {
     const $ = cheerio.load(data)
     const characterConfig = DomConfig.getCharacterConfig()
 
@@ -135,7 +140,7 @@ export default class Character implements ICharacter {
       Object.assign(character, { [key]: Character.processAttribute($, value) })
     })
 
-    character.gear = Character.processGear($)
+    character.gear = Character.processGear($, gearIdsOnly)
 
     return character
   }
