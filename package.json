@@ -90,10 +90,13 @@
   "husky": {
     "hooks": {
 	  "commit-msg": "echo \"[Husky] commit-msg\"",
-	  "pre-commit": "echo \"[Husky] pre-commit\""
+	  "pre-commit": "echo \"[Husky] pre-commit\"",
+	  "pre-push": "echo \"[Husky] pre-push\""
     }
   },
   "commitlint" : {
-	"extends": ["@commitlint/config-conventional"]
+	"extends": [
+	  "@commitlint/config-conventional"
+	]
   }
 }
