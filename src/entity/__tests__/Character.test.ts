@@ -33,7 +33,7 @@ describe('Character', () => {
   describe('when loading character information from HTML', () => {
     const expectedCharacterOne: Character = {
       id: 11886902,
-      name: 'P\'tajha Rihll',
+      name: "P'tajha Rihll",
       server: 'Cerberus',
       dataCenter: 'Chaos',
       race: 'Elezen',
@@ -65,7 +65,7 @@ describe('Character', () => {
       nameDay: '4th Sun of the 4th Astral Moon',
       guardian: 'Nymeia, the Spinner',
       gender: 'Female',
-      freeCompany: 'Gandalf\'s Gangstas',
+      freeCompany: "Gandalf's Gangstas",
       activeClass: Class.Arcanist,
       grandCompany: undefined,
     }
@@ -75,7 +75,7 @@ describe('Character', () => {
     // TODO: test character with no free company
 
     describe.each([
-      [11886902, 'P\'tajha Rihll', expectedCharacterOne],
+      [11886902, "P'tajha Rihll", expectedCharacterOne],
       [38531003, 'Aurora Nyxx', expectedCharacterTwo],
     ])('for character %s - %s', (charId, name, expected) => {
       let resultantCharacter: Character
@@ -88,7 +88,7 @@ describe('Character', () => {
         })
       })
 
-      it.each(Object.entries(expected))('should evaluate %s as \'%s\'', ([key]) => {
+      it.each(Object.entries(expected))("should evaluate %s as '%s'", ([key]) => {
         // @ts-ignore
         expect(resultantCharacter[key]).toEqual(expected[key])
       })

@@ -70,4 +70,13 @@ describe('Lodestone Client [Integration]', () => {
     })
   })
 
+  // describe('when fetching a series of characters by id', () => {
+  //   describe('when the character does not exist', () => {
+  //     jest.setTimeout(100000)
+  //     it('should throw a character not found error', async () => {
+  //       const resp = await client.getCharacterRange(11886902, 11886940, 20)
+  //       expect(resp.errored.length).toEqual(0)
+  //     })
+  //   })
+  // })
 })
