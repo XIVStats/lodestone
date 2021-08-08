@@ -8,7 +8,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions?:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -23,64 +23,37 @@
  *
  */
 
-import ILevel from './ILevel'
+import Class from './Class'
 
-export default interface IClassLevels {
-  readonly paladinGladiator?: ILevel
+export default class ClassHelper {
+  public static toEnum(string: string): Class {
+    const baseClassMap = {
+      Gladiator: Class.Gladiator,
+      Marauder: Class.Marauder,
+      Conjurer: Class.Conjurer,
+      Pugilist: Class.Pugilist,
+      Lancer: Class.Lancer,
+      Rogue: Class.Rogue,
+      Archer: Class.Archer,
+      Thaumaturge: Class.Thaumaturge,
+      Arcanist: Class.Arcanist,
+    }
+    const foundClass = Object.entries(baseClassMap).find((pair) => pair[0] === string)
 
-  readonly warriorMarauder?: ILevel
+    if (foundClass) {
+      return foundClass[1]
+    }
 
-  readonly darkKnight?: ILevel
+    return string as Class
+  }
 
-  readonly gunbreaker?: ILevel
-
-  readonly whiteMageConjurer?: ILevel
-
-  readonly scholar?: ILevel
-
-  readonly astrologian?: ILevel
-
-  readonly monkPugilist?: ILevel
-
-  readonly dragoonLancer?: ILevel
-
-  readonly ninjaRogue?: ILevel
-
-  readonly samurai?: ILevel
-
-  readonly bardArcher?: ILevel
-
-  readonly machinist?: ILevel
-
-  readonly dancer?: ILevel
-
-  readonly blackMageThaumaturge?: ILevel
-
-  readonly summonerArcanist?: ILevel
-
-  readonly redMage?: ILevel
-
-  readonly blueMageLimitedJob?: ILevel
-
-  readonly carpenter?: ILevel
-
-  readonly blacksmith?: ILevel
-
-  readonly armorer?: ILevel
-
-  readonly goldsmith?: ILevel
-
-  readonly leatherworker?: ILevel
-
-  readonly weaver?: ILevel
-
-  readonly alchemist?: ILevel
-
-  readonly culinarian?: ILevel
-
-  readonly miner?: ILevel
-
-  readonly botanist?: ILevel
-
-  readonly fisher?: ILevel
+  public static toKey(classEnum: Class): string {
+    const classWithNoPunc: string = classEnum
+      .toString()
+      .replace('(', '')
+      .replace(')', '')
+      .replace(/\s/g, '')
+      .replace('/', '')
+    return classWithNoPunc.charAt(0).toLowerCase() + classWithNoPunc.slice(1)
+  }
 }

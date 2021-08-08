@@ -31,6 +31,7 @@ import IGearSet from '../interface/IGearSet'
 import IAttributeMapping from '../interface/IAttributeMapping'
 import Class from './Class'
 import GearCategory from './GearCategory'
+import Level from './Level'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -51,7 +52,7 @@ export default class Character implements ICharacter {
 
   activeClass?: Class
 
-  classes?: IClassLevels | undefined
+  classes?: IClassLevels
 
   gear?: IGearSet | undefined
 
@@ -100,6 +101,7 @@ export default class Character implements ICharacter {
   private static processGear($: CheerioAPI, idsOnly?: boolean): IGearSet {
     const elements = $('.ic_reflection_box').toArray()
     const gear: IGearSet = {}
+    let ringCount = 0
     elements.forEach((element, index) => {
       const local$ = $(element)
       let id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
@@ -112,14 +114,18 @@ export default class Character implements ICharacter {
         const category: GearCategory = categoryStr as GearCategory
         id = id.replace('/lodestone/playguide/db/item/', '').replace('/', '')
 
-        const categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
+        let categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
+        if (category === GearCategory.Ring) {
+          ringCount += 1
+          categoryAsLowerCase = `${categoryAsLowerCase}${ringCount === 1 ? 'One' : 'Two'}`
+        }
         if (idsOnly) {
           Object.assign(gear, { [categoryAsLowerCase]: id })
         } else {
           Object.assign(gear, {
             [categoryAsLowerCase]: {
               category,
-              name: local$.find('.db-tooltip__item_equipment__class').text(),
+              name: local$.find('.db-tooltip__item__name').text(),
               id,
               iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
             },
@@ -128,6 +134,20 @@ export default class Character implements ICharacter {
       }
     })
     return gear
+  }
+
+  private static processClasses($: CheerioAPI): IClassLevels {
+    const classes: IClassLevels = {}
+    const classElements = $('.character__level').find('li').toArray()
+
+    classElements.forEach((classElement) => {
+      const class$ = $(classElement)
+      const classPair = Level.fromDom(class$)
+      Object.assign(classes, {
+        [classPair[1]]: classPair[0],
+      })
+    })
+    return classes
   }
 
   static fromPage(id: number, data: string, cheerio: CheerioAPI, gearIdsOnly?: boolean): Character {
@@ -141,6 +161,7 @@ export default class Character implements ICharacter {
     })
 
     character.gear = Character.processGear($, gearIdsOnly)
+    character.classes = Character.processClasses($)
 
     return character
   }

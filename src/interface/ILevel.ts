@@ -8,7 +8,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions?:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -23,64 +23,9 @@
  *
  */
 
-import ILevel from './ILevel'
+import Class from '../entity/Class'
 
-export default interface IClassLevels {
-  readonly paladinGladiator?: ILevel
-
-  readonly warriorMarauder?: ILevel
-
-  readonly darkKnight?: ILevel
-
-  readonly gunbreaker?: ILevel
-
-  readonly whiteMageConjurer?: ILevel
-
-  readonly scholar?: ILevel
-
-  readonly astrologian?: ILevel
-
-  readonly monkPugilist?: ILevel
-
-  readonly dragoonLancer?: ILevel
-
-  readonly ninjaRogue?: ILevel
-
-  readonly samurai?: ILevel
-
-  readonly bardArcher?: ILevel
-
-  readonly machinist?: ILevel
-
-  readonly dancer?: ILevel
-
-  readonly blackMageThaumaturge?: ILevel
-
-  readonly summonerArcanist?: ILevel
-
-  readonly redMage?: ILevel
-
-  readonly blueMageLimitedJob?: ILevel
-
-  readonly carpenter?: ILevel
-
-  readonly blacksmith?: ILevel
-
-  readonly armorer?: ILevel
-
-  readonly goldsmith?: ILevel
-
-  readonly leatherworker?: ILevel
-
-  readonly weaver?: ILevel
-
-  readonly alchemist?: ILevel
-
-  readonly culinarian?: ILevel
-
-  readonly miner?: ILevel
-
-  readonly botanist?: ILevel
-
-  readonly fisher?: ILevel
+export default interface ILevel {
+  class: Class
+  level: number
 }

@@ -8,7 +8,7 @@
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions?:
+ * furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
@@ -23,64 +23,31 @@
  *
  */
 
-import ILevel from './ILevel'
+import { Cheerio, Element } from 'cheerio'
+import ILevel from '../interface/ILevel'
+import Class from './Class'
+import ClassHelper from './ClassHelper'
 
-export default interface IClassLevels {
-  readonly paladinGladiator?: ILevel
+export default class Level implements ILevel {
+  level: number
 
-  readonly warriorMarauder?: ILevel
+  class: Class
 
-  readonly darkKnight?: ILevel
+  constructor(classValue: Class, level: number) {
+    this.class = classValue
+    this.level = level
+  }
 
-  readonly gunbreaker?: ILevel
-
-  readonly whiteMageConjurer?: ILevel
-
-  readonly scholar?: ILevel
-
-  readonly astrologian?: ILevel
-
-  readonly monkPugilist?: ILevel
-
-  readonly dragoonLancer?: ILevel
-
-  readonly ninjaRogue?: ILevel
-
-  readonly samurai?: ILevel
-
-  readonly bardArcher?: ILevel
-
-  readonly machinist?: ILevel
-
-  readonly dancer?: ILevel
-
-  readonly blackMageThaumaturge?: ILevel
-
-  readonly summonerArcanist?: ILevel
-
-  readonly redMage?: ILevel
-
-  readonly blueMageLimitedJob?: ILevel
-
-  readonly carpenter?: ILevel
-
-  readonly blacksmith?: ILevel
-
-  readonly armorer?: ILevel
-
-  readonly goldsmith?: ILevel
-
-  readonly leatherworker?: ILevel
-
-  readonly weaver?: ILevel
-
-  readonly alchemist?: ILevel
-
-  readonly culinarian?: ILevel
-
-  readonly miner?: ILevel
-
-  readonly botanist?: ILevel
-
-  readonly fisher?: ILevel
+  public static fromDom($: Cheerio<Element>): [Level, string] {
+    const name = $.find('img').attr('data-tooltip')
+    if (name === undefined) {
+      // TODO
+      throw Error()
+    }
+    const classEnum = ClassHelper.toEnum(name)
+    const levelStr = $.text()
+    const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
+    const classAsKey = ClassHelper.toKey(classEnum)
+    return [new Level(classEnum, levelValue), classAsKey]
+  }
 }

@@ -23,10 +23,10 @@
  *
  */
 
-import IClassLevels from './IClassLevels'
 import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
 import Class from '../entity/Class'
+import IClassLevels from './IClassLevels'
 
 export interface IMappableCharacter {
   readonly name: string

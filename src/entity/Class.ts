@@ -37,7 +37,7 @@ const enum Class {
   // DPS
   Pugilist = 'Monk / Pugilist',
   Lancer = 'Dragoon / Lancer',
-  Ninja = 'Ninja',
+  Rogue = 'Ninja / Rogue',
   Samurai = 'Samurai',
   Archer = 'Bard / Archer',
   Machinist = 'Machinist',
@@ -45,7 +45,7 @@ const enum Class {
   Thaumaturge = 'Black Mage / Thaumaturge',
   Arcanist = 'Summoner / Arcanist',
   RedMage = 'Red Mage',
-  BlueMage = 'Blue Mage',
+  BlueMage = 'Blue Mage (Limited Job)',
   // Reaper = 'Reaper', (Not enabling until Endwalker release)
   // DoH
   Carpenter = 'Carpenter',

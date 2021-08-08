@@ -88,7 +88,7 @@ export default class ClassConfig {
       imagePath: 'lds/h/R/yC5PNbFqbqxDn8OxiW4jYEYtuc.png',
     },
     {
-      className: Class.Ninja,
+      className: Class.Rogue,
       imagePath: 'lds/h/q/s1RT_Z6feOr_NasV2TFR_rl798.png',
     },
     {

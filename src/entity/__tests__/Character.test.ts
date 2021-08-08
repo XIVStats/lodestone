@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /*
  * MIT License
  *
@@ -46,11 +47,202 @@ describe('Character', () => {
       freeCompany: 'Archadian Moogles',
       activeClass: Class.Conjurer,
       gear: {
-        hands: {
+        arm: {
           category: GearCategory.Arm,
-          iLvl: 430,
+          name: 'Weathered Tishtrya',
           id: '000c99173df',
-          name: 'Weathered Tishrya',
+          iLvl: 430,
+        },
+        head: {
+          category: GearCategory.Head,
+          name: 'Ronkan Visor of Healing',
+          id: '71537a2985f',
+          iLvl: 440,
+        },
+        body: {
+          category: GearCategory.Body,
+          name: 'Ronkan Robe of Healing',
+          id: 'ccc2a4ebfbd',
+          iLvl: 440,
+        },
+        hands: {
+          category: GearCategory.Hands,
+          name: 'Ronkan Armguards of Healing',
+          id: '26c8e806fde',
+          iLvl: 440,
+        },
+        waist: {
+          category: GearCategory.Waist,
+          name: 'Ronkan Tassets of Healing',
+          id: '2c65375dac8',
+          iLvl: 440,
+        },
+        legs: {
+          category: GearCategory.Legs,
+          name: 'Edengate Pantaloons of Healing',
+          id: '82d2ccf47ea',
+          iLvl: 450,
+        },
+        feet: {
+          category: GearCategory.Feet,
+          name: 'Edengate Sandals of Healing',
+          id: '71d504e6cfe',
+          iLvl: 450,
+        },
+        earrings: {
+          category: GearCategory.Earrings,
+          name: 'Ronkan Earrings of Healing',
+          id: 'c3c1d1140d8',
+          iLvl: 440,
+        },
+        necklace: {
+          category: GearCategory.Necklace,
+          name: 'Edengate Choker of Healing',
+          id: 'dcacaad338a',
+          iLvl: 450,
+        },
+        bracelets: {
+          category: GearCategory.Bracelets,
+          name: 'Ronkan Bracelets of Healing',
+          id: 'c4da6050bab',
+          iLvl: 440,
+        },
+        ringOne: {
+          category: GearCategory.Ring,
+          name: 'Edengate Ring of Healing',
+          id: 'f38b0ba900a',
+          iLvl: 450,
+        },
+        ringTwo: {
+          category: GearCategory.Ring,
+          name: 'Deepshadow Ring of Healing',
+          id: '1ed827fc342',
+          iLvl: 460,
+        },
+        soulCrystal: {
+          category: GearCategory.SoulCrystal,
+          name: 'Soul of the White Mage',
+          id: '9cca5eb0fd2',
+          iLvl: 30,
+        },
+      },
+      // @ts-ignore
+      classes: {
+        paladinGladiator: {
+          class: Class.Gladiator,
+          level: 70,
+        },
+        warriorMarauder: {
+          class: Class.Marauder,
+          level: 0,
+        },
+        darkKnight: {
+          class: Class.DarkKnight,
+          level: 80,
+        },
+        gunbreaker: {
+          class: Class.Gunbreaker,
+          level: 0,
+        },
+        whiteMageConjurer: {
+          class: Class.Conjurer,
+          level: 80,
+        },
+        scholar: {
+          class: Class.Scholar,
+          level: 71,
+        },
+        astrologian: {
+          class: Class.Astrologian,
+          level: 40,
+        },
+        monkPugilist: {
+          class: Class.Pugilist,
+          level: 0,
+        },
+        dragoonLancer: {
+          class: Class.Lancer,
+          level: 0,
+        },
+        ninjaRogue: {
+          class: Class.Rogue,
+          level: 0,
+        },
+        samurai: {
+          class: Class.Samurai,
+          level: 55,
+        },
+        bardArcher: {
+          class: Class.Archer,
+          level: 15,
+        },
+        machinist: {
+          class: Class.Machinist,
+          level: 0,
+        },
+        dancer: {
+          class: Class.Dancer,
+          level: 0,
+        },
+        blackMageThaumaturge: {
+          class: Class.Thaumaturge,
+          level: 74,
+        },
+        summonerArcanist: {
+          class: Class.Arcanist,
+          level: 71,
+        },
+        redMage: {
+          class: Class.RedMage,
+          level: 80,
+        },
+        blueMageLimitedJob: {
+          class: Class.BlueMage,
+          level: 0,
+        },
+        carpenter: {
+          class: Class.Carpenter,
+          level: 0,
+        },
+        blacksmith: {
+          class: Class.Blacksmith,
+          level: 0,
+        },
+        armorer: {
+          class: Class.Armorer,
+          level: 0,
+        },
+        goldsmith: {
+          class: Class.Goldsmith,
+          level: 0,
+        },
+        leatherworker: {
+          class: Class.Leatherworker,
+          level: 0,
+        },
+        weaver: {
+          class: Class.Weaver,
+          level: 0,
+        },
+        alchemist: {
+          class: Class.Alchemist,
+          level: 0,
+        },
+        culinarian: {
+          class: Class.Culinarian,
+          level: 60,
+        },
+        miner: {
+          class: Class.Miner,
+          level: 7,
+        },
+        botanist: {
+          class: Class.Botanist,
+          level: 0,
+        },
+        fisher: {
+          class: Class.Fisher,
+          level: 0,
         },
       },
     }
@@ -79,19 +271,34 @@ describe('Character', () => {
       [38531003, 'Aurora Nyxx', expectedCharacterTwo],
     ])('for character %s - %s', (charId, name, expected) => {
       let resultantCharacter: Character
+      const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')
+      const objectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] === 'object')
 
       beforeAll((done) => {
         readFile(join(__dirname, 'resources', `${charId}.html`), 'utf8', (err, data) => {
+          jest.setTimeout(10000)
           const testString = Buffer.from(data)
           resultantCharacter = Character.fromPage(11886902, testString.toString(), Cheerio)
           done()
         })
       })
 
-      it.each(Object.entries(expected))("should evaluate %s as '%s'", ([key]) => {
+      it.each(nonObjectAttributes)("should evaluate %s as '%s'", ([key]) => {
         // @ts-ignore
         expect(resultantCharacter[key]).toEqual(expected[key])
       })
+
+      if (objectAttributes.length > 0) {
+        describe.each(objectAttributes)('should evaluate %s as object', (key, value) => {
+          describe.each(Object.entries(value))('with key %s, an object', (lowerKey, lowerValue) => {
+            // @ts-ignore
+            it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
+              // @ts-ignore
+              expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)
+            })
+          })
+        })
+      }
     })
   })
 })
