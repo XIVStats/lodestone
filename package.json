@@ -11,7 +11,8 @@
     "test": "jest",
     "format": "prettier --write src/**/*.ts src/**/*.test.ts",
     "lint": "eslint --ext .ts --ext .js src --color",
-    "lint:fix": "eslint --fix --ext .ts --ext .js src --color"
+    "lint:fix": "eslint --fix --ext .ts --ext .js src --color",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -27,10 +28,34 @@
     "character",
     "scraper"
   ],
-  "author": "xivstats@reidweb.com",
+  "author": {
+    "name": "Final Fantasy XIV Statistics Project",
+    "email": "hello@ffxivcensus.com",
+    "url": "https://ffxivcensus.com"
+  },
+  "contributors": [
+    {
+      "name": "Peter Reid",
+      "email": "peter@reidweb.com",
+      "url": "https://reidweb.com"
+    },
+    {
+      "name": "Padraig Fahy",
+      "email": "crakila@crakila.moe",
+      "url": "https://crakila.dev"
+    },
+    {
+      "name": "Jonathan Price",
+      "url": "https://jonathanprice.uk"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/XIVStats/lodestone/issues"
+  },
+  "engines": {
+    "node": ">14",
+    "npm": ">6"
   },
   "homepage": "https://github.com/XIVStats/lodestone#readme",
   "dependencies": {
@@ -39,6 +64,8 @@
     "p-limit": "^3.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^13.1.0",
+    "@commitlint/config-conventional": "^13.1.0",
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
@@ -52,11 +79,21 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.1",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "prettier-eslint": "^13.0.0",
     "prettier-eslint-cli": "^5.0.1",
     "ts-jest": "^27.0.4",
     "typescript": "^4.3.5"
+  },
+  "husky": {
+    "hooks": {
+	  "commit-msg": "echo \"[Husky] commit-msg\"",
+	  "pre-commit": "echo \"[Husky] pre-commit\""
+    }
+  },
+  "commitlint" : {
+	"extends": ["@commitlint/config-conventional"]
   }
 }
