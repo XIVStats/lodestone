@@ -1,6 +1,6 @@
 # @xivstats/lodestone
 
-![[NPM version](https://badge.fury.io/js/%40xivstats%2Flodestone.svg)](https://www.npmjs.com/@xivstats/lodestone)
+[![NPM version](https://badge.fury.io/js/%40xivstats%2Flodestone.svg)](https://www.npmjs.com/@xivstats/lodestone)
 [![Build, Test & Lint](https://github.com/XIVStats/lodestone/actions/workflows/build.yml/badge.svg)](https://github.com/XIVStats/lodestone/actions/workflows/build.yml)
 
 
