@@ -42,13 +42,13 @@ module.exports = {
 		'semi': ['error', 'never'],
 		'notice/notice':['error',
 			{
-				'mustMatch':"MIT License"
+				'mustMatch':'MIT License'
 			}
 		]
 	},
 	overrides: [
 		{
-			files: ["src/**/*.test.ts"],
+			files: ['src/**/*.test.ts'],
 			rules: {
 				'@typescript-eslint/ban-ts-comment': 'off'
 			}

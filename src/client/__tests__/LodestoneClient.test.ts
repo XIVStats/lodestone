@@ -23,63 +23,51 @@
  *
  */
 
-import Axios  from 'axios'
+import Axios from 'axios'
 import LodestoneClient from '../LodestoneClient'
 import CharacterNotFoundError from '../../errors/CharacterNotFoundError'
 
-describe('Lodestone Client', ()=>{
+describe('Lodestone Client', () => {
+  describe('when fetching a character by id', () => {
+    describe('when the character does not exist', () => {
+      let localClient: LodestoneClient
+      beforeAll(() => {
+        const axios = Axios.create({
+          baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
+          timeout: 5000,
+        })
+        axios.get = jest.fn().mockImplementation(() => {
+          /* eslint-disable @typescript-eslint/no-throw-literal */
+          throw {
+            response: {
+              status: 404,
+            },
+            isAxiosError: true,
+          }
+        })
+        localClient = new LodestoneClient(axios)
+      })
 
-	describe('when fetching a character by id', ()=>{
-
-		describe('when the character does not exist', ()=>{
-			let localClient: LodestoneClient
-			beforeAll(()=>{
-				const axios = Axios.create({
-					baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
-					timeout: 5000,
-				})
-				axios.get = jest.fn().mockImplementation(()=>{
-					/* eslint-disable @typescript-eslint/no-throw-literal */
-					throw {
-						response: {
-							status: 404
-						},
-						isAxiosError: true
-					}
-				})
-				localClient = new LodestoneClient(axios)
-			})
-
-
-			it('should throw a character not found error', async ()=>{
-				await expect(localClient.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
-			})
-
-		})
-
-	})
-
+      it('should throw a character not found error', async () => {
+        await expect(localClient.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+      })
+    })
+  })
 })
 
-describe('Lodestone Client [Integration]', ()=>{
+describe('Lodestone Client [Integration]', () => {
+  let client: LodestoneClient
 
-	let client : LodestoneClient
+  beforeAll(() => {
+    client = new LodestoneClient()
+  })
 
-	beforeAll(()=>{
-		client = new LodestoneClient()
-	})
-
-	describe('when fetching a character by id', ()=>{
-
-		describe('when the character does not exist', ()=>{
-
-			it('should throw a character not found error', async ()=>{
-				await expect(client.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
-			})
-
-		})
-
-
-	})
+  describe('when fetching a character by id', () => {
+    describe('when the character does not exist', () => {
+      it('should throw a character not found error', async () => {
+        await expect(client.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+      })
+    })
+  })
 
 })

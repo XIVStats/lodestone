@@ -23,9 +23,8 @@
  *
  */
 
-
-import {readFile} from 'fs'
-import {join} from 'path'
+import { readFile } from 'fs'
+import { join } from 'path'
 import Cheerio from 'cheerio'
 import Servers from '../Servers'
 import Server from '../Server'
@@ -33,93 +32,80 @@ import ServerCategory from '../ServerCategory'
 import ServerStatus from '../ServerStatus'
 
 describe('Servers', () => {
+  describe('when loading server information from html', () => {
+    let resultantServers: Servers
+    let testString: string
 
-	describe('when loading server information from html', ()=>{
+    beforeAll((done) => {
+      readFile(join(__dirname, 'resources', 'worldstatus.html'), 'utf8', (err, data) => {
+        testString = Buffer.from(data).toString()
+        resultantServers = Servers.fromPage(testString, Cheerio, true, true)
+        done()
+      })
+    })
 
-		let resultantServers: Servers
-		let testString : string
+    it('should return an array of servers of expected length', () => {
+      expect(resultantServers.servers.length).toEqual(68)
+    })
 
-		beforeAll( (done)=>{
-			readFile(join(__dirname, 'resources', 'worldstatus.html' ), 'utf8', (err, data)=>{
-				testString = Buffer.from(data).toString()
-				resultantServers = Servers.fromPage(testString, Cheerio, true, true)
-				done()
-			})
-		})
+    it('should return array of data centers of expected length', () => {
+      expect(resultantServers.dataCenters.length).toEqual(8)
+    })
 
-		it('should return an array of servers of expected length', ()=>{
-			expect(resultantServers.servers.length).toEqual(68)
-		})
+    describe('when status is not requested', () => {
+      let localInstanceResultantServers: Servers
 
-		it('should return array of data centers of expected length', () => {
-			expect(resultantServers.dataCenters.length).toEqual(8)
-		})
+      beforeAll(() => {
+        localInstanceResultantServers = Servers.fromPage(testString, Cheerio, true, false)
+      })
 
-		describe('when status is not requested', ()=>{
+      it('returned servers should not have status set', () => {
+        expect(localInstanceResultantServers.servers[0].status).toEqual(undefined)
+      })
+    })
 
-			let localInstanceResultantServers : Servers
+    describe('when category is not requested', () => {
+      let localInstanceResultantServers: Servers
 
-			beforeAll(()=>{
-				localInstanceResultantServers = Servers.fromPage(testString, Cheerio, true, false)
-			})
+      beforeAll(() => {
+        localInstanceResultantServers = Servers.fromPage(testString, Cheerio, false, true)
+      })
 
-			it('returned servers should not have status set', ()=>{
-				expect(localInstanceResultantServers.servers[0].status).toEqual(undefined)
-			})
+      it('returned servers should not have status set', () => {
+        expect(localInstanceResultantServers.servers[0].category).toEqual(undefined)
+      })
+    })
 
-		})
+    describe.each([
+      ['Cerberus', 'Chaos', 'Europe', ServerCategory.Standard, ServerStatus.CreationOfNewCharactersUnavailable],
+      ['Ridill', 'Gaia', 'Japan', ServerCategory.Preferred, ServerStatus.CreationOfNewCharacters],
+      ['Siren', 'Aether', 'North America', ServerCategory.Standard, ServerStatus.CreationOfNewCharacters],
+    ])('servers array should contain %s', (serverName, dataCenter, region, category, status) => {
+      let foundServer: Server | undefined
 
-		describe('when category is not requested', ()=>{
+      beforeAll(() => {
+        foundServer = resultantServers.servers.find((server) => server.name === serverName)
+      })
 
-			let localInstanceResultantServers : Servers
+      it(`with name '${serverName}'`, () => {
+        expect(foundServer?.name).toEqual(serverName)
+      })
 
-			beforeAll(()=>{
-				localInstanceResultantServers = Servers.fromPage(testString, Cheerio, false, true)
-			})
+      it(`with region '${region}'`, () => {
+        expect(foundServer?.region).toEqual(region)
+      })
 
-			it('returned servers should not have status set', ()=>{
-				expect(localInstanceResultantServers.servers[0].category).toEqual(undefined)
-			})
+      it(`with data center '${dataCenter}'`, () => {
+        expect(foundServer?.dataCenter).toEqual(dataCenter)
+      })
 
-		})
+      it(`where category is '${category}'`, () => {
+        expect(foundServer?.category).toEqual(category)
+      })
 
-
-		describe.each([
-			['Cerberus', 'Chaos', 'Europe', ServerCategory.Standard, ServerStatus.CreationOfNewCharactersUnavailable],
-			['Ridill', 'Gaia', 'Japan', ServerCategory.Preferred, ServerStatus.CreationOfNewCharacters],
-			['Siren', 'Aether', 'North America', ServerCategory.Standard, ServerStatus.CreationOfNewCharacters]
-		]) ('servers array should contain %s', (serverName, dataCenter, region, category, status) =>{
-
-			let foundServer : Server | undefined
-
-			beforeAll(()=>{
-				foundServer = resultantServers.servers.find(server => server.name === serverName)
-			})
-
-			it(`with name '${serverName}'`, ()=>{
-				expect(foundServer?.name).toEqual(serverName)
-			})
-
-			it(`with region '${region}'`, ()=>{
-				expect(foundServer?.region).toEqual(region)
-			})
-
-			it(`with data center '${dataCenter}'`, ()=>{
-				expect(foundServer?.dataCenter).toEqual(dataCenter)
-			})
-
-			it(`where category is '${category}'`, ()=>{
-				expect(foundServer?.category).toEqual(category)
-			})
-
-			it(`where status is '${status}'`, ()=>{
-				expect(foundServer?.status).toEqual(status)
-			})
-
-		})
-
-
-
-	})
-
+      it(`where status is '${status}'`, () => {
+        expect(foundServer?.status).toEqual(status)
+      })
+    })
+  })
 })

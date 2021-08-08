@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "format": "prettier --write src/**/*.ts ",
+    "format": "prettier --write src/**/*.ts src/**/*.test.ts",
     "lint": "eslint --ext .ts --ext .js src --color",
     "lint:fix": "eslint --fix --ext .ts --ext .js src --color"
   },
