@@ -10,7 +10,7 @@
 		"build": "tsc",
 		"commit": "cz",
 		"test": "jest",
-		"test:ci": "jest --ci --reporters=default --reporters=jest-junit",
+		"test:ci": "jest --ci --reporters=default --reporters=jest-junit --collect-coverage",
 		"format": "prettier --write src/**/*.ts src/**/*.test.ts",
 		"format:check": "prettier --check src/**/*.ts src/**/*.test.ts",
 		"lint": "eslint --ext .ts --ext .js src --color",
