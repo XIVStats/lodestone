@@ -39,6 +39,9 @@ jobs:
       - run: npm run lint
         if: success() || failure()    # run this step even if previous step failed
 
+      - run: npm run format:check
+        if: success() || failure()    # run this step even if previous step failed
+
       - run: npm run build
 
 
