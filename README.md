@@ -2,6 +2,7 @@
 
 [![NPM version](https://badge.fury.io/js/%40xivstats%2Flodestone.svg)](https://www.npmjs.com/package/@xivstats/lodestone)
 [![Build, Test & Lint](https://github.com/XIVStats/lodestone/actions/workflows/build.yml/badge.svg)](https://github.com/XIVStats/lodestone/actions/workflows/build.yml)
+[![Test results](https://camo.githubusercontent.com/62b2af39f19b792821f9e9f2f7327440f8f23265335b6d0843c4ee637208b155/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f74657374732d3135362532307061737365642d73756363657373)](https://github.com/XIVStats/lodestone/actions/workflows/build.yml)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/xivstats/lodestone/main/LICENSE)
 [![npm downloads](https://img.shields.io/npm/dm/%40xivstats%2Flodestone.svg)](https://www.npmjs.com/package/%40xivstats%2Flodestone)
 

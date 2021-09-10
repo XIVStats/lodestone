@@ -40,7 +40,7 @@ describe('Lodestone Client', () => {
           /* eslint-disable @typescript-eslint/no-throw-literal */
           throw {
             response: {
-              status: 404,
+              status: 403,
             },
             isAxiosError: true,
           }
