@@ -8,6 +8,7 @@
 	],
 	"scripts": {
 		"build": "tsc",
+		"commit": "cz",
 		"test": "jest",
 		"test:ci": "jest --ci --reporters=default --reporters=jest-Junit",
 		"format": "prettier --write src/**/*.ts src/**/*.test.ts",
@@ -72,6 +73,8 @@
 		"@typescript-eslint/eslint-plugin": "^4.28.5",
 		"@typescript-eslint/parser": "^4.28.5",
 		"babel-jest": "^27.0.6",
+		"commitizen": "^4.2.4",
+		"cz-conventional-changelog": "^3.3.0",
 		"eslint": "^7.32.0",
 		"eslint-config-airbnb-typescript": "^12.3.1",
 		"eslint-config-prettier": "^8.3.0",
@@ -92,6 +95,7 @@
 	},
 	"husky": {
 		"hooks": {
+			"prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
 			"commit-msg": "echo \"[Husky] commit-msg\"",
 			"pre-commit": "echo \"[Husky] pre-commit\"",
 			"pre-push": "echo \"[Husky] pre-push\""
@@ -110,5 +114,10 @@
 		"suiteNameTemplate": "{filepath}",
 		"classNameTemplate": "{classname}",
 		"titleTemplate": "{title}"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	}
 }
