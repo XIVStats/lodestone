@@ -26,7 +26,7 @@ jobs:
           cache: 'npm'
 
       - run: npm install
-      - run: npm test
+      - run: npm test:ci
 
       - name: Test Report
         uses: dorny/test-reporter@v1
