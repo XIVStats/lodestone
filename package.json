@@ -9,6 +9,7 @@
 	"scripts": {
 		"build": "tsc",
 		"test": "jest",
+		"test:ci": "jest --ci --reporters=default --reporters=jest-Junit",
 		"format": "prettier --write src/**/*.ts src/**/*.test.ts",
 		"format:check": "prettier --check src/**/*.ts src/**/*.test.ts",
 		"lint": "eslint --ext .ts --ext .js src --color",
@@ -82,6 +83,7 @@
 		"eslint-plugin-react-hooks": "^4.2.0",
 		"husky": "^7.0.1",
 		"jest": "^27.0.6",
+		"jest-junit": "^12.0.0",
 		"prettier": "^2.3.2",
 		"prettier-eslint": "^13.0.0",
 		"prettier-eslint-cli": "^5.0.1",
@@ -99,5 +101,14 @@
 		"extends": [
 			"@commitlint/config-conventional"
 		]
+	},
+	"jest-junit": {
+		"outputDirectory": "reports",
+		"outputName": "jest-junit.xml",
+		"ancestorSeparator": " › ",
+		"uniqueOutputName": "false",
+		"suiteNameTemplate": "{filepath}",
+		"classNameTemplate": "{classname}",
+		"titleTemplate": "{title}"
 	}
 }
