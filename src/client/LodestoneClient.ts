@@ -37,6 +37,9 @@ import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
 
+/**
+ * Client for interfacing with the Final Fantasy XIV Lodestone
+ */
 export default class LodestoneClient {
   axiosInstance: AxiosInstance
 

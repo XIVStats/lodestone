@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [ 10.x, 12.x, 14.x ]
+        node-version: [ 14.x, 16.x, 18.x ]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -49,6 +49,7 @@ jobs:
 
       - name: Upload
         uses: codecov/codecov-action@v1
+        if: success() || failure()    # run this step even if previous step failed
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
