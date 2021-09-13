@@ -61,9 +61,11 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_PUSH_TOKEN }}
-          branch: main
-
-
-
-
-
+          branch: 'release/${{ github.event.release.tag_name }}'
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: 'release/${{ github.event.release.tag_name }}'
+          destination_branch: main
+          pr_label: 'pr/auto-approve'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
