@@ -67,5 +67,6 @@ jobs:
         with:
           source_branch: 'release/${{ github.event.release.tag_name }}'
           destination_branch: main
+          title: 'chore: Merge version ${{ github.event.release.tag_name }}'
           pr_label: 'pr/auto-approve'
           github_token: ${{ secrets.GITHUB_TOKEN }}
