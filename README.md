@@ -21,13 +21,13 @@ Jump To:
 ### 1. Installation
 
 ```shell
-$ npm install --save @xivstats/lodestone
+npm install --save @xivstats/lodestone
 ```
 
 or if you're using yarn
 
 ```shell
-$ yarn install @xivstats/lodestone
+yarn install @xivstats/lodestone
 ```
 
 ### 2. Imports
