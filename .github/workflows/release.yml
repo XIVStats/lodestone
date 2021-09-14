@@ -45,7 +45,7 @@ jobs:
       - run: git config --global user.name "GitHub Actions"
       - run: git checkout -b release/${{ github.event.release.tag_name }}
       - run: git rev-parse --abbrev-ref HEAD
-      - run: 'VERSION=$(npm version --no-commit-hook ${{ github.event.release.tag_name }} -m "chore: release version %s")'
+      - run: npm run release ${{ github.event.release.tag_name }}
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
