@@ -17,13 +17,13 @@
 		"lint": "eslint --ext .ts --ext .js src --color",
 		"lint:fix": "eslint --fix --ext .ts --ext .js src --color",
 		"prepare": "husky install",
-		"release": "semantic-release --no-ci --dry",
-		"release:dry": "semantic-release --no-ci --dry",
-		"release:ci": "semantic-release --no-ci"
+		"release": "semantic-release --no-ci",
+		"release:dry": "semantic-release --no-ci --dry-run",
+		"release:ci": "semantic-release"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/XIVStats/lodestone.git"
+		"url": "git@github.com:XIVStats/lodestone.git"
 	},
 	"keywords": [
 		"final",

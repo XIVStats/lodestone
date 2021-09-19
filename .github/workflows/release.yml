@@ -46,7 +46,7 @@ jobs:
       - run: git rev-parse --abbrev-ref HEAD
       - name: Release new version to NPM
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run release
       - name: get-npm-version
