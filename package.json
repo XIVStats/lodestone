@@ -74,7 +74,6 @@
 		"@commitlint/cli": "^13.1.0",
 		"@commitlint/config-conventional": "^13.1.0",
 		"@semantic-release/changelog": "^5.0.1",
-		"@semantic-release/git": "^9.0.1",
 		"@types/jest": "^26.0.24",
 		"@typescript-eslint/eslint-plugin": "^4.28.5",
 		"@typescript-eslint/parser": "^4.28.5",
