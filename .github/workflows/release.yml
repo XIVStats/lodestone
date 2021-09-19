@@ -43,14 +43,16 @@ jobs:
       - run: npm run build
       - run: git config --global user.email "automation@reidweb.com"
       - run: git config --global user.name "GitHub Actions"
-      - run: git checkout -b release/${{ github.event.release.tag_name }}
       - run: git rev-parse --abbrev-ref HEAD
-      - run: npm run release ${{ github.event.release.tag_name }}
       - name: Release new version to NPM
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run release
+      - name: get-npm-version
+        id: package-version
+        uses: martinbeentjes/npm-get-version-action@master
+      - run: git checkout -b release/${{ steps.package-version.outputs.current-version }}
       - uses: actions/setup-node@v2
         with:
           registry-url: 'https://npm.pkg.github.com'
@@ -60,17 +62,12 @@ jobs:
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_PUSH_TOKEN }}
-          branch: 'release/${{ github.event.release.tag_name }}'
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          source_branch: 'release/${{ github.event.release.tag_name }}'
+          source_branch: 'release/${{ steps.package-version.outputs.current-version }}'
           destination_branch: main
-          pr_title: 'chore(release): ${{ github.event.release.tag_name }}'
-          pr_body: 'Auto-compile changelog, increment package, then auto-merge changes made for v${{ github.event.release.tag_name }} into main'
+          pr_title: 'chore(release): ${{ steps.package-version.outputs.current-version }}'
+          pr_body: 'Auto-compile changelog, increment package, then auto-merge changes made for v${{ steps.package-version.outputs.current-version }} into main'
           pr_label: 'pr/auto-approve'
           github_token: ${{ secrets.GH_PUSH_TOKEN }}
