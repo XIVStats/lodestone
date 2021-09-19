@@ -44,7 +44,7 @@ jobs:
       - run: git config --global user.email "automation@reidweb.com"
       - run: git config --global user.name "GitHub Actions"
       - run: git rev-parse --abbrev-ref HEAD
-      - name: Release new version to NPM
+      - name: Release new version to NPM & GitHub, generate changelog
         env:
           GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -55,6 +55,7 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@master
       - run: git checkout -b release/${{ steps.package-version.outputs.current-version }}
       - uses: actions/setup-node@v2
+        name: Publish new version to GitHub packages
         with:
           registry-url: 'https://npm.pkg.github.com'
           # Defaults to the user or organization that owns the workflow file
