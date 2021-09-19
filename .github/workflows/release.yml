@@ -69,6 +69,6 @@ jobs:
           source_branch: 'release/${{ steps.package-version.outputs.current-version }}'
           destination_branch: main
           pr_title: 'chore(release): ${{ steps.package-version.outputs.current-version }}'
-          pr_body: 'Auto-compile changelog, increment package, then auto-merge changes made for v${{ steps.package-version.outputs.current-version }} into main'
+          pr_body: 'Auto-compile changelog, increment package, then auto-merge changes made for v${{ steps.package-version.outputs.current-version }} into main. [skip ci]'
           pr_label: 'pr/auto-approve'
           github_token: ${{ secrets.GH_PUSH_TOKEN }}
