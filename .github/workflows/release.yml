@@ -48,6 +48,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_PUSH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_REGISTRY: https://registry.npmjs.org:8443/ # https://github.com/semantic-release/npm/issues/277#issuecomment-723431906
         run: npm run release
       - name: get-npm-version
         id: package-version
