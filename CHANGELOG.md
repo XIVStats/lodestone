@@ -1,3 +1,12 @@
+# Changelog
+
+## [0.1.7](https://github.com/XIVStats/lodestone/compare/v0.1.6...v0.1.7) (2021-09-20)
+
+
+### Bug Fixes
+
+* **release:** add # to changelog title ([f72dfd3](https://github.com/XIVStats/lodestone/commit/f72dfd33b5a71d60ae6ff7404047d04f3f0ebfcd))
+
 Changelog
 
 ## [0.1.6](https://github.com/XIVStats/lodestone/compare/v0.1.5...v0.1.6) (2021-09-20)
