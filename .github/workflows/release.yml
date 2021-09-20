@@ -60,6 +60,8 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           # Defaults to the user or organization that owns the workflow file
           scope: '@xivstats'
+      - run: git status
+      - run: ls -alh
       - run: git add CHANGELOG.MD package.json package-lock.json
       - run: 'git commit -m "chore(release): ${{ steps.package-version.outputs.current-version }}" -m "[skip ci]"'
       - name: Push changes
