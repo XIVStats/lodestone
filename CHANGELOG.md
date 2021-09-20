@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/XIVStats/lodestone/compare/v0.1.4...v0.1.5) (2021-09-20)
+
+
+### Bug Fixes
+
+* **license:** add additional contributor ([6403049](https://github.com/XIVStats/lodestone/commit/640304972cdd5abd4b71eb564a58c927a9deb30f))
+
 # Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
