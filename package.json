@@ -19,7 +19,7 @@
 		"prepare": "husky install",
 		"release": "semantic-release --no-ci",
 		"release:dry": "semantic-release --no-ci --dry-run",
-		"release:ci": "semantic-release"
+		"release:ci": "semantic-release --first-release"
 	},
 	"repository": {
 		"type": "git",
