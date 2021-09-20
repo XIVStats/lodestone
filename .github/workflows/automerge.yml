@@ -11,6 +11,7 @@ jobs:
       contains(github.event.pull_request.labels.*.name, 'pr/auto-approve') &&
       (github.event.pull_request.user.login == 'reidweb-automation'
        || github.event.pull_request.user.login == 'dependabot[bot]'
+       || github.event.pull_request.user.login == 'dependabot'
        || github.event.pull_request.user.login == 'dependabot-preview[bot]')
     runs-on: ubuntu-latest
     permissions:
