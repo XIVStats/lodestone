@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.8](https://github.com/XIVStats/lodestone/compare/v0.1.7...v0.1.8) (2021-09-20)
+
+
+### Bug Fixes
+
+* **ci:** disable jest report step for dependavot ([7cb038f](https://github.com/XIVStats/lodestone/commit/7cb038ffa25058ce54ac7cdc19abb89d9905e248))
+* **ci:** enable automerge for dependabot prs ([8c5f824](https://github.com/XIVStats/lodestone/commit/8c5f82485e206c0f20ac214f227dacd1d6a75a92))
+
 ## [0.1.7](https://github.com/XIVStats/lodestone/compare/v0.1.6...v0.1.7) (2021-09-20)
 
 
