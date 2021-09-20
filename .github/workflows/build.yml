@@ -5,6 +5,9 @@ name: Build, Test & Lint
 # Controls when the workflow will run
 on:
   push:
+    branches:
+      - main
+      - develop
   pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
@@ -35,7 +38,7 @@ jobs:
 
       - name: Test Report
         uses: dorny/test-reporter@v1
-        if: success() || failure()    # run this step even if previous step failed
+        if: github.actor != 'dependabot-bot' && (success() || failure())    # run this step even if previous step failed
         with:
           name: JEST Tests            # Name of the check run which will be created
           path: reports/jest-*.xml    # Path to test results
