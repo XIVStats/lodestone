@@ -45,7 +45,7 @@ export default class DomConfig {
         useHtml: true,
         transformationFunction: (value: string) => value.split('<br>')[1].split('/')[0].trim(),
       },
-      realm: {
+      homeWorld: {
         selector:
           '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
         transformationFunction: (value: string) => value.split('(')[0].trim(),

@@ -31,7 +31,7 @@ import IClassLevels from './IClassLevels'
 export interface IMappableCharacter {
   readonly name: string
 
-  readonly realm?: string | IAttributeMapping
+  readonly homeWorld?: string | IAttributeMapping
 
   readonly dataCenter?: string | IAttributeMapping
 

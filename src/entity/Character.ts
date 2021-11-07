@@ -36,7 +36,7 @@ import Level from './Level'
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
 
-  server?: string
+  homeWorld?: string
 
   dataCenter?: string
 

@@ -38,7 +38,7 @@ export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
 
 /**
- * Client for interfacing with the Final Fantasy XIV Lodestone
+ * Client for interfacing with the Final Fantasy XIV Lodestone.
  */
 export default class LodestoneClient {
   /**
@@ -50,7 +50,7 @@ export default class LodestoneClient {
 
   cheerioInstance: CheerioAPI
 
-  constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
+  public constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
     this.axiosInstance =
       axiosInstance ||
       Axios.create({
