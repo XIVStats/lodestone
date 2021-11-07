@@ -32,10 +32,11 @@ import GearCategory from '../GearCategory'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {
+    // Character with Free Company, Grand Company, Full Gear, No Shield
     const expectedCharacterOne: Character = {
       id: 11886902,
       name: "P'tajha Rihll",
-      server: 'Cerberus',
+      homeWorld: 'Cerberus',
       dataCenter: 'Chaos',
       race: 'Elezen',
       clan: 'Wildwood',
@@ -247,10 +248,11 @@ describe('Character', () => {
       },
     }
 
+    // Character with no Grand Company
     const expectedCharacterTwo: Character = {
       id: 38531003,
       name: 'Aurora Nyx',
-      server: 'Omega',
+      homeWorld: 'Omega',
       dataCenter: 'Chaos',
       race: 'Elezen',
       clan: 'Wildwood',
@@ -262,13 +264,40 @@ describe('Character', () => {
       grandCompany: undefined,
     }
 
+    // Character with a shield
+    const expectedCharacterThree: Character = {
+      id: 11886902,
+      name: 'Shamir Kotomine',
+      activeClass: Class.Gladiator,
+      cityState: 'Limsa Lominsa',
+      clan: 'Dunesfolk',
+      homeWorld: 'Cerberus',
+      title: 'Outlander',
+      dataCenter: 'Chaos',
+      freeCompany: 'Cerberus (Chaos)',
+      gear: {
+        shield: {
+          category: GearCategory.Shield,
+          name: 'Augmented Scaevan Magitek Shield',
+          id: '92995e4130e',
+          iLvl: 400,
+        },
+      },
+      gender: 'Female',
+      grandCompany: 'Maelstrom',
+      grandCompanyRank: 'Storm Corporal',
+      guardian: 'Halone, the Fury',
+      nameDay: '8th Sun of the 1st Astral Moon',
+      race: 'Lalafell',
+    }
+
     // TODO: Test character with shield
-    // TODO: test character with no grand company
     // TODO: test character with no free company
 
     describe.each([
       [11886902, "P'tajha Rihll", expectedCharacterOne],
       [38531003, 'Aurora Nyxx', expectedCharacterTwo],
+      [27218992, 'Shamir Kotmine', expectedCharacterThree],
     ])('for character %s - %s', (charId, name, expected) => {
       let resultantCharacter: Character
       const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')
