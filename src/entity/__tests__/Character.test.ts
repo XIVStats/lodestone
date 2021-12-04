@@ -72,12 +72,6 @@ describe('Character', () => {
           id: '41cccfe5212?hq=1',
           iLvl: 480,
         },
-        waist: {
-          category: GearCategory.Waist,
-          name: 'Ronkan Tassets of Healing',
-          id: '2c65375dac8',
-          iLvl: 440,
-        },
         legs: {
           category: GearCategory.Legs,
           name: 'Exarchic Hose of Healing',

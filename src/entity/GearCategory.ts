@@ -28,7 +28,6 @@ const enum GearCategory {
   Head = 'Head',
   Body = 'Body',
   Hands = 'Hands',
-  Waist = 'Waist',
   Legs = 'Legs',
   Feet = 'Feet',
   Shield = 'Shield',

@@ -34,8 +34,6 @@ export default interface IGearSet {
 
   readonly hands?: string | IGearPiece
 
-  readonly waist?: string | IGearPiece
-
   readonly legs?: string | IGearPiece
 
   readonly feet?: string | IGearPiece
