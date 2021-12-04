@@ -40,6 +40,8 @@ export default interface IClassLevels {
 
   readonly astrologian?: ILevel
 
+  readonly sage?: ILevel
+
   readonly monkPugilist?: ILevel
 
   readonly dragoonLancer?: ILevel
@@ -47,6 +49,8 @@ export default interface IClassLevels {
   readonly ninjaRogue?: ILevel
 
   readonly samurai?: ILevel
+
+  readonly reaper?: ILevel
 
   readonly bardArcher?: ILevel
 

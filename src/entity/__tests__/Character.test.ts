@@ -50,27 +50,27 @@ describe('Character', () => {
       gear: {
         arm: {
           category: GearCategory.Arm,
-          name: 'Weathered Tishtrya',
-          id: '000c99173df',
-          iLvl: 430,
+          name: 'Exarchic Cane',
+          id: '8aa1be1728a?hq=1',
+          iLvl: 510,
         },
         head: {
           category: GearCategory.Head,
-          name: 'Ronkan Visor of Healing',
-          id: '71537a2985f',
-          iLvl: 440,
+          name: 'Exarchic Circlet of Healing',
+          id: '5fffa0cb64b?hq=1',
+          iLvl: 510,
         },
         body: {
           category: GearCategory.Body,
-          name: 'Ronkan Robe of Healing',
-          id: 'ccc2a4ebfbd',
-          iLvl: 440,
+          name: 'Neo-Ishgardian Top of Healing',
+          id: '96e994d56ae',
+          iLvl: 480,
         },
         hands: {
           category: GearCategory.Hands,
-          name: 'Ronkan Armguards of Healing',
-          id: '26c8e806fde',
-          iLvl: 440,
+          name: 'Neo-Ishgardian Gloves of Healing',
+          id: '41cccfe5212?hq=1',
+          iLvl: 480,
         },
         waist: {
           category: GearCategory.Waist,
@@ -80,39 +80,39 @@ describe('Character', () => {
         },
         legs: {
           category: GearCategory.Legs,
-          name: 'Edengate Pantaloons of Healing',
-          id: '82d2ccf47ea',
-          iLvl: 450,
+          name: 'Exarchic Hose of Healing',
+          id: '8421f0db039?hq=1',
+          iLvl: 510,
         },
         feet: {
           category: GearCategory.Feet,
-          name: 'Edengate Sandals of Healing',
-          id: '71d504e6cfe',
-          iLvl: 450,
+          name: 'Exarchic Shoes of Healing',
+          id: 'c31aef0901f?hq=1',
+          iLvl: 510,
         },
         earrings: {
           category: GearCategory.Earrings,
-          name: 'Ronkan Earrings of Healing',
-          id: 'c3c1d1140d8',
-          iLvl: 440,
+          name: 'Crystarium Earrings of Healing',
+          id: 'e90fe40b436',
+          iLvl: 490,
         },
         necklace: {
           category: GearCategory.Necklace,
-          name: 'Edengate Choker of Healing',
-          id: 'dcacaad338a',
-          iLvl: 450,
+          name: 'Neo-Ishgardian Choker of Healing',
+          id: 'e129bc8a2e4',
+          iLvl: 480,
         },
         bracelets: {
           category: GearCategory.Bracelets,
-          name: 'Ronkan Bracelets of Healing',
-          id: 'c4da6050bab',
-          iLvl: 440,
+          name: 'Neo-Ishgardian Wristbands of Healing',
+          id: '2a6a86be422?hq=1',
+          iLvl: 480,
         },
         ringOne: {
           category: GearCategory.Ring,
-          name: 'Edengate Ring of Healing',
-          id: 'f38b0ba900a',
-          iLvl: 450,
+          name: 'Exarchic Ring of Healing',
+          id: '54b8ff24b67?hq=1',
+          iLvl: 510,
         },
         ringTwo: {
           category: GearCategory.Ring,
@@ -149,6 +149,10 @@ describe('Character', () => {
           class: Class.Conjurer,
           level: 80,
         },
+        sage: {
+          class: Class.Sage,
+          level: 0,
+        },
         scholar: {
           class: Class.Scholar,
           level: 71,
@@ -173,6 +177,10 @@ describe('Character', () => {
           class: Class.Samurai,
           level: 55,
         },
+        reaper: {
+          class: Class.Reaper,
+          level: 0,
+        },
         bardArcher: {
           class: Class.Archer,
           level: 15,
@@ -187,7 +195,7 @@ describe('Character', () => {
         },
         blackMageThaumaturge: {
           class: Class.Thaumaturge,
-          level: 74,
+          level: 77,
         },
         summonerArcanist: {
           class: Class.Arcanist,
@@ -291,6 +299,56 @@ describe('Character', () => {
       race: 'Lalafell',
     }
 
+    // Character with Sage active
+    const expectedCharacterFour: Character = {
+      id: 11886902,
+      name: 'Sey Moore',
+      activeClass: Class.Sage,
+      cityState: 'Gridania',
+      clan: 'Dunesfolk',
+      homeWorld: 'Cerberus',
+      title: 'Monster Hunter',
+      dataCenter: 'Chaos',
+      freeCompany: 'Cerberus (Chaos)',
+      gender: 'Male',
+      grandCompany: 'Order of the Twin Adder',
+      grandCompanyRank: 'Serpent Captain',
+      guardian: 'Rhalgr, the Destroyer',
+      nameDay: '6th Sun of the 6th Astral Moon',
+      race: 'Lalafell',
+      classes: {
+        sage: {
+          class: Class.Sage,
+          level: 76,
+        },
+      },
+    }
+
+    // Character with reaper active
+    const expectedCharacterFive: Character = {
+      id: 11886902,
+      name: 'Refler Desu',
+      activeClass: Class.Reaper,
+      cityState: "Ul'dah",
+      clan: 'Xaela',
+      homeWorld: 'Cerberus',
+      title: 'The Liberator',
+      dataCenter: 'Chaos',
+      freeCompany: 'Cerberus (Chaos)',
+      gender: 'Female',
+      grandCompany: 'Maelstrom',
+      grandCompanyRank: 'Second Storm Lieutenant',
+      guardian: 'Azeyma, the Warden',
+      nameDay: '7th Sun of the 1st Astral Moon',
+      race: 'Au Ra',
+      classes: {
+        reaper: {
+          class: Class.Reaper,
+          level: 80,
+        },
+      },
+    }
+
     // TODO: Test character with shield
     // TODO: test character with no free company
 
@@ -298,6 +356,8 @@ describe('Character', () => {
       [11886902, "P'tajha Rihll", expectedCharacterOne],
       [38531003, 'Aurora Nyxx', expectedCharacterTwo],
       [27218992, 'Shamir Kotmine', expectedCharacterThree],
+      [18001255, 'Sey Moore', expectedCharacterFour],
+      [28309293, 'Refler Desu', expectedCharacterFive],
     ])('for character %s - %s', (charId, name, expected) => {
       let resultantCharacter: Character
       const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')

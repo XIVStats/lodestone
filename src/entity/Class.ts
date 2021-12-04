@@ -33,7 +33,7 @@ const enum Class {
   Conjurer = 'White Mage / Conjurer',
   Scholar = 'Scholar',
   Astrologian = 'Astrologian',
-  // Sage = 'Sage', (Not enabling until Endwalker release)
+  Sage = 'Sage',
   // DPS
   Pugilist = 'Monk / Pugilist',
   Lancer = 'Dragoon / Lancer',
@@ -46,7 +46,7 @@ const enum Class {
   Arcanist = 'Summoner / Arcanist',
   RedMage = 'Red Mage',
   BlueMage = 'Blue Mage (Limited Job)',
-  // Reaper = 'Reaper', (Not enabling until Endwalker release)
+  Reaper = 'Reaper',
   // DoH
   Carpenter = 'Carpenter',
   Blacksmith = 'Blacksmith',

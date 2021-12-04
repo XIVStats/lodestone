@@ -65,11 +65,10 @@ export default class ClassConfig {
       className: Class.Astrologian,
       imagePath: 'lds/h/3/umwvB9TpD5eWyIdhVuksPuV__k.png',
     },
-    // Sage - (Not enabling until Endwalker release)
-    // {
-    // 	className: Class.Sage,
-    // 	imagePath: 'XXXXXX'
-    // },
+    {
+      className: Class.Sage,
+      imagePath: 'lds/h/u/0blXNf6dtQ7j1039qlIpMf8M1E.png',
+    },
     // DPS
     {
       className: Class.Pugilist, // Monk
@@ -135,11 +134,10 @@ export default class ClassConfig {
       className: Class.BlueMage,
       imagePath: 'lds/h/0/SsnnfFXS_AKGbrcBnIEA0J_jUk.png',
     },
-    // Reaper - (Not enabling until Endwalker release)
-    // {
-    // 	className: Class.Reaper,
-    // 	imagePath: 'XXXXXX'
-    // },
+    {
+      className: Class.Reaper,
+      imagePath: 'lds/h/H/ZEiwU3soVZIobM2RZSG8LnhYEY.png',
+    },
     // DoH
     {
       className: Class.Carpenter,
