@@ -70,7 +70,7 @@ export default class Character implements ICharacter {
 
   mountIds?: string[] | undefined
 
-  private static processAttribute($: CheerioAPI, config: string | IAttributeMapping | undefined) {
+  private static processAttribute($: CheerioAPI, config: string | IAttributeMapping | undefined): string | undefined {
     if (typeof config === 'object') {
       const transformConfig: IAttributeMapping = config
 
@@ -89,7 +89,7 @@ export default class Character implements ICharacter {
       if ((text === undefined || text === '') && !config.canBeNull && transformConfig.transformationFunction) {
         throw new Error('Non-nullable mapping has null value for attribute')
       } else if (config.canBeNull && (text === undefined || text === '')) {
-        return null
+        return undefined
       } else if (transformConfig.transformationFunction) {
         return transformConfig.transformationFunction(text)
       }

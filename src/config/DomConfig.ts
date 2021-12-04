@@ -56,8 +56,7 @@ export default class DomConfig {
           '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
         transformationFunction: (value: string) => value.split('(')[1].replace(')', '').trim(),
       },
-      freeCompany:
-        '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
+      freeCompany: 'div.character__freecompany__name > h4',
       gear: {},
       gender: {
         selector:

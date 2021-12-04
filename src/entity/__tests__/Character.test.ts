@@ -268,7 +268,7 @@ describe('Character', () => {
 
     // Character with a shield
     const expectedCharacterThree: Character = {
-      id: 11886902,
+      id: 27218992,
       name: 'Shamir Kotomine',
       activeClass: Class.Gladiator,
       cityState: 'Limsa Lominsa',
@@ -276,7 +276,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Outlander',
       dataCenter: 'Chaos',
-      freeCompany: 'Cerberus (Chaos)',
+      freeCompany: 'Archadian Moogles',
       gear: {
         shield: {
           category: GearCategory.Shield,
@@ -295,7 +295,7 @@ describe('Character', () => {
 
     // Character with Sage active
     const expectedCharacterFour: Character = {
-      id: 11886902,
+      id: 18001255,
       name: 'Sey Moore',
       activeClass: Class.Sage,
       cityState: 'Gridania',
@@ -303,7 +303,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Monster Hunter',
       dataCenter: 'Chaos',
-      freeCompany: 'Cerberus (Chaos)',
+      freeCompany: 'Archadian Moogles',
       gender: 'Male',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'Serpent Captain',
@@ -320,7 +320,7 @@ describe('Character', () => {
 
     // Character with reaper active
     const expectedCharacterFive: Character = {
-      id: 11886902,
+      id: 28309293,
       name: 'Refler Desu',
       activeClass: Class.Reaper,
       cityState: "Ul'dah",
@@ -328,7 +328,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'The Liberator',
       dataCenter: 'Chaos',
-      freeCompany: 'Cerberus (Chaos)',
+      freeCompany: 'Archadian Moogles',
       gender: 'Female',
       grandCompany: 'Maelstrom',
       grandCompanyRank: 'Second Storm Lieutenant',
@@ -361,12 +361,12 @@ describe('Character', () => {
         readFile(join(__dirname, 'resources', `${charId}.html`), 'utf8', (err, data) => {
           jest.setTimeout(10000)
           const testString = Buffer.from(data)
-          resultantCharacter = Character.fromPage(11886902, testString.toString(), Cheerio)
+          resultantCharacter = Character.fromPage(charId, testString.toString(), Cheerio)
           done()
         })
       })
 
-      it.each(nonObjectAttributes)("should evaluate %s as '%s'", ([key]) => {
+      it.each(nonObjectAttributes)("should evaluate %s as '%s'", (key) => {
         // @ts-ignore
         expect(resultantCharacter[key]).toEqual(expected[key])
       })

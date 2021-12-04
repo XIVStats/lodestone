@@ -59,7 +59,7 @@ export interface IMappableCharacter {
 
   readonly grandCompanyRank?: string | IAttributeMapping
 
-  readonly freeCompany?: string
+  readonly freeCompany?: string | IAttributeMapping
 
   readonly minionIds?: string[]
 
