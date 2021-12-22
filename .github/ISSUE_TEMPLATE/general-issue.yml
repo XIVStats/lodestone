@@ -1,0 +1,52 @@
+name: General Issue
+description: Create a new issue
+title: "(module name): short issue description"
+labels: [needs-triage, guidance]
+body:
+  - type: input
+    id: issue
+    attributes:
+      label: General Issue
+      description: |
+        For support questions, please first reference our [documentation](https://github.com/xivstats/lodestone/docs), then use [GitHub Discussions](https://github.com/XIVStats/lodestone/discussions). This repository's issues are intended for feature requests and bug reports.
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: The Question
+      description: |
+        Ask your question here. Include any details relevant. Make sure you are not falling prey to the [X/Y problem](http://xyproblem.info)!
+    validations:
+      required: true
+
+  - type: input
+    id: module-version
+    attributes:
+      label: Module Version
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js Version
+    validations:
+      required: false
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: OS
+    validations:
+      required: false
+
+  - type: textarea
+    id: other
+    attributes:
+      label: Other information
+      description: |
+        e.g. detailed explanation, stacktraces, related issues, suggestions how to fix, links for us to have context, eg. associated pull-request, stackoverflow, etc
+    validations:
+      required: false
