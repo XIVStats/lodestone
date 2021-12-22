@@ -8,7 +8,7 @@ body:
     attributes:
       label: General Issue
       description: |
-        For support questions, please first reference our [documentation](https://github.com/xivstats/lodestone/docs), then use [GitHub Discussions](https://github.com/XIVStats/lodestone/discussions). This repository's issues are intended for feature requests and bug reports.
+        For support questions, please first reference our [documentation](https://github.com/XIVStats/lodestone/tree/main/docs), then use [GitHub Discussions](https://github.com/XIVStats/lodestone/discussions). This repository's issues are intended for feature requests and bug reports.
     validations:
       required: true
 
