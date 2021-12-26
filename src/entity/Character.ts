@@ -32,6 +32,7 @@ import IAttributeMapping from '../interface/IAttributeMapping'
 import Class from './Class'
 import GearCategory from './GearCategory'
 import Level from './Level'
+import IItem from '../interface/IItem'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -68,7 +69,7 @@ export default class Character implements ICharacter {
 
   minionIds?: string[] | undefined
 
-  mountIds?: string[] | undefined
+  mounts?: IItem[] | undefined
 
   private static processAttribute($: CheerioAPI, config: string | IAttributeMapping | undefined): string | undefined {
     if (typeof config === 'object') {
@@ -127,7 +128,7 @@ export default class Character implements ICharacter {
               category,
               name: local$.find('.db-tooltip__item__name').text(),
               id,
-              iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Item Level', '').trim()),
+              iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Creature Level', '').trim()),
             },
           })
         }
@@ -164,5 +165,12 @@ export default class Character implements ICharacter {
     character.classes = Character.processClasses($)
 
     return character
+  }
+
+  static getMountTooltipUrlsFromPage(id: number, data: string, cheerio: CheerioAPI): string[] {
+    const $ = cheerio.load(data)
+    return $('.character__mounts > ul > li')
+      .toArray()
+      .map((listItem) => listItem.attribs['data-tooltip_href'])
   }
 }

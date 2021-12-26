@@ -33,6 +33,8 @@ import { ICharacterFetchError } from '../interface/ICharacterFetchError'
 import CharacterFetchError from '../errors/CharacterFetchError'
 import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
 import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
+import IItem from '../interface/IItem'
+import Creature from '../entity/Creature'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -78,6 +80,23 @@ export default class LodestoneClient {
         throw new CharacterFetchError(id, e)
       }
     }
+  }
+
+  public async getCharacterMounts(id: number, fetchNames?: boolean): Promise<IItem[]> {
+    // eslint-disable-next-line no-useless-catch
+    try {
+      const response = await this.axiosInstance.get(`/character/${id}/mount/`)
+      const tooltipUrls = Character.getMountTooltipUrlsFromPage(id, response.data, this.cheerioInstance)
+      return []
+    } catch (e) {
+      throw e
+    }
+  }
+
+  public async getCreatureToolTip(path: string, fetchName?: string): Promise<Creature> {
+    const shortenedPath = path.replace('/lodestone', '')
+    const response = await this.axiosInstance.get(shortenedPath)
+    return Creature.fromToolTip(response.data, this.cheerioInstance)
   }
 
   public async getCharacters(

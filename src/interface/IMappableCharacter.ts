@@ -27,6 +27,7 @@ import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
 import Class from '../entity/Class'
 import IClassLevels from './IClassLevels'
+import IItem from './IItem'
 
 export interface IMappableCharacter {
   readonly name: string
@@ -63,5 +64,5 @@ export interface IMappableCharacter {
 
   readonly minionIds?: string[]
 
-  readonly mountIds?: string[]
+  readonly mounts?: IItem[]
 }

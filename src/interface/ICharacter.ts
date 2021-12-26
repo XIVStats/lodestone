@@ -27,6 +27,7 @@ import IGearSet from './IGearSet'
 import { IMappableCharacter } from './IMappableCharacter'
 import Class from '../entity/Class'
 import IClassLevels from './IClassLevels'
+import IItem from './IItem'
 
 export default interface ICharacter extends IMappableCharacter {
   readonly name: string
@@ -63,5 +64,5 @@ export default interface ICharacter extends IMappableCharacter {
 
   readonly minionIds?: string[]
 
-  readonly mountIds?: string[]
+  readonly mounts?: IItem[]
 }

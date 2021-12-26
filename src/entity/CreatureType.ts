@@ -23,11 +23,9 @@
  *
  */
 
-import GearCategory from '../entity/GearCategory'
-import IItem from './IItem'
-
-export default interface IGearPiece extends IItem {
-  name: string
-  category: GearCategory
-  iLvl: number
+const enum CreatureType {
+  Mount = 'MOUNT',
+  Minion = 'MINION',
 }
+
+export default CreatureType

@@ -23,11 +23,21 @@
  *
  */
 
-import GearCategory from '../entity/GearCategory'
-import IItem from './IItem'
+import { CheerioAPI } from 'cheerio'
+import IItem from '../interface/IItem'
+import CreatureType from './CreatureType'
 
-export default interface IGearPiece extends IItem {
-  name: string
-  category: GearCategory
-  iLvl: number
+export default class Creature {
+  constructor(public item: IItem, public creatureType?: CreatureType, public creatureName?: string) {}
+
+  static fromToolTip(data: string, cheerio: CheerioAPI, itemIdOnly?: string): Creature {
+    const $ = cheerio.load(data)
+    const typeAsString = $('header')[0].attribs.class.replace('__header', '').toUpperCase()
+    const type = typeAsString as CreatureType
+    const creatureName = !itemIdOnly ? $('h4').text() : undefined
+    const item = $('a')[0]
+    const itemName = !itemIdOnly ? item.attribs['data-tooltip'] : undefined
+    const itemId = item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', '')
+    return new Creature({ name: itemName, id: itemId }, type, creatureName)
+  }
 }

@@ -29,6 +29,7 @@ import Cheerio from 'cheerio'
 import Character from '../Character'
 import Class from '../Class'
 import GearCategory from '../GearCategory'
+import IItem from '../../interface/IItem'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {
@@ -384,4 +385,28 @@ describe('Character', () => {
       }
     })
   })
+
+  // describe('when loading character mounts from HTML', () => {
+  //   const expectedMountsOne: IItem[] = []
+  //
+  //   describe.each([[11886902, "P'tajha Rihll", expectedMountsOne]])(
+  //     'for character %s - %s',
+  //     (charId, name, expected) => {
+  //       let resultantMounts: IItem[]
+  //
+  //       beforeAll((done) => {
+  //         readFile(join(__dirname, 'resources', 'mount', `${charId}.html`), 'utf8', (err, data) => {
+  //           jest.setTimeout(10000)
+  //           const testString = Buffer.from(data)
+  //           resultantMounts = Character.getMountTooltipUrlsFromPage(charId, testString.toString(), Cheerio)
+  //           done()
+  //         })
+  //       })
+  //
+  //       it('base test', () => {
+  //         expect(resultantMounts.length).toEqual(23)
+  //       })
+  //     }
+  //   )
+  // })
 })
