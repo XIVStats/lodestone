@@ -422,19 +422,19 @@ describe('Character', () => {
       if (objectAttributes.length > 0) {
         describe.each(objectAttributes)('should evaluate %s as object', (key, value) => {
           describe.each(Object.entries(value))('with key %s, an object', (lowerKey, lowerValue) => {
-						if (!(lowerValue instanceof Object)) {
-							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-							it(`with key ${lowerKey} equal to ${lowerValue}`, ()=>{
-								// @ts-ignore
-								expect(resultantCharacter[key][lowerKey]).toEqual(lowerValue)
-							})
-						} else {
-							// @ts-ignore
-							it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
-								// @ts-ignore
-								expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)
-							})
-						}
+            if (!(lowerValue instanceof Object)) {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              it(`with key ${lowerKey} equal to ${lowerValue}`, () => {
+                // @ts-ignore
+                expect(resultantCharacter[key][lowerKey]).toEqual(lowerValue)
+              })
+            } else {
+              // @ts-ignore
+              it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
+                // @ts-ignore
+                expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)
+              })
+            }
           })
         })
       }
