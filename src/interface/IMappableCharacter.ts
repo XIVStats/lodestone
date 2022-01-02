@@ -28,6 +28,7 @@ import IAttributeMapping from './IAttributeMapping'
 import Class from '../entity/Class'
 import IClassLevels from './IClassLevels'
 import IItem from './IItem'
+import { IPlayerGroup } from './IPlayerGroup'
 
 export interface IMappableCharacter {
   readonly name: string
@@ -60,7 +61,9 @@ export interface IMappableCharacter {
 
   readonly grandCompanyRank?: string | IAttributeMapping
 
-  readonly freeCompany?: string | IAttributeMapping
+  readonly freeCompanyName?: string | IAttributeMapping
+
+  readonly pvpTeam?: IPlayerGroup | IAttributeMapping
 
   readonly minionIds?: string[]
 

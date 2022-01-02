@@ -23,11 +23,12 @@
  *
  */
 
-export default interface IAttributeMapping {
-  selector: string
-  canBeNull?: boolean
-  useHtml?: boolean
-  getAttr?: string
-  isGroupLink?: boolean
-  transformationFunction?(value: string): string
+export default class UnparseableGroupIdError extends Error {
+  readonly code: string
+
+  constructor(public attemptedString?: string) {
+    super(`Could not parse the id out of string ${attemptedString || ''}`)
+    this.code = 'FAILED_GROUP_PARSE'
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
 }

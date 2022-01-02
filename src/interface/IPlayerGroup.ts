@@ -23,11 +23,10 @@
  *
  */
 
-export default interface IAttributeMapping {
-  selector: string
-  canBeNull?: boolean
-  useHtml?: boolean
-  getAttr?: string
-  isGroupLink?: boolean
-  transformationFunction?(value: string): string
+/**
+ * A PlayerGroup is a group of players such as a Free Company or PvP Team.
+ */
+export interface IPlayerGroup {
+  id: string
+  name?: string
 }

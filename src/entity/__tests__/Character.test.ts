@@ -29,7 +29,6 @@ import Cheerio from 'cheerio'
 import Character from '../Character'
 import Class from '../Class'
 import GearCategory from '../GearCategory'
-import IItem from '../../interface/IItem'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {
@@ -46,7 +45,7 @@ describe('Character', () => {
       guardian: 'Thaliak, the Scholar',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'First Serpent Lieutenant',
-      freeCompany: 'Archadian Moogles',
+      freeCompanyName: 'Archadian Moogles',
       activeClass: Class.Conjurer,
       gear: {
         arm: {
@@ -262,7 +261,7 @@ describe('Character', () => {
       nameDay: '4th Sun of the 4th Astral Moon',
       guardian: 'Nymeia, the Spinner',
       gender: 'Female',
-      freeCompany: "Gandalf's Gangstas",
+      freeCompanyName: "Gandalf's Gangstas",
       activeClass: Class.Arcanist,
       grandCompany: undefined,
     }
@@ -277,7 +276,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Outlander',
       dataCenter: 'Chaos',
-      freeCompany: 'Archadian Moogles',
+      freeCompanyName: 'Archadian Moogles',
       gear: {
         shield: {
           category: GearCategory.Shield,
@@ -304,7 +303,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Monster Hunter',
       dataCenter: 'Chaos',
-      freeCompany: 'Archadian Moogles',
+      freeCompanyName: 'Archadian Moogles',
       gender: 'Male',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'Serpent Captain',
@@ -329,7 +328,7 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'The Liberator',
       dataCenter: 'Chaos',
-      freeCompany: 'Archadian Moogles',
+      freeCompanyName: 'Archadian Moogles',
       gender: 'Female',
       grandCompany: 'Maelstrom',
       grandCompanyRank: 'Second Storm Lieutenant',
@@ -344,6 +343,35 @@ describe('Character', () => {
       },
     }
 
+    // Character with PvP team, Free Company, Grand Company
+    const expectedCharacterSix: Character = {
+      id: 8283,
+      name: 'Windows Vista',
+      activeClass: Class.Armorer,
+      cityState: "Ul'dah",
+      clan: 'Plainsfolk',
+      homeWorld: 'Aegis',
+      title: 'Peacemaker',
+      dataCenter: 'Elemental',
+      freeCompanyName: 'DawnGarden',
+      gender: 'Male',
+      grandCompany: 'Immortal Flames',
+      grandCompanyRank: 'Flame Captain',
+      guardian: 'Rhalgr, the Destroyer',
+      nameDay: '16th Sun of the 1st Umbral Moon',
+      race: 'Lalafell',
+      pvpTeam: {
+        id: '754a1662b54d9fe4d0c6beefa0e61e856fff4d10',
+        name: 'Hushigi Yugi',
+      },
+      classes: {
+        armorer: {
+          class: Class.Armorer,
+          level: 90,
+        },
+      },
+    }
+
     // TODO: Test character with shield
     // TODO: test character with no free company
 
@@ -353,6 +381,7 @@ describe('Character', () => {
       [27218992, 'Shamir Kotmine', expectedCharacterThree],
       [18001255, 'Sey Moore', expectedCharacterFour],
       [28309293, 'Refler Desu', expectedCharacterFive],
+      [8283, 'Windows Vista', expectedCharacterSix],
     ])('for character %s - %s', (charId, name, expected) => {
       let resultantCharacter: Character
       const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')

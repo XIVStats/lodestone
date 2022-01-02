@@ -33,6 +33,8 @@ import Class from './Class'
 import GearCategory from './GearCategory'
 import Level from './Level'
 import IItem from '../interface/IItem'
+import { IPlayerGroup } from '../interface/IPlayerGroup'
+import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -65,13 +67,18 @@ export default class Character implements ICharacter {
 
   grandCompanyRank?: string | undefined
 
-  freeCompany?: string | undefined
+  freeCompanyName?: string | undefined
+
+  pvpTeam?: IPlayerGroup | undefined
 
   minionIds?: string[] | undefined
 
   mounts?: IItem[] | undefined
 
-  private static processAttribute($: CheerioAPI, config: string | IAttributeMapping | undefined): string | undefined {
+  private static processAttribute(
+    $: CheerioAPI,
+    config: string | IAttributeMapping | undefined
+  ): string | IPlayerGroup | undefined {
     if (typeof config === 'object') {
       const transformConfig: IAttributeMapping = config
 
@@ -82,6 +89,20 @@ export default class Character implements ICharacter {
         text = $(config.selector).attr(config.getAttr)
         if (text === undefined) {
           throw new Error()
+        }
+      } else if (config.isGroupLink) {
+        const href = $(`${config.selector} > a`)?.attr('href')
+        if (href) {
+          const id = href.split('/')[3]
+          if (!id) {
+            throw new UnparseableGroupIdError($(`${config.selector} > a`).attr('href'))
+          } else
+            return {
+              id,
+              name: $(config.selector).text(),
+            }
+        } else {
+          return undefined
         }
       } else {
         text = $(config.selector).text()

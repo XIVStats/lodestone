@@ -25,7 +25,7 @@
 
 import Axios, { AxiosError, AxiosInstance } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
-import pLimit from 'p-limit'
+import pLimit, { Limit } from 'p-limit'
 import Character from '../entity/Character'
 import Servers from '../entity/Servers'
 import CharacterNotFoundError from '../errors/CharacterNotFoundError'
@@ -33,7 +33,6 @@ import { ICharacterFetchError } from '../interface/ICharacterFetchError'
 import CharacterFetchError from '../errors/CharacterFetchError'
 import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
 import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
-import IItem from '../interface/IItem'
 import Creature from '../entity/Creature'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
@@ -52,7 +51,9 @@ export default class LodestoneClient {
 
   cheerioInstance: CheerioAPI
 
-  public constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI) {
+  limit: Limit
+
+  public constructor(axiosInstance?: AxiosInstance, cheerioInstance?: CheerioAPI, parallelismLimit?: number) {
     this.axiosInstance =
       axiosInstance ||
       Axios.create({
@@ -60,6 +61,7 @@ export default class LodestoneClient {
         timeout: 5000,
       })
     this.cheerioInstance = cheerioInstance || Cheerio
+    this.limit = pLimit(parallelismLimit || 10)
   }
 
   public async getCharacter(id: number): Promise<Character> {
@@ -82,35 +84,39 @@ export default class LodestoneClient {
     }
   }
 
-  public async getCharacterMounts(id: number, fetchNames?: boolean): Promise<IItem[]> {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const response = await this.axiosInstance.get(`/character/${id}/mount/`)
-      const tooltipUrls = Character.getMountTooltipUrlsFromPage(id, response.data, this.cheerioInstance)
-      return []
-    } catch (e) {
-      throw e
-    }
-  }
+  // public async getCharacterMounts(id: number, itemIdsOnly?: boolean): Promise<Creature[]> {
+  //   // eslint-disable-next-line no-useless-catch
+  //   try {
+  //     const response = await this.axiosInstance.get(`/character/${id}/mount/`)
+  //     // TODO: break off below to allow pre-flight function for smarter lookup
+  //     const tooltipUrls = Character.getMountTooltipUrlsFromPage(id, response.data, this.cheerioInstance)
+  //     const promises: Promise<Creature>[] = []
+  //     tooltipUrls.forEach((url) => {
+  //       promises.push(this.limit(() => this.getCreatureToolTip(url)))
+  //     })
+  //     // TODO: work on this more
+  //     const results = await Promise.allSettled(promises)
+  //     return []
+  //   } catch (e) {
+  //     throw e
+  //   }
+  // }
 
-  public async getCreatureToolTip(path: string, fetchName?: string): Promise<Creature> {
+  public async getCreatureToolTip(path: string, itemIdsOnly?: boolean): Promise<Creature> {
     const shortenedPath = path.replace('/lodestone', '')
     const response = await this.axiosInstance.get(shortenedPath)
-    return Creature.fromToolTip(response.data, this.cheerioInstance)
+    return Creature.fromToolTip(path.split('/tooltip/')[1], response.data, this.cheerioInstance, itemIdsOnly)
   }
 
   public async getCharacters(
     characterIds: number[],
-    parallelismLimit: number,
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
     onError?: OnErrorFunction
   ): Promise<ICharacterSetFetchResult> {
-    const limit = pLimit(parallelismLimit)
-
     const promises: Promise<Character>[] = []
     characterIds.forEach((currentId) => {
-      promises.push(limit(() => this.getCharacter(currentId)))
+      promises.push(this.limit(() => this.getCharacter(currentId)))
     })
     const successfulCharacters: Character[] = []
     const failedCharacters: ICharacterFetchError[] = []
@@ -147,7 +153,6 @@ export default class LodestoneClient {
   public async getCharacterRange(
     start: number,
     end: number,
-    parallelismLimit: number,
     onSuccess?: OnSuccessFunction,
     onDeleted?: OnSuccessFunction,
     onError?: OnErrorFunction
@@ -156,7 +161,7 @@ export default class LodestoneClient {
     for (let currentId = start; currentId < end; currentId += 1) {
       ids.push(currentId)
     }
-    return this.getCharacters(ids, parallelismLimit, onSuccess, onDeleted, onError)
+    return this.getCharacters(ids, onSuccess, onDeleted, onError)
   }
 
   public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {

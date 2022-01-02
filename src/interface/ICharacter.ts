@@ -28,6 +28,7 @@ import { IMappableCharacter } from './IMappableCharacter'
 import Class from '../entity/Class'
 import IClassLevels from './IClassLevels'
 import IItem from './IItem'
+import { IPlayerGroup } from './IPlayerGroup'
 
 export default interface ICharacter extends IMappableCharacter {
   readonly name: string
@@ -60,7 +61,9 @@ export default interface ICharacter extends IMappableCharacter {
 
   readonly grandCompanyRank?: string
 
-  readonly freeCompany?: string
+  readonly freeCompanyName?: string
+
+  readonly pvpTeam?: IPlayerGroup
 
   readonly minionIds?: string[]
 
