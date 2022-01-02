@@ -28,16 +28,26 @@ import IItem from '../interface/IItem'
 import CreatureType from './CreatureType'
 
 export default class Creature {
-  constructor(public item: IItem, public creatureType?: CreatureType, public creatureName?: string) {}
+  constructor(public toolTipId: string, public item: IItem, public type?: CreatureType, public name?: string) {}
 
-  static fromToolTip(data: string, cheerio: CheerioAPI, itemIdOnly?: string): Creature {
+  public asMapping(): { toolTipId: string; itemId: string } {
+    return {
+      toolTipId: this.toolTipId,
+      itemId: this.item.id,
+    }
+  }
+
+  static fromToolTip(toolTipId: string, data: string, cheerio: CheerioAPI, itemIdOnly?: boolean): Creature {
     const $ = cheerio.load(data)
-    const typeAsString = $('header')[0].attribs.class.replace('__header', '').toUpperCase()
-    const type = typeAsString as CreatureType
-    const creatureName = !itemIdOnly ? $('h4').text() : undefined
     const item = $('a')[0]
-    const itemName = !itemIdOnly ? item.attribs['data-tooltip'] : undefined
-    const itemId = item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', '')
-    return new Creature({ name: itemName, id: itemId }, type, creatureName)
+    return new Creature(
+      toolTipId,
+      {
+        name: !itemIdOnly ? item.attribs['data-tooltip'] : undefined,
+        id: item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
+      },
+      $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureType,
+      !itemIdOnly ? $('h4').text() : undefined
+    )
   }
 }

@@ -31,14 +31,15 @@ import CreatureType from '../CreatureType'
 
 describe('Creature', () => {
   describe('given a mount tooltip is being loaded', () => {
-    const expectedMountOne: Creature = {
-      creatureName: 'Company Chocobo',
-      creatureType: CreatureType.Mount,
-      item: {
+    const expectedMountOne: Creature = new Creature(
+      '9045c5c5d5d181ee495f0e76af07d6d93c9f0f13',
+      {
         id: '85f78cb2a87',
         name: 'Chocobo Whistle',
       },
-    }
+      CreatureType.Mount,
+      'Company Chocobo'
+    )
     // /lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13
     describe.each([['9045c5c5d5d181ee495f0e76af07d6d93c9f0f13', "P'tajha Rihll", 'Company Chocobo', expectedMountOne]])(
       'for tooltip %s - relating to %s - Mount: %s',
@@ -51,7 +52,7 @@ describe('Creature', () => {
           readFile(join(__dirname, 'resources', 'mount', 'tooltip', `${toolTipId}.html`), 'utf8', (err, data) => {
             jest.setTimeout(10000)
             const testString = Buffer.from(data)
-            resultantCreature = Creature.fromToolTip(testString.toString(), Cheerio)
+            resultantCreature = Creature.fromToolTip(toolTipId, testString.toString(), Cheerio)
             done()
           })
         })
@@ -66,6 +67,7 @@ describe('Creature', () => {
             // @ts-ignore
             it.each(Object.entries(value))("with key %s equal to '%s'", (lowerKey, lowerValue) => {
               // @ts-ignore
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
               expect(resultantCreature[key][lowerKey]).toEqual(lowerValue)
             })
           })
@@ -73,4 +75,6 @@ describe('Creature', () => {
       }
     )
   })
+
+  // TODO: Add minion tooltip tests
 })
