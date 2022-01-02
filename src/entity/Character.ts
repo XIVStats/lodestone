@@ -67,7 +67,7 @@ export default class Character implements ICharacter {
 
   grandCompanyRank?: string | undefined
 
-  freeCompanyName?: string | undefined
+  freeCompany?: IPlayerGroup | undefined
 
   pvpTeam?: IPlayerGroup | undefined
 

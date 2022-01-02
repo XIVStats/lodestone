@@ -61,7 +61,7 @@ export default interface ICharacter extends IMappableCharacter {
 
   readonly grandCompanyRank?: string
 
-  readonly freeCompanyName?: string
+  readonly freeCompany?: IPlayerGroup
 
   readonly pvpTeam?: IPlayerGroup
 

@@ -61,7 +61,7 @@ export interface IMappableCharacter {
 
   readonly grandCompanyRank?: string | IAttributeMapping
 
-  readonly freeCompanyName?: string | IAttributeMapping
+  readonly freeCompany?: IPlayerGroup | IAttributeMapping
 
   readonly pvpTeam?: IPlayerGroup | IAttributeMapping
 
