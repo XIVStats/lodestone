@@ -46,9 +46,9 @@ describe('Character', () => {
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'First Serpent Lieutenant',
       freeCompany: {
-				id: '9234631035923259083',
-				name: 'Archadian Moogles'
-			},
+        id: '9234631035923259083',
+        name: 'Archadian Moogles',
+      },
       activeClass: Class.Conjurer,
       gear: {
         arm: {
@@ -265,9 +265,9 @@ describe('Character', () => {
       guardian: 'Nymeia, the Spinner',
       gender: 'Female',
       freeCompany: {
-				id: '9228860798900682722',
-				name:"Gandalf's Gangstas"
-			},
+        id: '9228860798900682722',
+        name: "Gandalf's Gangstas",
+      },
       activeClass: Class.Arcanist,
       grandCompany: undefined,
     }
@@ -282,10 +282,10 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Outlander',
       dataCenter: 'Chaos',
-			freeCompany: {
-				id: '9234631035923259083',
-				name: 'Archadian Moogles'
-			},
+      freeCompany: {
+        id: '9234631035923259083',
+        name: 'Archadian Moogles',
+      },
       gear: {
         shield: {
           category: GearCategory.Shield,
@@ -312,10 +312,10 @@ describe('Character', () => {
       homeWorld: 'Cerberus',
       title: 'Monster Hunter',
       dataCenter: 'Chaos',
-			freeCompany: {
-				id: '9234631035923259083',
-				name: 'Archadian Moogles'
-			},
+      freeCompany: {
+        id: '9234631035923259083',
+        name: 'Archadian Moogles',
+      },
       gender: 'Male',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'Serpent Captain',
@@ -341,9 +341,9 @@ describe('Character', () => {
       title: 'The Liberator',
       dataCenter: 'Chaos',
       freeCompany: {
-				id: '9234631035923259083',
-				name: 'Archadian Moogles'
-			},
+        id: '9234631035923259083',
+        name: 'Archadian Moogles',
+      },
       gender: 'Female',
       grandCompany: 'Maelstrom',
       grandCompanyRank: 'Second Storm Lieutenant',
@@ -369,9 +369,9 @@ describe('Character', () => {
       title: 'Peacemaker',
       dataCenter: 'Elemental',
       freeCompany: {
-				id: '9236038410806755415x',
-				name: 'DawnGarden'
-			},
+        id: '9236038410806755415',
+        name: 'DawnGarden',
+      },
       gender: 'Male',
       grandCompany: 'Immortal Flames',
       grandCompanyRank: 'Flame Captain',

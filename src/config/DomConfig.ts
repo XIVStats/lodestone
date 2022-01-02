@@ -57,9 +57,9 @@ export default class DomConfig {
         transformationFunction: (value: string) => value.split('(')[1].replace(')', '').trim(),
       },
       freeCompany: {
-				selector: 'div.character__freecompany__name > h4',
-				isGroupLink: true
-			},
+        selector: 'div.character__freecompany__name > h4',
+        isGroupLink: true,
+      },
       pvpTeam: {
         selector: 'div.character__pvpteam__name > h4',
         isGroupLink: true,
