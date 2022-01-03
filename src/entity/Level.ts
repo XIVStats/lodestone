@@ -26,7 +26,6 @@
 import { Cheerio, Element } from 'cheerio'
 import ILevel from '../interface/ILevel'
 import ClassAbbreviation from './ClassAbbreviation'
-import ClassHelper from './ClassHelper'
 import Language from '../locale/Language'
 import Class from './Class'
 
@@ -49,7 +48,6 @@ export default class Level implements ILevel {
     const classEnum = Class.getEnumFromName(name, language)
     const levelStr = $.text()
     const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
-    const classAsKey = ClassHelper.toKey(classEnum)
-    return [new Level(classEnum, levelValue), classAsKey]
+    return [new Level(classEnum, levelValue), classEnum]
   }
 }

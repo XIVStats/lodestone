@@ -36,7 +36,6 @@ import IItem from '../interface/IItem'
 import { IPlayerGroup } from '../interface/IPlayerGroup'
 import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
 import Language from '../locale/Language'
-import language from '../locale/Language'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}

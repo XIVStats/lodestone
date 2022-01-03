@@ -43,7 +43,7 @@ describe('Character', () => {
       clan: 'Wildwood',
       gender: 'Female',
       nameDay: '29th Sun of the 3rd Astral Moon',
-      guardian: 'Thaliak, the SCH',
+      guardian: 'Thaliak, the Scholar',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'First Serpent Lieutenant',
       freeCompany: {
@@ -127,127 +127,127 @@ describe('Character', () => {
       },
       // @ts-ignore
       classes: {
-        paladinGladiator: {
+        [ClassAbbreviation.GLD]: {
           class: ClassAbbreviation.GLD,
           level: 70,
         },
-        warriorMarauder: {
+        [ClassAbbreviation.MRD]: {
           class: ClassAbbreviation.MRD,
           level: 0,
         },
-        darkKnight: {
+        [ClassAbbreviation.DRK]: {
           class: ClassAbbreviation.DRK,
           level: 80,
         },
-        gunbreaker: {
+        [ClassAbbreviation.GNB]: {
           class: ClassAbbreviation.GNB,
           level: 0,
         },
-        whiteMageConjurer: {
+        [ClassAbbreviation.CNJ]: {
           class: ClassAbbreviation.CNJ,
           level: 80,
         },
-        sage: {
+        [ClassAbbreviation.SGE]: {
           class: ClassAbbreviation.SGE,
           level: 0,
         },
-        scholar: {
+        [ClassAbbreviation.SCH]: {
           class: ClassAbbreviation.SCH,
           level: 71,
         },
-        astrologian: {
+        [ClassAbbreviation.AST]: {
           class: ClassAbbreviation.AST,
           level: 40,
         },
-        monkPugilist: {
+        [ClassAbbreviation.PGL]: {
           class: ClassAbbreviation.PGL,
           level: 0,
         },
-        dragoonLancer: {
+        [ClassAbbreviation.LNC]: {
           class: ClassAbbreviation.LNC,
           level: 0,
         },
-        ninjaRogue: {
+        [ClassAbbreviation.ROG]: {
           class: ClassAbbreviation.ROG,
           level: 0,
         },
-        samurai: {
+        [ClassAbbreviation.SAM]: {
           class: ClassAbbreviation.SAM,
           level: 55,
         },
-        reaper: {
+        [ClassAbbreviation.RPR]: {
           class: ClassAbbreviation.RPR,
           level: 0,
         },
-        bardArcher: {
+        [ClassAbbreviation.ARC]: {
           class: ClassAbbreviation.ARC,
           level: 15,
         },
-        machinist: {
+        [ClassAbbreviation.MCH]: {
           class: ClassAbbreviation.MCH,
           level: 0,
         },
-        dancer: {
+        [ClassAbbreviation.DNC]: {
           class: ClassAbbreviation.DNC,
           level: 0,
         },
-        blackMageThaumaturge: {
+        [ClassAbbreviation.THM]: {
           class: ClassAbbreviation.THM,
           level: 77,
         },
-        summonerArcanist: {
+        [ClassAbbreviation.ACN]: {
           class: ClassAbbreviation.ACN,
           level: 71,
         },
-        redMage: {
+        [ClassAbbreviation.RDM]: {
           class: ClassAbbreviation.RDM,
           level: 80,
         },
-        blueMageLimitedJob: {
+        [ClassAbbreviation.BLU]: {
           class: ClassAbbreviation.BLU,
           level: 0,
         },
-        carpenter: {
+        [ClassAbbreviation.CRP]: {
           class: ClassAbbreviation.CRP,
           level: 0,
         },
-        blacksmith: {
+        [ClassAbbreviation.BSM]: {
           class: ClassAbbreviation.BSM,
           level: 0,
         },
-        armorer: {
+        [ClassAbbreviation.ARM]: {
           class: ClassAbbreviation.ARM,
           level: 0,
         },
-        goldsmith: {
+        [ClassAbbreviation.GSM]: {
           class: ClassAbbreviation.GSM,
           level: 0,
         },
-        leatherworker: {
+        [ClassAbbreviation.LTW]: {
           class: ClassAbbreviation.LTW,
           level: 0,
         },
-        weaver: {
+        [ClassAbbreviation.WVR]: {
           class: ClassAbbreviation.WVR,
           level: 0,
         },
-        alchemist: {
+        [ClassAbbreviation.ALC]: {
           class: ClassAbbreviation.ALC,
           level: 0,
         },
-        culinarian: {
+        [ClassAbbreviation.CUL]: {
           class: ClassAbbreviation.CUL,
           level: 60,
         },
-        miner: {
+        [ClassAbbreviation.MIN]: {
           class: ClassAbbreviation.MIN,
           level: 7,
         },
-        botanist: {
+        [ClassAbbreviation.BTN]: {
           class: ClassAbbreviation.BTN,
           level: 0,
         },
-        fisher: {
+        [ClassAbbreviation.FSH]: {
           class: ClassAbbreviation.FSH,
           level: 0,
         },
@@ -324,7 +324,7 @@ describe('Character', () => {
       nameDay: '6th Sun of the 6th Astral Moon',
       race: 'Lalafell',
       classes: {
-        sage: {
+        [ClassAbbreviation.SGE]: {
           class: ClassAbbreviation.SGE,
           level: 76,
         },
@@ -352,7 +352,7 @@ describe('Character', () => {
       nameDay: '7th Sun of the 1st Astral Moon',
       race: 'Au Ra',
       classes: {
-        reaper: {
+        [ClassAbbreviation.RPR]: {
           class: ClassAbbreviation.RPR,
           level: 80,
         },
@@ -384,7 +384,7 @@ describe('Character', () => {
         name: 'Hushigi Yugi',
       },
       classes: {
-        armorer: {
+        [ClassAbbreviation.ARM]: {
           class: ClassAbbreviation.ARM,
           level: 90,
         },

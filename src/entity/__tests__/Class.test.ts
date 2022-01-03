@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-returns, jsdoc/require-param-type, jsdoc/require-param-description */
+
 /*
  * MIT License
  *
@@ -64,6 +66,7 @@ describe('Class', () => {
      * @param index
      * @param self
      */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     function onlyUnique(value: string, index: number, self: Array<any>) {
       return self.indexOf(value) === index
     }

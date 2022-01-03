@@ -25,7 +25,6 @@
 
 import { AxiosInstance } from 'axios'
 import { CheerioAPI } from 'cheerio'
-import { Limit } from 'p-limit'
 import { RegionalAxiosInstances } from './RegionalAxiosInstances'
 import Language from '../locale/Language'
 

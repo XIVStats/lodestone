@@ -24,7 +24,7 @@
  */
 
 import { IMappableCharacter } from '../interface/IMappableCharacter'
-import ClassConfig from './ClassConfig'
+import Class from '../entity/Class'
 
 export default class DomConfig {
   public static getCharacterConfig(): IMappableCharacter {
@@ -35,7 +35,7 @@ export default class DomConfig {
           '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__detail > div.character__view.clearfix > div.character__class > div.character__class__data > img',
         getAttr: 'src',
         transformationFunction: (value: string) =>
-          ClassConfig.getClassForImage(value.replace('https://img.finalfantasyxiv.com/', '')),
+          Class.getEnumFromImage(value.replace('https://img.finalfantasyxiv.com/', '')),
       },
       cityState:
         '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(3) > div > p.character-block__name',

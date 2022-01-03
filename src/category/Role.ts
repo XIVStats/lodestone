@@ -23,16 +23,15 @@
  *
  */
 
-
 const enum Role {
-	Crafter ='Crafter',
-	Gatherer= 'Gatherer',
-	Healer= 'Healer',
-	MagicDps='Magic DPS',
-	MeleeDps='Melee DPS',
-	RangedDps= 'Ranged DPS',
-	Tank='Tank',
-	LimitedJob='Limited Job'
+  Crafter = 'Crafter',
+  Gatherer = 'Gatherer',
+  Healer = 'Healer',
+  MagicDps = 'Magic DPS',
+  MeleeDps = 'Melee DPS',
+  RangedDps = 'Ranged DPS',
+  Tank = 'Tank',
+  LimitedJob = 'Limited Job',
 }
 
 export default Role

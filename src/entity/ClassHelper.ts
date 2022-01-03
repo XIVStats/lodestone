@@ -26,7 +26,6 @@
 import ClassAbbreviation from './ClassAbbreviation'
 
 export default class ClassHelper {
-
   // public static getEnumFromName(string: string): ClassAbbreviation {
   //   const baseClassMap = {
   //     Gladiator: ClassAbbreviation.GLD,
@@ -40,11 +39,11 @@ export default class ClassHelper {
   //     Arcanist: ClassAbbreviation.ACN,
   //   }
   //   const foundClass = Object.entries(baseClassMap).find((pair) => pair[0] === string)
-	//
+  //
   //   if (foundClass) {
   //     return foundClass[1]
   //   }
-	//
+  //
   //   return string as ClassAbbreviation
   // }
 

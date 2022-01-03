@@ -24,10 +24,10 @@
  */
 
 const enum ClassCategory {
-	DoH= 'DoH',
-	DoL = 'DoL',
-	DoM = 'DoM',
-	DoW = 'DoW',
+  DoH = 'DoH',
+  DoL = 'DoL',
+  DoM = 'DoM',
+  DoW = 'DoW',
 }
 
 export default ClassCategory

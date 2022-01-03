@@ -24,67 +24,10 @@
  */
 
 import ILevel from './ILevel'
+import ClassAbbreviation from '../entity/ClassAbbreviation'
 
-export default interface IClassLevels {
-  readonly paladinGladiator?: ILevel
-
-  readonly warriorMarauder?: ILevel
-
-  readonly darkKnight?: ILevel
-
-  readonly gunbreaker?: ILevel
-
-  readonly whiteMageConjurer?: ILevel
-
-  readonly scholar?: ILevel
-
-  readonly astrologian?: ILevel
-
-  readonly sage?: ILevel
-
-  readonly monkPugilist?: ILevel
-
-  readonly dragoonLancer?: ILevel
-
-  readonly ninjaRogue?: ILevel
-
-  readonly samurai?: ILevel
-
-  readonly reaper?: ILevel
-
-  readonly bardArcher?: ILevel
-
-  readonly machinist?: ILevel
-
-  readonly dancer?: ILevel
-
-  readonly blackMageThaumaturge?: ILevel
-
-  readonly summonerArcanist?: ILevel
-
-  readonly redMage?: ILevel
-
-  readonly blueMageLimitedJob?: ILevel
-
-  readonly carpenter?: ILevel
-
-  readonly blacksmith?: ILevel
-
-  readonly armorer?: ILevel
-
-  readonly goldsmith?: ILevel
-
-  readonly leatherworker?: ILevel
-
-  readonly weaver?: ILevel
-
-  readonly alchemist?: ILevel
-
-  readonly culinarian?: ILevel
-
-  readonly miner?: ILevel
-
-  readonly botanist?: ILevel
-
-  readonly fisher?: ILevel
+type IClassLevels = {
+  [key in ClassAbbreviation]?: ILevel
 }
+
+export default IClassLevels

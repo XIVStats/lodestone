@@ -24,11 +24,11 @@
  */
 
 const enum Language {
-	en= 'en',
-	enUs = 'enUs',
-	de = 'de',
-	fr = 'fr',
-	ja = 'ja'
+  en = 'en',
+  enUs = 'enUs',
+  de = 'de',
+  fr = 'fr',
+  ja = 'ja',
 }
 
 export default Language

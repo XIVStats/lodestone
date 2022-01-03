@@ -25,7 +25,7 @@
 
 const enum ClassAbbreviation {
   // Tank
-  GLD= 'GLD',
+  GLD = 'GLD',
   MRD = 'MRD',
   DRK = 'DRK',
   GNB = 'GNB',
@@ -39,7 +39,7 @@ const enum ClassAbbreviation {
   LNC = 'LNC',
   ROG = 'ROG',
   SAM = 'SAM',
-	RPR = 'RPR',
+  RPR = 'RPR',
   ARC = 'ARC',
   MCH = 'MCH',
   DNC = 'DNC',

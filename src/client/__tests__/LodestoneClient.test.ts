@@ -45,7 +45,7 @@ describe('Lodestone Client', () => {
             isAxiosError: true,
           }
         })
-        localClient = new LodestoneClient({axiosInstance: axios})
+        localClient = new LodestoneClient({ axiosInstance: axios })
       })
 
       it('should throw a character not found error', async () => {
