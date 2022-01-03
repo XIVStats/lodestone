@@ -23,9 +23,9 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
+import { AxiosInstance } from 'axios'
+import Language from '../locale/Language'
 
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+export type RegionalAxiosInstances = {
+  [key in Language]?: AxiosInstance
 }

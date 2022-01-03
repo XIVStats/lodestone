@@ -25,26 +25,28 @@
 
 import { Cheerio, Element } from 'cheerio'
 import ILevel from '../interface/ILevel'
-import Class from './Class'
+import ClassAbbreviation from './ClassAbbreviation'
 import ClassHelper from './ClassHelper'
+import Language from '../locale/Language'
+import Class from './Class'
 
 export default class Level implements ILevel {
   level: number
 
-  class: Class
+  class: ClassAbbreviation
 
-  constructor(classValue: Class, level: number) {
+  constructor(classValue: ClassAbbreviation, level: number) {
     this.class = classValue
     this.level = level
   }
 
-  public static fromDom($: Cheerio<Element>): [Level, string] {
+  public static fromDom($: Cheerio<Element>, language: Language): [Level, string] {
     const name = $.find('img').attr('data-tooltip')
     if (name === undefined) {
       // TODO
       throw Error()
     }
-    const classEnum = ClassHelper.toEnum(name)
+    const classEnum = Class.getEnumFromName(name, language)
     const levelStr = $.text()
     const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
     const classAsKey = ClassHelper.toKey(classEnum)

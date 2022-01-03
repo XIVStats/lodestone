@@ -23,9 +23,11 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
-
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+const enum ClassCategory {
+	DoH= 'DoH',
+	DoL = 'DoL',
+	DoM = 'DoM',
+	DoW = 'DoW',
 }
+
+export default ClassCategory

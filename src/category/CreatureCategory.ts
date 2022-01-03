@@ -23,9 +23,9 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
-
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+const enum CreatureCategory {
+  Mount = 'MOUNT',
+  Minion = 'MINION',
 }
+
+export default CreatureCategory

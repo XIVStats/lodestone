@@ -27,7 +27,7 @@ import { readFile } from 'fs'
 import { join } from 'path'
 import Cheerio from 'cheerio'
 import Creature from '../Creature'
-import CreatureType from '../CreatureType'
+import CreatureCategory from '../../category/CreatureCategory'
 
 describe('Creature', () => {
   describe('given a mount tooltip is being loaded', () => {
@@ -37,7 +37,7 @@ describe('Creature', () => {
         id: '85f78cb2a87',
         name: 'Chocobo Whistle',
       },
-      CreatureType.Mount,
+      CreatureCategory.Mount,
       'Company Chocobo'
     )
     // /lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13

@@ -23,31 +23,32 @@
  *
  */
 
-import Class from './Class'
+import ClassAbbreviation from './ClassAbbreviation'
 
 export default class ClassHelper {
-  public static toEnum(string: string): Class {
-    const baseClassMap = {
-      Gladiator: Class.Gladiator,
-      Marauder: Class.Marauder,
-      Conjurer: Class.Conjurer,
-      Pugilist: Class.Pugilist,
-      Lancer: Class.Lancer,
-      Rogue: Class.Rogue,
-      Archer: Class.Archer,
-      Thaumaturge: Class.Thaumaturge,
-      Arcanist: Class.Arcanist,
-    }
-    const foundClass = Object.entries(baseClassMap).find((pair) => pair[0] === string)
 
-    if (foundClass) {
-      return foundClass[1]
-    }
+  // public static getEnumFromName(string: string): ClassAbbreviation {
+  //   const baseClassMap = {
+  //     Gladiator: ClassAbbreviation.GLD,
+  //     Marauder: ClassAbbreviation.MRD,
+  //     Conjurer: ClassAbbreviation.CNJ,
+  //     Pugilist: ClassAbbreviation.PGL,
+  //     Lancer: ClassAbbreviation.LNC,
+  //     Rogue: ClassAbbreviation.ROG,
+  //     Archer: ClassAbbreviation.ARC,
+  //     Thaumaturge: ClassAbbreviation.THM,
+  //     Arcanist: ClassAbbreviation.ACN,
+  //   }
+  //   const foundClass = Object.entries(baseClassMap).find((pair) => pair[0] === string)
+	//
+  //   if (foundClass) {
+  //     return foundClass[1]
+  //   }
+	//
+  //   return string as ClassAbbreviation
+  // }
 
-    return string as Class
-  }
-
-  public static toKey(classEnum: Class): string {
+  public static toKey(classEnum: ClassAbbreviation): string {
     const classWithNoPunc: string = classEnum
       .toString()
       .replace('(', '')

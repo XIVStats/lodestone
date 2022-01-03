@@ -23,7 +23,7 @@
  *
  */
 
-import GearCategory from '../entity/GearCategory'
+import GearCategory from '../category/GearCategory'
 import IItem from './IItem'
 
 export default interface IGearPiece extends IItem {

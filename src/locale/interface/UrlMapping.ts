@@ -23,9 +23,8 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
+import Language from '../Language'
 
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+export type UrlMapping = {
+  [key in Language]: string
 }

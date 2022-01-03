@@ -24,8 +24,8 @@
  */
 
 import ClassAbbreviation from '../entity/ClassAbbreviation'
+import IClass from './IClass'
 
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+export type IClassMap = {
+  [key in ClassAbbreviation]: IClass
 }

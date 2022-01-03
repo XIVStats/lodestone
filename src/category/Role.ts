@@ -23,9 +23,16 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
 
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+const enum Role {
+	Crafter ='Crafter',
+	Gatherer= 'Gatherer',
+	Healer= 'Healer',
+	MagicDps='Magic DPS',
+	MeleeDps='Melee DPS',
+	RangedDps= 'Ranged DPS',
+	Tank='Tank',
+	LimitedJob='Limited Job'
 }
+
+export default Role

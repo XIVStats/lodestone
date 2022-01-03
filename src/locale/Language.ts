@@ -23,9 +23,12 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
-
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+const enum Language {
+	en= 'en',
+	enUs = 'enUs',
+	de = 'de',
+	fr = 'fr',
+	ja = 'ja'
 }
+
+export default Language

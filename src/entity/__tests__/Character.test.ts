@@ -27,8 +27,9 @@ import { readFile } from 'fs'
 import { join } from 'path'
 import Cheerio from 'cheerio'
 import Character from '../Character'
-import Class from '../Class'
-import GearCategory from '../GearCategory'
+import ClassAbbreviation from '../ClassAbbreviation'
+import GearCategory from '../../category/GearCategory'
+import Language from '../../locale/Language'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {
@@ -42,14 +43,14 @@ describe('Character', () => {
       clan: 'Wildwood',
       gender: 'Female',
       nameDay: '29th Sun of the 3rd Astral Moon',
-      guardian: 'Thaliak, the Scholar',
+      guardian: 'Thaliak, the SCH',
       grandCompany: 'Order of the Twin Adder',
       grandCompanyRank: 'First Serpent Lieutenant',
       freeCompany: {
         id: '9234631035923259083',
         name: 'Archadian Moogles',
       },
-      activeClass: Class.Conjurer,
+      activeClass: ClassAbbreviation.CNJ,
       gear: {
         arm: {
           category: GearCategory.Arm,
@@ -127,127 +128,127 @@ describe('Character', () => {
       // @ts-ignore
       classes: {
         paladinGladiator: {
-          class: Class.Gladiator,
+          class: ClassAbbreviation.GLD,
           level: 70,
         },
         warriorMarauder: {
-          class: Class.Marauder,
+          class: ClassAbbreviation.MRD,
           level: 0,
         },
         darkKnight: {
-          class: Class.DarkKnight,
+          class: ClassAbbreviation.DRK,
           level: 80,
         },
         gunbreaker: {
-          class: Class.Gunbreaker,
+          class: ClassAbbreviation.GNB,
           level: 0,
         },
         whiteMageConjurer: {
-          class: Class.Conjurer,
+          class: ClassAbbreviation.CNJ,
           level: 80,
         },
         sage: {
-          class: Class.Sage,
+          class: ClassAbbreviation.SGE,
           level: 0,
         },
         scholar: {
-          class: Class.Scholar,
+          class: ClassAbbreviation.SCH,
           level: 71,
         },
         astrologian: {
-          class: Class.Astrologian,
+          class: ClassAbbreviation.AST,
           level: 40,
         },
         monkPugilist: {
-          class: Class.Pugilist,
+          class: ClassAbbreviation.PGL,
           level: 0,
         },
         dragoonLancer: {
-          class: Class.Lancer,
+          class: ClassAbbreviation.LNC,
           level: 0,
         },
         ninjaRogue: {
-          class: Class.Rogue,
+          class: ClassAbbreviation.ROG,
           level: 0,
         },
         samurai: {
-          class: Class.Samurai,
+          class: ClassAbbreviation.SAM,
           level: 55,
         },
         reaper: {
-          class: Class.Reaper,
+          class: ClassAbbreviation.RPR,
           level: 0,
         },
         bardArcher: {
-          class: Class.Archer,
+          class: ClassAbbreviation.ARC,
           level: 15,
         },
         machinist: {
-          class: Class.Machinist,
+          class: ClassAbbreviation.MCH,
           level: 0,
         },
         dancer: {
-          class: Class.Dancer,
+          class: ClassAbbreviation.DNC,
           level: 0,
         },
         blackMageThaumaturge: {
-          class: Class.Thaumaturge,
+          class: ClassAbbreviation.THM,
           level: 77,
         },
         summonerArcanist: {
-          class: Class.Arcanist,
+          class: ClassAbbreviation.ACN,
           level: 71,
         },
         redMage: {
-          class: Class.RedMage,
+          class: ClassAbbreviation.RDM,
           level: 80,
         },
         blueMageLimitedJob: {
-          class: Class.BlueMage,
+          class: ClassAbbreviation.BLU,
           level: 0,
         },
         carpenter: {
-          class: Class.Carpenter,
+          class: ClassAbbreviation.CRP,
           level: 0,
         },
         blacksmith: {
-          class: Class.Blacksmith,
+          class: ClassAbbreviation.BSM,
           level: 0,
         },
         armorer: {
-          class: Class.Armorer,
+          class: ClassAbbreviation.ARM,
           level: 0,
         },
         goldsmith: {
-          class: Class.Goldsmith,
+          class: ClassAbbreviation.GSM,
           level: 0,
         },
         leatherworker: {
-          class: Class.Leatherworker,
+          class: ClassAbbreviation.LTW,
           level: 0,
         },
         weaver: {
-          class: Class.Weaver,
+          class: ClassAbbreviation.WVR,
           level: 0,
         },
         alchemist: {
-          class: Class.Alchemist,
+          class: ClassAbbreviation.ALC,
           level: 0,
         },
         culinarian: {
-          class: Class.Culinarian,
+          class: ClassAbbreviation.CUL,
           level: 60,
         },
         miner: {
-          class: Class.Miner,
+          class: ClassAbbreviation.MIN,
           level: 7,
         },
         botanist: {
-          class: Class.Botanist,
+          class: ClassAbbreviation.BTN,
           level: 0,
         },
         fisher: {
-          class: Class.Fisher,
+          class: ClassAbbreviation.FSH,
           level: 0,
         },
       },
@@ -268,7 +269,7 @@ describe('Character', () => {
         id: '9228860798900682722',
         name: "Gandalf's Gangstas",
       },
-      activeClass: Class.Arcanist,
+      activeClass: ClassAbbreviation.ACN,
       grandCompany: undefined,
     }
 
@@ -276,7 +277,7 @@ describe('Character', () => {
     const expectedCharacterThree: Character = {
       id: 27218992,
       name: 'Shamir Kotomine',
-      activeClass: Class.Gladiator,
+      activeClass: ClassAbbreviation.GLD,
       cityState: 'Limsa Lominsa',
       clan: 'Dunesfolk',
       homeWorld: 'Cerberus',
@@ -302,11 +303,11 @@ describe('Character', () => {
       race: 'Lalafell',
     }
 
-    // Character with Sage active
+    // Character with SGE active
     const expectedCharacterFour: Character = {
       id: 18001255,
       name: 'Sey Moore',
-      activeClass: Class.Sage,
+      activeClass: ClassAbbreviation.SGE,
       cityState: 'Gridania',
       clan: 'Dunesfolk',
       homeWorld: 'Cerberus',
@@ -324,7 +325,7 @@ describe('Character', () => {
       race: 'Lalafell',
       classes: {
         sage: {
-          class: Class.Sage,
+          class: ClassAbbreviation.SGE,
           level: 76,
         },
       },
@@ -334,7 +335,7 @@ describe('Character', () => {
     const expectedCharacterFive: Character = {
       id: 28309293,
       name: 'Refler Desu',
-      activeClass: Class.Reaper,
+      activeClass: ClassAbbreviation.RPR,
       cityState: "Ul'dah",
       clan: 'Xaela',
       homeWorld: 'Cerberus',
@@ -352,7 +353,7 @@ describe('Character', () => {
       race: 'Au Ra',
       classes: {
         reaper: {
-          class: Class.Reaper,
+          class: ClassAbbreviation.RPR,
           level: 80,
         },
       },
@@ -362,7 +363,7 @@ describe('Character', () => {
     const expectedCharacterSix: Character = {
       id: 8283,
       name: 'Windows Vista',
-      activeClass: Class.Armorer,
+      activeClass: ClassAbbreviation.ARM,
       cityState: "Ul'dah",
       clan: 'Plainsfolk',
       homeWorld: 'Aegis',
@@ -384,7 +385,7 @@ describe('Character', () => {
       },
       classes: {
         armorer: {
-          class: Class.Armorer,
+          class: ClassAbbreviation.ARM,
           level: 90,
         },
       },
@@ -409,7 +410,7 @@ describe('Character', () => {
         readFile(join(__dirname, 'resources', `${charId}.html`), 'utf8', (err, data) => {
           jest.setTimeout(10000)
           const testString = Buffer.from(data)
-          resultantCharacter = Character.fromPage(charId, testString.toString(), Cheerio)
+          resultantCharacter = Character.fromPage(charId, testString.toString(), Cheerio, Language.en)
           done()
         })
       })

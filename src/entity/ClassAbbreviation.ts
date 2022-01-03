@@ -23,9 +23,43 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
-
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+const enum ClassAbbreviation {
+  // Tank
+  GLD= 'GLD',
+  MRD = 'MRD',
+  DRK = 'DRK',
+  GNB = 'GNB',
+  // Healer
+  CNJ = 'CNJ',
+  SCH = 'SCH',
+  AST = 'AST',
+  SGE = 'SGE',
+  // DPS
+  PGL = 'PGL',
+  LNC = 'LNC',
+  ROG = 'ROG',
+  SAM = 'SAM',
+	RPR = 'RPR',
+  ARC = 'ARC',
+  MCH = 'MCH',
+  DNC = 'DNC',
+  THM = 'THM',
+  ACN = 'ACN',
+  RDM = 'RDM',
+  BLU = 'BLU',
+  // // DoH
+  CRP = 'CRP',
+  BSM = 'BSM',
+  ARM = 'ARM',
+  GSM = 'GSM',
+  LTW = 'LTW',
+  WVR = 'WVR',
+  ALC = 'ALC',
+  CUL = 'CUL',
+  // // DoL
+  MIN = 'MIN',
+  BTN = 'BTN',
+  FSH = 'FSH',
 }
+
+export default ClassAbbreviation

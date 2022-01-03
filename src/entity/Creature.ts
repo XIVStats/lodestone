@@ -25,10 +25,10 @@
 
 import { CheerioAPI } from 'cheerio'
 import IItem from '../interface/IItem'
-import CreatureType from './CreatureType'
+import CreatureCategory from '../category/CreatureCategory'
 
 export default class Creature {
-  constructor(public toolTipId: string, public item: IItem, public type?: CreatureType, public name?: string) {}
+  constructor(public toolTipId: string, public item: IItem, public type?: CreatureCategory, public name?: string) {}
 
   public asMapping(): { toolTipId: string; itemId: string } {
     return {
@@ -46,7 +46,7 @@ export default class Creature {
         name: !itemIdOnly ? item.attribs['data-tooltip'] : undefined,
         id: item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
       },
-      $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureType,
+      $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory,
       !itemIdOnly ? $('h4').text() : undefined
     )
   }

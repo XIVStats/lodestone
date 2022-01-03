@@ -1,4 +1,4 @@
-# Class: default
+# ClassAbbreviation: default
 
 [client/LodestoneClient](../modules/client_LodestoneClient.md).default
 

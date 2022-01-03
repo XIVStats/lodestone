@@ -23,9 +23,9 @@
  *
  */
 
-import Class from '../entity/Class'
+import ClassAbbreviation from '../entity/ClassAbbreviation'
 
 export default interface ILevel {
-  class: Class
+  class: ClassAbbreviation
   level: number
 }

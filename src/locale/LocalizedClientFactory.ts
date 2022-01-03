@@ -23,9 +23,32 @@
  *
  */
 
-const enum CreatureType {
-  Mount = 'MOUNT',
-  Minion = 'MINION',
-}
+import Axios, { AxiosInstance } from 'axios'
+import { UrlMapping } from './interface/UrlMapping'
+import Language from './Language'
+import { RegionalAxiosInstances } from '../interface/RegionalAxiosInstances'
 
-export default CreatureType
+export default class LocalizedClientFactory {
+  static baseUrls: UrlMapping = {
+    [Language.de]: 'de',
+    [Language.en]: 'eu',
+    [Language.enUs]: 'na',
+    [Language.fr]: 'fr',
+    [Language.ja]: 'jp',
+  }
+
+  static createClientForLanguage(language: Language): AxiosInstance {
+    return Axios.create({
+      baseURL: `https://${this.baseUrls[language]}.finalfantasyxiv.com/lodestone`,
+      timeout: 5000,
+    })
+  }
+
+  static createClientsForLanguages(languages: Language[]): RegionalAxiosInstances {
+    const result: RegionalAxiosInstances = {}
+    languages.forEach((language) => {
+      result[language] = LocalizedClientFactory.createClientForLanguage(language)
+    })
+    return result
+  }
+}

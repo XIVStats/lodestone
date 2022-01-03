@@ -25,7 +25,7 @@
 
 import IGearSet from './IGearSet'
 import IAttributeMapping from './IAttributeMapping'
-import Class from '../entity/Class'
+import ClassAbbreviation from '../entity/ClassAbbreviation'
 import IClassLevels from './IClassLevels'
 import IItem from './IItem'
 import { IPlayerGroup } from './IPlayerGroup'
@@ -47,7 +47,7 @@ export interface IMappableCharacter {
 
   readonly nameDay?: string
 
-  readonly activeClass?: Class | IAttributeMapping
+  readonly activeClass?: ClassAbbreviation | IAttributeMapping
 
   readonly classes?: IClassLevels
 

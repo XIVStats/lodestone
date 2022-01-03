@@ -23,9 +23,17 @@
  *
  */
 
-import ClassAbbreviation from '../entity/ClassAbbreviation'
+import Language from '../locale/Language'
 
-export interface IClassIdMapping {
-  className: ClassAbbreviation
-  imagePath: string
+/**
+ * Supported languages for localized text.
+ *
+ * Corresponding to ISO 639-1:2002.
+ *
+ * These do not correspond to:
+ * Country code (ISO-3166) - e.g. Japan would be JP not ja.
+ * Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
+ */
+export type ILocalizedString = {
+  [key in Language]?: string
 }

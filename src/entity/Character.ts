@@ -29,12 +29,14 @@ import ICharacter from '../interface/ICharacter'
 import IClassLevels from '../interface/IClassLevels'
 import IGearSet from '../interface/IGearSet'
 import IAttributeMapping from '../interface/IAttributeMapping'
-import Class from './Class'
-import GearCategory from './GearCategory'
+import ClassAbbreviation from './ClassAbbreviation'
+import GearCategory from '../category/GearCategory'
 import Level from './Level'
 import IItem from '../interface/IItem'
 import { IPlayerGroup } from '../interface/IPlayerGroup'
 import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
+import Language from '../locale/Language'
+import language from '../locale/Language'
 
 export default class Character implements ICharacter {
   constructor(readonly id: number, readonly name: string) {}
@@ -53,7 +55,7 @@ export default class Character implements ICharacter {
 
   nameDay?: string
 
-  activeClass?: Class
+  activeClass?: ClassAbbreviation
 
   classes?: IClassLevels
 
@@ -158,13 +160,13 @@ export default class Character implements ICharacter {
     return gear
   }
 
-  private static processClasses($: CheerioAPI): IClassLevels {
+  private static processClasses($: CheerioAPI, language: Language): IClassLevels {
     const classes: IClassLevels = {}
     const classElements = $('.character__level').find('li').toArray()
 
     classElements.forEach((classElement) => {
       const class$ = $(classElement)
-      const classPair = Level.fromDom(class$)
+      const classPair = Level.fromDom(class$, language)
       Object.assign(classes, {
         [classPair[1]]: classPair[0],
       })
@@ -172,7 +174,7 @@ export default class Character implements ICharacter {
     return classes
   }
 
-  static fromPage(id: number, data: string, cheerio: CheerioAPI, gearIdsOnly?: boolean): Character {
+  static fromPage(id: number, data: string, cheerio: CheerioAPI, language: Language, gearIdsOnly?: boolean): Character {
     const $ = cheerio.load(data)
     const characterConfig = DomConfig.getCharacterConfig()
 
@@ -183,7 +185,7 @@ export default class Character implements ICharacter {
     })
 
     character.gear = Character.processGear($, gearIdsOnly)
-    character.classes = Character.processClasses($)
+    character.classes = Character.processClasses($, language)
 
     return character
   }
