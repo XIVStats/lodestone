@@ -22,4 +22,4 @@ Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
 
 #### Defined in
 
-[interface/ILocalizedString.ts:37](https://github.com/XIVStats/lodestone/blob/02db3a9/src/interface/ILocalizedString.ts#L37)
+[interface/ILocalizedString.ts:37](https://github.com/XIVStats/lodestone/blob/18e55b4/src/interface/ILocalizedString.ts#L37)
