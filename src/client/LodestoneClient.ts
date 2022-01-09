@@ -23,17 +23,10 @@
  *
  */
 
-import Axios, { AxiosError, AxiosInstance } from 'axios'
+import { AxiosInstance, AxiosResponse } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import pLimit, { Limit } from 'p-limit'
 import Character from '../entity/character/Character'
-import Worlds from '../entity/world/Worlds'
-import CharacterNotFoundError from '../errors/CharacterNotFoundError'
-import { ICharacterFetchError } from './interface/ICharacterFetchError'
-import CharacterFetchError from '../errors/CharacterFetchError'
-import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
-import ICharacterSetFetchResult from './interface/ICharacterSetFetchResult'
-import Creature from '../entity/creature/Creature'
 import IClientProps from './interface/IClientProps'
 import Language from '../locale/Language'
 import LocalizedClientFactory from '../locale/LocalizedClientFactory'
@@ -45,43 +38,42 @@ export type OnErrorFunction = (id: number, error: Error) => void
 /**
  * Client for interfacing with the Final Fantasy XIV Lodestone.
  */
-export default class LodestoneClient implements IClientProps {
-  public axiosInstance: AxiosInstance
+export default abstract class LodestoneClient implements IClientProps {
+  cheerioInstance: CheerioAPI
 
-  public cheerioInstance: CheerioAPI
+  axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
-  public regionalAxiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
-
-  public limit: Limit
+  parallelismLimit: Limit
 
   public defaultLanguage: Language
 
   public constructor(props?: IClientProps) {
     this.defaultLanguage = props?.defaultLanguage || Language.en
-    this.axiosInstance = props?.axiosInstance || LocalizedClientFactory.createClientForLanguage(this.defaultLanguage)
     this.cheerioInstance = props?.cheerioInstance || Cheerio
-    this.limit = pLimit(props?.parallelismLimit || 10)
-    this.regionalAxiosInstances = props?.regionalAxiosInstances
+    this.parallelismLimit = props?.parallelismLimit || pLimit(5)
+    this.axiosInstances =
+      props?.axiosInstances || LocalizedClientFactory.createClientsForLanguages([this.defaultLanguage])
   }
 
-  public async getCharacter(id: number): Promise<Character> {
-    try {
-      const response = await this.axiosInstance.get(`/character/${id}`)
-      return Character.fromPage(id, response.data, this.cheerioInstance, Language.en)
-    } catch (e) {
-      if (Axios.isAxiosError(e)) {
-        const ae: AxiosError = e
-        if (ae.response && ae.response?.status === 404) {
-          throw new CharacterNotFoundError(id)
-        } else if (ae.response && ae.code === 'ECONNABORTED') {
-          throw new CharacterFetchTimeoutError(id)
-        } else {
-          throw new CharacterFetchError(id, ae)
-        }
-      } else {
-        throw new CharacterFetchError(id, e)
+  private getInstanceToUse(language?: Language): AxiosInstance {
+    if (language) {
+      if (this.axiosInstances?.[language] !== undefined) {
+        return <AxiosInstance>this.axiosInstances?.[language]
       }
+      // TODO
+      throw new Error()
+    } else {
+      if (this.axiosInstances?.[this.defaultLanguage] !== undefined) {
+        return <AxiosInstance>this.axiosInstances?.[this.defaultLanguage]
+      }
+      throw new Error()
     }
+  }
+
+  protected async getPath(path: string, language?: Language): Promise<AxiosResponse> {
+    const promises: Promise<AxiosResponse>[] = [this.parallelismLimit(() => this.getInstanceToUse(language).get(path))]
+    const settledPromises = await Promise.all(promises)
+    return settledPromises[0]
   }
 
   // public async getCharacterMounts(id: number, itemIdsOnly?: boolean): Promise<Creature[]> {
@@ -102,70 +94,9 @@ export default class LodestoneClient implements IClientProps {
   //   }
   // }
 
-  public async getCreatureToolTip(path: string, itemIdsOnly?: boolean): Promise<Creature> {
-    const shortenedPath = path.replace('/lodestone', '')
-    const response = await this.axiosInstance.get(shortenedPath)
-    return Creature.fromToolTip(path.split('/tooltip/')[1], response.data, this.cheerioInstance, itemIdsOnly)
-  }
-
-  public async getCharacters(
-    characterIds: number[],
-    onSuccess?: OnSuccessFunction,
-    onDeleted?: OnSuccessFunction,
-    onError?: OnErrorFunction
-  ): Promise<ICharacterSetFetchResult> {
-    const promises: Promise<Character>[] = []
-    characterIds.forEach((currentId) => {
-      promises.push(this.limit(() => this.getCharacter(currentId)))
-    })
-    const successfulCharacters: Character[] = []
-    const failedCharacters: ICharacterFetchError[] = []
-    const notFoundCharacters: number[] = []
-    const results = await Promise.allSettled(promises)
-    results.forEach((result) => {
-      if (result.status === 'fulfilled') {
-        successfulCharacters.push(result.value)
-        if (onSuccess) {
-          onSuccess(result.value.id, result.value)
-        }
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-      } else if (result.status === 'rejected' && result.reason.code === 'ENOTFOUND') {
-        notFoundCharacters.push(result.reason.characterId)
-        if (onDeleted) {
-          onDeleted(result.reason.characterId)
-        }
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-      } else if (result.status === 'rejected') {
-        failedCharacters.push(result.reason)
-        if (onError) {
-          /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-          onError(result.reason.id, result.reason.error)
-        }
-      }
-    })
-    return {
-      found: successfulCharacters,
-      notFound: notFoundCharacters,
-      errored: failedCharacters,
-    }
-  }
-
-  public async getCharacterRange(
-    start: number,
-    end: number,
-    onSuccess?: OnSuccessFunction,
-    onDeleted?: OnSuccessFunction,
-    onError?: OnErrorFunction
-  ): Promise<ICharacterSetFetchResult> {
-    const ids: number[] = []
-    for (let currentId = start; currentId < end; currentId += 1) {
-      ids.push(currentId)
-    }
-    return this.getCharacters(ids, onSuccess, onDeleted, onError)
-  }
-
-  public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Worlds> {
-    const response = await this.axiosInstance.get('/worldstatus')
-    return Worlds.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
-  }
+  //
+  // public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Worlds> {
+  //   const response = await this.axiosInstance.get('/worldstatus')
+  //   return Worlds.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
+  // }
 }

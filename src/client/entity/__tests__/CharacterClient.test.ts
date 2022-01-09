@@ -24,13 +24,14 @@
  */
 
 import Axios from 'axios'
-import LodestoneClient from '../LodestoneClient'
-import CharacterNotFoundError from '../../errors/CharacterNotFoundError'
+import CharacterNotFoundError from '../../../errors/CharacterNotFoundError'
+import CharacterClient from '../CharacterClient'
+import language from '../../../locale/Language'
 
-describe('Lodestone Client', () => {
+describe('CharacterClient Client', () => {
   describe('when fetching a character by id', () => {
     describe('when the character does not exist', () => {
-      let localClient: LodestoneClient
+      let localClient: CharacterClient
       beforeAll(() => {
         const axios = Axios.create({
           baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
@@ -45,7 +46,7 @@ describe('Lodestone Client', () => {
             isAxiosError: true,
           }
         })
-        localClient = new LodestoneClient({ axiosInstance: axios })
+        localClient = new CharacterClient({ axiosInstances: { [language.en]: axios } })
       })
 
       it('should throw a character not found error', async () => {
@@ -55,11 +56,11 @@ describe('Lodestone Client', () => {
   })
 })
 
-describe('Lodestone Client [Integration]', () => {
-  let client: LodestoneClient
+describe('Character Client [Integration]', () => {
+  let client: CharacterClient
 
   beforeAll(() => {
-    client = new LodestoneClient()
+    client = new CharacterClient()
   })
 
   describe('when fetching a character by id', () => {
@@ -74,7 +75,7 @@ describe('Lodestone Client [Integration]', () => {
   //   describe('when the character does not exist', () => {
   //     jest.setTimeout(100000)
   //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940, 20)
+  //       const resp = await client.getCharacterRange(11886902, 11886940)
   //       expect(resp.errored.length).toEqual(0)
   //     })
   //   })

@@ -29,7 +29,7 @@ import Language from './Language'
 import OptionalPerLanguageMapping from './type/OptionalPerLanguageMapping'
 
 export default class LocalizedClientFactory {
-  static baseUrls: PerLanguageMapping<string> = {
+  static BaseUrls: PerLanguageMapping<string> = {
     [Language.de]: 'de',
     [Language.en]: 'eu',
     [Language.enUs]: 'na',
@@ -38,7 +38,7 @@ export default class LocalizedClientFactory {
   }
 
   static getUrlForLanguage(language: Language): string {
-    return `https://${this.baseUrls[language]}.finalfantasyxiv.com/lodestone`
+    return `https://${this.BaseUrls[language]}.finalfantasyxiv.com/lodestone`
   }
 
   static createClientForLanguage(language: Language): AxiosInstance {

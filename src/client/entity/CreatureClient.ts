@@ -23,18 +23,13 @@
  *
  */
 
-import { AxiosInstance } from 'axios'
-import { CheerioAPI } from 'cheerio'
-import { Limit } from 'p-limit'
-import Language from '../../locale/Language'
-import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
+import LodestoneClient from '../LodestoneClient'
+import Creature from '../../entity/creature/Creature'
 
-export default interface IClientProps {
-  cheerioInstance?: CheerioAPI
-
-  axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
-
-  parallelismLimit?: Limit
-
-  defaultLanguage?: Language
+export default class CreatureClient extends LodestoneClient {
+  public async getCreatureToolTip(path: string, itemIdsOnly?: boolean): Promise<Creature> {
+    const shortenedPath = path.replace('/lodestone', '')
+    const response = await this.getPath(shortenedPath)
+    return Creature.fromToolTip(path.split('/tooltip/')[1], response.data, this.cheerioInstance, itemIdsOnly)
+  }
 }

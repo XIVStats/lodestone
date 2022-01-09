@@ -5,4 +5,4 @@
 ### Modules
 
 - [client/LodestoneClient](modules/client_LodestoneClient.md)
-- [interface/OptionalPerLanguageMapping](modules/interface_ILocalizedString.md)
+- [locale](modules/locale.md)

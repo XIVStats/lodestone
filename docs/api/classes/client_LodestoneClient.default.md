@@ -14,10 +14,6 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 - [constructor](client_LodestoneClient.default.md#constructor)
 
-### Properties
-
-- [axiosInstance](client_LodestoneClient.default.md#axiosinstance)
-
 ## Constructors
 
 ### constructor
@@ -32,18 +28,4 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 #### Defined in
 
-[client/LodestoneClient.ts:59](https://github.com/XIVStats/lodestone/blob/87b4ba0/src/client/LodestoneClient.ts#L59)
-
-## Properties
-
-### axiosInstance
-
-• **axiosInstance**: `AxiosInstance`
-
-#### Implementation of
-
-IClientProps.axiosInstance
-
-#### Defined in
-
-[client/LodestoneClient.ts:49](https://github.com/XIVStats/lodestone/blob/87b4ba0/src/client/LodestoneClient.ts#L49)
+[client/LodestoneClient.ts:50](https://github.com/XIVStats/lodestone/blob/0cc3d3e/src/client/LodestoneClient.ts#L50)

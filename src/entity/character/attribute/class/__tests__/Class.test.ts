@@ -27,7 +27,6 @@
 
 import { CheerioAPI } from 'cheerio'
 import Language from '../../../../../locale/Language'
-import LodestoneClient from '../../../../../client/LodestoneClient'
 import LocalizedClientFactory from '../../../../../locale/LocalizedClientFactory'
 import IClass from '../interface/IClass'
 import ClassConfig from '../../../config/ClassConfig'
@@ -35,6 +34,7 @@ import ClassAbbreviation from '../category/ClassAbbreviation'
 import Role from '../category/Role'
 import ClassCategory from '../category/ClassCategory'
 import Class from '../Class'
+import CreatureClient from '../../../../../client/entity/CreatureClient'
 
 describe('Class', () => {
   describe('given we are converting display name into abbreviation', () => {
@@ -243,19 +243,19 @@ describe('Class', () => {
 
   describe('given the translation values provided, and icon mappings [integration]', () => {
     const testLanguages = [Language.en, Language.enUs, Language.de, Language.fr, Language.ja]
-    let client: LodestoneClient
+    let client: CreatureClient
     const testCharacterId = 1557260
 
     beforeAll(() => {
-      client = new LodestoneClient({
-        regionalAxiosInstances: LocalizedClientFactory.createClientsForLanguages(testLanguages),
+      client = new CreatureClient({
+        axiosInstances: LocalizedClientFactory.createClientsForLanguages(testLanguages),
       })
     })
 
     describe('the icon image value', () => {
       let $: CheerioAPI
       beforeAll(async () => {
-        const resp = await client?.regionalAxiosInstances?.en?.get(`/character/${testCharacterId}`)
+        const resp = await client?.axiosInstances?.en?.get(`/character/${testCharacterId}`)
         $ = client.cheerioInstance.load(resp?.data)
       })
 
@@ -270,7 +270,7 @@ describe('Class', () => {
     describe.each(testLanguages)('the %s translation', (languageUnderTest: Language) => {
       let $: CheerioAPI
       beforeAll(async () => {
-        const resp = await client?.regionalAxiosInstances?.[languageUnderTest]?.get(`/character/${testCharacterId}`)
+        const resp = await client?.axiosInstances?.[languageUnderTest]?.get(`/character/${testCharacterId}`)
         $ = client.cheerioInstance.load(resp?.data)
       })
 
