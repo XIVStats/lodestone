@@ -26,7 +26,7 @@
 import ClassAbbreviation from '../category/ClassAbbreviation'
 import ClassCategory from '../category/ClassCategory'
 import Role from '../category/Role'
-import { PerLanguageMapping } from '../../../../locale'
+import { PerLanguageMapping } from '../../../../../locale'
 
 export default interface IClass {
   /**

@@ -30,7 +30,7 @@ import Cheerio from 'cheerio'
 import Character from '../Character'
 import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
 import GearCategory from '../attribute/gear/GearCategory'
-import Language from '../../locale/Language'
+import Language from '../../../locale/Language'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {

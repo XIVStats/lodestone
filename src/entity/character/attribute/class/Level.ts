@@ -23,38 +23,31 @@
  *
  */
 
+import { Cheerio, Element } from 'cheerio'
+import ILevel from './interface/ILevel'
 import ClassAbbreviation from './category/ClassAbbreviation'
-import { Language } from '../../../locale'
-import IClass from './interface/IClass'
-import ClassConfig from '../../config/ClassConfig'
+import Language from '../../../../locale/Language'
+import Class from './Class'
 
-export default class Class {
-  static getEnumFromName(name: string, language: Language): ClassAbbreviation {
-    // First check classes for match
-    const match = Object.values(ClassConfig).find(
-      (item) => Class.getDisplayName(item, language) === name || item.name[language] === name
-    )
-    if (match) {
-      return match.abbreviation
-    }
-    // TODO
-    throw new Error(`Could not find a class with provided name ${name}`)
+export default class Level implements ILevel {
+  level: number
+
+  class: ClassAbbreviation
+
+  constructor(classValue: ClassAbbreviation, level: number) {
+    this.class = classValue
+    this.level = level
   }
 
-  static getDisplayName(classToFetch: IClass, language: Language): string {
-    return classToFetch.job?.name && !classToFetch.isOnlyJob && !classToFetch.isOnlyClass
-      ? `${classToFetch.job?.name[language]} / ${classToFetch.name[language]}`
-      : classToFetch.name[language]
-  }
-
-  static getEnumFromImage(imagePath: string): ClassAbbreviation {
-    const match = Object.values(ClassConfig).find(
-      (item) => item.imageMapping === imagePath || item.job?.imageMapping === imagePath
-    )
-    if (match) {
-      return match.abbreviation
+  public static fromDom($: Cheerio<Element>, language: Language): [Level, string] {
+    const name = $.find('img').attr('data-tooltip')
+    if (name === undefined) {
+      // TODO
+      throw Error()
     }
-    // TODO
-    throw new Error(`Could not find a mapping for the provided imagePath ${imagePath}`)
+    const classEnum = Class.getEnumFromName(name, language)
+    const levelStr = $.text()
+    const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
+    return [new Level(classEnum, levelValue), classEnum]
   }
 }

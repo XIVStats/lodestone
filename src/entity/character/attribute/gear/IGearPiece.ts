@@ -23,49 +23,11 @@
  *
  */
 
-import IGearSet from '../attribute/gear/IGearSet'
-import { IMappableCharacter } from './IMappableCharacter'
-import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
-import IItem from '../../interface/IItem'
-import IPlayerGroup from '../attribute/group/IPlayerGroup'
-import ClassLevels from '../attribute/class/ClassLevels'
+import GearCategory from './GearCategory'
+import IItem from '../../../item/interface/IItem'
 
-export default interface ICharacter extends IMappableCharacter {
-  readonly name: string
-
-  readonly homeWorld?: string
-
-  readonly dataCenter?: string
-
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: ClassAbbreviation
-
-  readonly classes?: ClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: IPlayerGroup
-
-  readonly pvpTeam?: IPlayerGroup
-
-  readonly minionIds?: string[]
-
-  readonly mounts?: IItem[]
+export default interface IGearPiece extends IItem {
+  name: string
+  category: GearCategory
+  iLvl: number
 }

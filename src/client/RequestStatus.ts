@@ -23,31 +23,10 @@
  *
  */
 
-import { CheerioAPI } from 'cheerio'
-import IItem from '../interface/IItem'
-import CreatureCategory from './type/CreatureCategory'
-
-export default class Creature {
-  constructor(public toolTipId: string, public item: IItem, public type?: CreatureCategory, public name?: string) {}
-
-  public asMapping(): { toolTipId: string; itemId: string } {
-    return {
-      toolTipId: this.toolTipId,
-      itemId: this.item.id,
-    }
-  }
-
-  static fromToolTip(toolTipId: string, data: string, cheerio: CheerioAPI, itemIdOnly?: boolean): Creature {
-    const $ = cheerio.load(data)
-    const item = $('a')[0]
-    return new Creature(
-      toolTipId,
-      {
-        name: !itemIdOnly ? item.attribs['data-tooltip'] : undefined,
-        id: item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
-      },
-      $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory,
-      !itemIdOnly ? $('h4').text() : undefined
-    )
-  }
+const enum RequestStatus {
+  Success = 'SUCCESS',
+  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
+  NotFound = 'NOT_FOUND',
+  Throttled = 'THROTTLED',
+  OtherError = 'OTHER_ERROR_ENCOUNTERED',
 }

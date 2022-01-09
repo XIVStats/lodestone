@@ -23,31 +23,49 @@
  *
  */
 
-import { Cheerio, Element } from 'cheerio'
-import ILevel from './interface/ILevel'
-import ClassAbbreviation from './category/ClassAbbreviation'
-import Language from '../../../locale/Language'
-import Class from './Class'
+import IGearSet from '../attribute/gear/IGearSet'
+import { IMappableCharacter } from './IMappableCharacter'
+import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
+import IItem from '../../item/interface/IItem'
+import IPlayerGroup from '../attribute/group/IPlayerGroup'
+import ClassLevels from '../attribute/class/ClassLevels'
 
-export default class Level implements ILevel {
-  level: number
+export default interface ICharacter extends IMappableCharacter {
+  readonly name: string
 
-  class: ClassAbbreviation
+  readonly homeWorld?: string
 
-  constructor(classValue: ClassAbbreviation, level: number) {
-    this.class = classValue
-    this.level = level
-  }
+  readonly dataCenter?: string
 
-  public static fromDom($: Cheerio<Element>, language: Language): [Level, string] {
-    const name = $.find('img').attr('data-tooltip')
-    if (name === undefined) {
-      // TODO
-      throw Error()
-    }
-    const classEnum = Class.getEnumFromName(name, language)
-    const levelStr = $.text()
-    const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
-    return [new Level(classEnum, levelValue), classEnum]
-  }
+  readonly race?: string
+
+  readonly clan?: string
+
+  readonly gender?: string
+
+  readonly guardian?: string
+
+  readonly nameDay?: string
+
+  readonly activeClass?: ClassAbbreviation
+
+  readonly classes?: ClassLevels
+
+  readonly gear?: IGearSet
+
+  readonly title?: string
+
+  readonly cityState?: string
+
+  readonly grandCompany?: string
+
+  readonly grandCompanyRank?: string
+
+  readonly freeCompany?: IPlayerGroup
+
+  readonly pvpTeam?: IPlayerGroup
+
+  readonly minionIds?: string[]
+
+  readonly mounts?: IItem[]
 }

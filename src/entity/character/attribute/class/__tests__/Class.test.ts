@@ -26,9 +26,9 @@
  */
 
 import { CheerioAPI } from 'cheerio'
-import Language from '../../../../locale/Language'
-import LodestoneClient from '../../../../client/LodestoneClient'
-import LocalizedClientFactory from '../../../../locale/LocalizedClientFactory'
+import Language from '../../../../../locale/Language'
+import LodestoneClient from '../../../../../client/LodestoneClient'
+import LocalizedClientFactory from '../../../../../locale/LocalizedClientFactory'
 import IClass from '../interface/IClass'
 import ClassConfig from '../../../config/ClassConfig'
 import ClassAbbreviation from '../category/ClassAbbreviation'

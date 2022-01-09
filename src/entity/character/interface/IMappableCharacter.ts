@@ -24,9 +24,9 @@
  */
 
 import IGearSet from '../attribute/gear/IGearSet'
-import IAttributeMapping from '../../interface/IAttributeMapping'
+import IAttributeMapping from '../../../parser/interface/IAttributeMapping'
 import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
-import IItem from '../../interface/IItem'
+import IItem from '../../item/interface/IItem'
 import IPlayerGroup from '../attribute/group/IPlayerGroup'
 import ClassLevels from '../attribute/class/ClassLevels'
 

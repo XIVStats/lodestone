@@ -23,7 +23,7 @@
  *
  */
 
-import ICharacter from '../../character/interface/ICharacter'
+import ICharacter from '../../entity/character/interface/ICharacter'
 import { ICharacterFetchError } from './ICharacterFetchError'
 
 export default interface ICharacterSetFetchResult {
