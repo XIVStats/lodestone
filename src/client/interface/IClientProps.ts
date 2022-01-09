@@ -25,8 +25,8 @@
 
 import { AxiosInstance } from 'axios'
 import { CheerioAPI } from 'cheerio'
-import { RegionalAxiosInstances } from '../../interface/RegionalAxiosInstances'
 import Language from '../../locale/Language'
+import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
 
 export default interface IClientProps {
   /**
@@ -38,7 +38,7 @@ export default interface IClientProps {
 
   cheerioInstance?: CheerioAPI
 
-  regionalAxiosInstances?: RegionalAxiosInstances
+  regionalAxiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
   parallelismLimit?: number
 

@@ -26,7 +26,6 @@
 import Axios, { AxiosInstance } from 'axios'
 import PerLanguageMapping from './type/PerLanguageMapping'
 import Language from './Language'
-import { RegionalAxiosInstances } from '../../lib/interface/RegionalAxiosInstances'
 import OptionalPerLanguageMapping from './type/OptionalPerLanguageMapping'
 
 export default class LocalizedClientFactory {

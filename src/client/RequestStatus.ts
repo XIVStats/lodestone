@@ -30,3 +30,5 @@ const enum RequestStatus {
   Throttled = 'THROTTLED',
   OtherError = 'OTHER_ERROR_ENCOUNTERED',
 }
+
+export default RequestStatus
