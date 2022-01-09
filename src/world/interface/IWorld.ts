@@ -23,12 +23,14 @@
  *
  */
 
-const enum ServerStatus {
-  Online = 'Online',
-  PartialMaintenance = 'Partial Maintenance',
-  Maintenance = 'Maintenance',
-  CreationOfNewCharacters = 'Creation of New Characters Available',
-  CreationOfNewCharactersUnavailable = 'Creation of New Characters Unavailable',
-}
+import WorldStatus from '../attribute/WorldStatus'
+import WorldCategory from '../attribute/WorldCategory'
+import Region from '../attribute/Region'
 
-export default ServerStatus
+export default interface IWorld {
+  name: string
+  dataCenter: string
+  region: Region
+  status?: WorldStatus
+  category?: WorldCategory
+}

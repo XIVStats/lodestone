@@ -25,8 +25,8 @@
 
 import Language from '../Language'
 
-type PerLanguageMapping = {
-  [key in Language]: string
+type PerLanguageMapping<Type> = {
+  [key in Language]: Type
 }
 
 export default PerLanguageMapping

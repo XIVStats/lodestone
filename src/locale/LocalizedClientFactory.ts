@@ -26,10 +26,11 @@
 import Axios, { AxiosInstance } from 'axios'
 import PerLanguageMapping from './type/PerLanguageMapping'
 import Language from './Language'
-import { RegionalAxiosInstances } from '../interface/RegionalAxiosInstances'
+import { RegionalAxiosInstances } from '../../lib/interface/RegionalAxiosInstances'
+import OptionalPerLanguageMapping from './type/OptionalPerLanguageMapping'
 
 export default class LocalizedClientFactory {
-  static baseUrls: PerLanguageMapping = {
+  static baseUrls: PerLanguageMapping<string> = {
     [Language.de]: 'de',
     [Language.en]: 'eu',
     [Language.enUs]: 'na',
@@ -48,8 +49,8 @@ export default class LocalizedClientFactory {
     })
   }
 
-  static createClientsForLanguages(languages: Language[]): RegionalAxiosInstances {
-    const result: RegionalAxiosInstances = {}
+  static createClientsForLanguages(languages: Language[]): OptionalPerLanguageMapping<AxiosInstance> {
+    const result: OptionalPerLanguageMapping<AxiosInstance> = {}
     languages.forEach((language) => {
       result[language] = LocalizedClientFactory.createClientForLanguage(language)
     })

@@ -24,15 +24,15 @@
  */
 
 import { CheerioAPI, Node } from 'cheerio'
-import Server from './Server'
-import { IDataCenter } from '../interface/IDataCenter'
-import Region from './Region'
+import World from './World'
+import IDataCenter from './interface/IDataCenter'
+import Region from './attribute/Region'
 
-export default class Servers {
-  constructor(readonly servers: Server[], readonly dataCenters: IDataCenter[]) {}
+export default class Worlds {
+  constructor(readonly servers: World[], readonly dataCenters: IDataCenter[]) {}
 
-  public static fromPage(data: string, cheerio: CheerioAPI, loadCategory?: boolean, loadStatus?: boolean): Servers {
-    const foundRealms: Server[] = []
+  public static fromPage(data: string, cheerio: CheerioAPI, loadCategory?: boolean, loadStatus?: boolean): Worlds {
+    const foundRealms: World[] = []
     const foundDataCenters: IDataCenter[] = []
     const $ = cheerio.load(data)
     const regions: Node[] = $('.world-dcgroup').toArray()
@@ -58,11 +58,11 @@ export default class Servers {
         foundDataCenters.push({ name: dcName, region })
         const serverElements: Node[] = $(dcElement).find('li').toArray()
         serverElements.forEach((serverElement: Node) => {
-          foundRealms.push(Server.fromElement($, serverElement, dcName, region, loadCategory, loadStatus))
+          foundRealms.push(World.fromElement($, serverElement, dcName, region, loadCategory, loadStatus))
         })
       })
     })
 
-    return new Servers(foundRealms, foundDataCenters)
+    return new Worlds(foundRealms, foundDataCenters)
   }
 }

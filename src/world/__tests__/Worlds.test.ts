@@ -26,20 +26,20 @@
 import { readFile } from 'fs'
 import { join } from 'path'
 import Cheerio from 'cheerio'
-import Servers from '../Servers'
-import Server from '../Server'
-import ServerCategory from '../ServerCategory'
-import ServerStatus from '../ServerStatus'
+import Worlds from '../Worlds'
+import World from '../World'
+import WorldCategory from '../attribute/WorldCategory'
+import WorldStatus from '../attribute/WorldStatus'
 
-describe('Servers', () => {
+describe('Worlds', () => {
   describe('when loading server information from html', () => {
-    let resultantServers: Servers
+    let resultantServers: Worlds
     let testString: string
 
     beforeAll((done) => {
       readFile(join(__dirname, 'resources', 'worldstatus.html'), 'utf8', (err, data) => {
         testString = Buffer.from(data).toString()
-        resultantServers = Servers.fromPage(testString, Cheerio, true, true)
+        resultantServers = Worlds.fromPage(testString, Cheerio, true, true)
         done()
       })
     })
@@ -53,10 +53,10 @@ describe('Servers', () => {
     })
 
     describe('when status is not requested', () => {
-      let localInstanceResultantServers: Servers
+      let localInstanceResultantServers: Worlds
 
       beforeAll(() => {
-        localInstanceResultantServers = Servers.fromPage(testString, Cheerio, true, false)
+        localInstanceResultantServers = Worlds.fromPage(testString, Cheerio, true, false)
       })
 
       it('returned servers should not have status set', () => {
@@ -65,10 +65,10 @@ describe('Servers', () => {
     })
 
     describe('when category is not requested', () => {
-      let localInstanceResultantServers: Servers
+      let localInstanceResultantServers: Worlds
 
       beforeAll(() => {
-        localInstanceResultantServers = Servers.fromPage(testString, Cheerio, false, true)
+        localInstanceResultantServers = Worlds.fromPage(testString, Cheerio, false, true)
       })
 
       it('returned servers should not have status set', () => {
@@ -77,11 +77,11 @@ describe('Servers', () => {
     })
 
     describe.each([
-      ['Cerberus', 'Chaos', 'Europe', ServerCategory.Standard, ServerStatus.CreationOfNewCharactersUnavailable],
-      ['Ridill', 'Gaia', 'Japan', ServerCategory.Preferred, ServerStatus.CreationOfNewCharacters],
-      ['Siren', 'Aether', 'North America', ServerCategory.Standard, ServerStatus.CreationOfNewCharacters],
+      ['Cerberus', 'Chaos', 'Europe', WorldCategory.Standard, WorldStatus.CreationOfNewCharactersUnavailable],
+      ['Ridill', 'Gaia', 'Japan', WorldCategory.Preferred, WorldStatus.CreationOfNewCharacters],
+      ['Siren', 'Aether', 'North America', WorldCategory.Standard, WorldStatus.CreationOfNewCharacters],
     ])('servers array should contain %s', (serverName, dataCenter, region, category, status) => {
-      let foundServer: Server | undefined
+      let foundServer: World | undefined
 
       beforeAll(() => {
         foundServer = resultantServers.servers.find((server) => server.name === serverName)

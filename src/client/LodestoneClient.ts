@@ -27,17 +27,17 @@ import Axios, { AxiosError, AxiosInstance } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import pLimit, { Limit } from 'p-limit'
 import Character from '../character/Character'
-import Servers from '../world/Servers'
+import Worlds from '../world/Worlds'
 import CharacterNotFoundError from '../errors/CharacterNotFoundError'
-import { ICharacterFetchError } from '../interface/ICharacterFetchError'
+import { ICharacterFetchError } from './interface/ICharacterFetchError'
 import CharacterFetchError from '../errors/CharacterFetchError'
 import CharacterFetchTimeoutError from '../errors/CharacterFetchTimeoutError'
-import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
+import ICharacterSetFetchResult from './interface/ICharacterSetFetchResult'
 import Creature from '../creature/Creature'
-import { RegionalAxiosInstances } from '../interface/RegionalAxiosInstances'
-import IClientProps from '../interface/IClientProps'
+import IClientProps from './interface/IClientProps'
 import Language from '../locale/Language'
 import LocalizedClientFactory from '../locale/LocalizedClientFactory'
+import { OptionalPerLanguageMapping } from '../locale'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -50,7 +50,7 @@ export default class LodestoneClient implements IClientProps {
 
   public cheerioInstance: CheerioAPI
 
-  public regionalAxiosInstances?: RegionalAxiosInstances
+  public regionalAxiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
   public limit: Limit
 
@@ -164,8 +164,8 @@ export default class LodestoneClient implements IClientProps {
     return this.getCharacters(ids, onSuccess, onDeleted, onError)
   }
 
-  public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Servers> {
+  public async getServers(loadCategory?: boolean, loadStatus?: boolean): Promise<Worlds> {
     const response = await this.axiosInstance.get('/worldstatus')
-    return Servers.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
+    return Worlds.fromPage(response.data, this.cheerioInstance, loadCategory, loadStatus)
   }
 }

@@ -23,9 +23,12 @@
  *
  */
 
-import { AxiosInstance } from 'axios'
-import Language from '../locale/Language'
-
-export type RegionalAxiosInstances = {
-  [key in Language]?: AxiosInstance
+const enum WorldStatus {
+  Online = 'Online',
+  PartialMaintenance = 'Partial Maintenance',
+  Maintenance = 'Maintenance',
+  CreationOfNewCharacters = 'Creation of New Characters Available',
+  CreationOfNewCharactersUnavailable = 'Creation of New Characters Unavailable',
 }
+
+export default WorldStatus

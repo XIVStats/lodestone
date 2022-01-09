@@ -23,17 +23,9 @@
  *
  */
 
-import Language from '../locale/Language'
-
-/**
- * Supported languages for localized text.
- *
- * Corresponding to ISO 639-1:2002.
- *
- * These do not correspond to:
- * Country code (ISO-3166) - e.g. Japan would be JP not ja.
- * Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
- */
-export type ILocalizedString = {
-  [key in Language]?: string
+const enum WorldCategory {
+  Preferred = 'Preferred',
+  Standard = 'Standard',
 }
+
+export default WorldCategory

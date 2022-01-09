@@ -26,5 +26,6 @@
 import Language from './Language'
 import LocalizedClientFactory from './LocalizedClientFactory'
 import PerLanguageMapping from './type/PerLanguageMapping'
+import OptionalPerLanguageMapping from './type/OptionalPerLanguageMapping'
 
-export { PerLanguageMapping, Language, LocalizedClientFactory }
+export { PerLanguageMapping, Language, LocalizedClientFactory, OptionalPerLanguageMapping }

@@ -23,9 +23,19 @@
  *
  */
 
-const enum Region {
-  Japan = 'Japan',
-  NorthAmerica = 'North America',
-  Europe = 'Europe',
+import Language from '../Language'
+
+/**
+ * Supported languages for localized text.
+ *
+ * Corresponding to ISO 639-1:2002.
+ *
+ * These do not correspond to:
+ * Country code (ISO-3166) - e.g. Japan would be JP not ja.
+ * Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
+ */
+type OptionalPerLanguageMapping<Type> = {
+  [key in Language]?: Type
 }
-export default Region
+
+export default OptionalPerLanguageMapping

@@ -23,14 +23,7 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
-
-export default interface IServer {
+export default interface IDataCenter {
   name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+  region: string
 }

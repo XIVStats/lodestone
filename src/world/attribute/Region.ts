@@ -23,7 +23,10 @@
  *
  */
 
-export interface IDataCenter {
-  name: string
-  region: string
+const enum Region {
+  Japan = 'Japan',
+  NorthAmerica = 'North America',
+  Europe = 'Europe',
 }
+
+export default Region

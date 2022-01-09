@@ -1,16 +1,16 @@
-# Module: interface/ILocalizedString
+# Module: interface/OptionalPerLanguageMapping
 
 ## Table of contents
 
 ### Type aliases
 
-- [ILocalizedString](interface_ILocalizedString.md#ilocalizedstring)
+- [OptionalPerLanguageMapping](interface_ILocalizedString.md#ilocalizedstring)
 
 ## Type aliases
 
-### ILocalizedString
+### OptionalPerLanguageMapping
 
-Ƭ **ILocalizedString**: { [key in Language]?: string}
+Ƭ **OptionalPerLanguageMapping**: { [key in Language]?: string}
 
 Supported languages for localized text.
 
@@ -22,4 +22,4 @@ Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
 
 #### Defined in
 
-[interface/ILocalizedString.ts:37](https://github.com/XIVStats/lodestone/blob/e81c3ec/src/interface/ILocalizedString.ts#L37)
+[interface/OptionalPerLanguageMapping.ts:37](https://github.com/XIVStats/lodestone/blob/e81c3ec/src/interface/ILocalizedString.ts#L37)

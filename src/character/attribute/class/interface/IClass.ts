@@ -73,7 +73,7 @@ export default interface IClass {
   /**
    * The name of the class in each respective language.
    */
-  name: PerLanguageMapping
+  name: PerLanguageMapping<string>
 
   /**
    * The job associated to this class if existent.
@@ -89,7 +89,7 @@ export default interface IClass {
     /**
      * The name of the job in each respective language.
      */
-    name: PerLanguageMapping
+    name: PerLanguageMapping<string>
 
     /**
      * Icon path that maps to this job.
