@@ -23,14 +23,10 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
-
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+/**
+ * A PlayerGroup is a group of players such as a Free Company or PvP Team.
+ */
+export default interface IPlayerGroup {
+  id: string
+  name?: string
 }

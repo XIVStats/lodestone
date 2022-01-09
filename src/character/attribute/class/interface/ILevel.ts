@@ -23,14 +23,9 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import ClassAbbreviation from '../category/ClassAbbreviation'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+export default interface ILevel {
+  class: ClassAbbreviation
+  level: number
 }

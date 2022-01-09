@@ -23,14 +23,8 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import Language from './Language'
+import LocalizedClientFactory from './LocalizedClientFactory'
+import PerLanguageMapping from './type/PerLanguageMapping'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
-}
+export { PerLanguageMapping, Language, LocalizedClientFactory }

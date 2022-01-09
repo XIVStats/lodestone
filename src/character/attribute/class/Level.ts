@@ -23,14 +23,31 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import { Cheerio, Element } from 'cheerio'
+import ILevel from './interface/ILevel'
+import ClassAbbreviation from './category/ClassAbbreviation'
+import Language from '../../../locale/Language'
+import Class from './Class'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+export default class Level implements ILevel {
+  level: number
+
+  class: ClassAbbreviation
+
+  constructor(classValue: ClassAbbreviation, level: number) {
+    this.class = classValue
+    this.level = level
+  }
+
+  public static fromDom($: Cheerio<Element>, language: Language): [Level, string] {
+    const name = $.find('img').attr('data-tooltip')
+    if (name === undefined) {
+      // TODO
+      throw Error()
+    }
+    const classEnum = Class.getEnumFromName(name, language)
+    const levelStr = $.text()
+    const levelValue: number = levelStr === '-' ? 0 : Number(levelStr)
+    return [new Level(classEnum, levelValue), classEnum]
+  }
 }

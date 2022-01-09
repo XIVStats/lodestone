@@ -23,14 +23,11 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import ClassAbbreviation from './category/ClassAbbreviation'
+import IClass from './interface/IClass'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+type ClassInfoMap = {
+  [key in ClassAbbreviation]: IClass
 }
+
+export default ClassInfoMap

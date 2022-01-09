@@ -24,12 +24,12 @@
  */
 
 import Axios, { AxiosInstance } from 'axios'
-import { UrlMapping } from './interface/UrlMapping'
+import PerLanguageMapping from './type/PerLanguageMapping'
 import Language from './Language'
 import { RegionalAxiosInstances } from '../interface/RegionalAxiosInstances'
 
 export default class LocalizedClientFactory {
-  static baseUrls: UrlMapping = {
+  static baseUrls: PerLanguageMapping = {
     [Language.de]: 'de',
     [Language.en]: 'eu',
     [Language.enUs]: 'na',
@@ -37,9 +37,13 @@ export default class LocalizedClientFactory {
     [Language.ja]: 'jp',
   }
 
+  static getUrlForLanguage(language: Language): string {
+    return `https://${this.baseUrls[language]}.finalfantasyxiv.com/lodestone`
+  }
+
   static createClientForLanguage(language: Language): AxiosInstance {
     return Axios.create({
-      baseURL: `https://${this.baseUrls[language]}.finalfantasyxiv.com/lodestone`,
+      baseURL: LocalizedClientFactory.getUrlForLanguage(language),
       timeout: 5000,
     })
   }

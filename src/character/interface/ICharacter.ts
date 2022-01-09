@@ -23,14 +23,49 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import IGearSet from '../attribute/gear/IGearSet'
+import { IMappableCharacter } from './IMappableCharacter'
+import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
+import IItem from '../../interface/IItem'
+import IPlayerGroup from '../attribute/group/IPlayerGroup'
+import ClassLevels from '../attribute/class/ClassLevels'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+export default interface ICharacter extends IMappableCharacter {
+  readonly name: string
+
+  readonly homeWorld?: string
+
+  readonly dataCenter?: string
+
+  readonly race?: string
+
+  readonly clan?: string
+
+  readonly gender?: string
+
+  readonly guardian?: string
+
+  readonly nameDay?: string
+
+  readonly activeClass?: ClassAbbreviation
+
+  readonly classes?: ClassLevels
+
+  readonly gear?: IGearSet
+
+  readonly title?: string
+
+  readonly cityState?: string
+
+  readonly grandCompany?: string
+
+  readonly grandCompanyRank?: string
+
+  readonly freeCompany?: IPlayerGroup
+
+  readonly pvpTeam?: IPlayerGroup
+
+  readonly minionIds?: string[]
+
+  readonly mounts?: IItem[]
 }

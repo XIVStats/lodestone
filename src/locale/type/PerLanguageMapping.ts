@@ -23,14 +23,10 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import Language from '../Language'
 
-export default interface IServer {
-  name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+type PerLanguageMapping = {
+  [key in Language]: string
 }
+
+export default PerLanguageMapping

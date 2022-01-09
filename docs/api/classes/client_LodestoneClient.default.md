@@ -32,7 +32,7 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 #### Defined in
 
-[client/LodestoneClient.ts:59](https://github.com/XIVStats/lodestone/blob/18e55b4/src/client/LodestoneClient.ts#L59)
+[client/LodestoneClient.ts:59](https://github.com/XIVStats/lodestone/blob/e81c3ec/src/client/LodestoneClient.ts#L59)
 
 ## Properties
 
@@ -46,4 +46,4 @@ IClientProps.axiosInstance
 
 #### Defined in
 
-[client/LodestoneClient.ts:49](https://github.com/XIVStats/lodestone/blob/18e55b4/src/client/LodestoneClient.ts#L49)
+[client/LodestoneClient.ts:49](https://github.com/XIVStats/lodestone/blob/e81c3ec/src/client/LodestoneClient.ts#L49)

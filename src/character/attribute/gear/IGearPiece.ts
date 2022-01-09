@@ -23,14 +23,11 @@
  *
  */
 
-import ServerStatus from '../world/ServerStatus'
-import ServerCategory from '../world/ServerCategory'
-import Region from '../world/Region'
+import GearCategory from './GearCategory'
+import IItem from '../../../interface/IItem'
 
-export default interface IServer {
+export default interface IGearPiece extends IItem {
   name: string
-  dataCenter: string
-  region: Region
-  status?: ServerStatus
-  category?: ServerCategory
+  category: GearCategory
+  iLvl: number
 }
