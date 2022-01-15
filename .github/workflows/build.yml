@@ -31,7 +31,7 @@ jobs:
           cache: 'npm'
 
       - run: npm install
-      - run: npm run test:unit:integration
+      - run: npm run test:ci:unit
         name: 'Execute unit tests'
       - run: npm run test:ci:integration
         name: 'Execute integration tests'
