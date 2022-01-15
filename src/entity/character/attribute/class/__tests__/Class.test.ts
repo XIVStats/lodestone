@@ -25,16 +25,12 @@
  *
  */
 
-import { CheerioAPI } from 'cheerio'
 import Language from '../../../../../locale/Language'
-import LocalizedClientFactory from '../../../../../locale/LocalizedClientFactory'
-import IClass from '../interface/IClass'
 import ClassConfig from '../../../config/ClassConfig'
 import ClassAbbreviation from '../category/ClassAbbreviation'
 import Role from '../category/Role'
 import ClassCategory from '../category/ClassCategory'
 import Class from '../Class'
-import CreatureClient from '../../../../../client/entity/CreatureClient'
 
 describe('Class', () => {
   describe('given we are converting display name into abbreviation', () => {

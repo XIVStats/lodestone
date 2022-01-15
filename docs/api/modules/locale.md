@@ -28,4 +28,4 @@ Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
 
 #### Defined in
 
-[locale/type/OptionalPerLanguageMapping.ts:37](https://github.com/XIVStats/lodestone/blob/1f47efc/src/locale/type/OptionalPerLanguageMapping.ts#L37)
+[locale/type/OptionalPerLanguageMapping.ts:37](https://github.com/XIVStats/lodestone/blob/267d8b1/src/locale/type/OptionalPerLanguageMapping.ts#L37)
