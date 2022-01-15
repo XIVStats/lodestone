@@ -23,35 +23,31 @@
  *
  */
 
-import Axios from 'axios'
 import CharacterNotFoundError from '../../../errors/CharacterNotFoundError'
 import CharacterClient from '../CharacterClient'
-import language from '../../../locale/Language'
 
-describe('CharacterClient Client', () => {
+describe('Character Client [Integration]', () => {
+  let client: CharacterClient
+
+  beforeAll(() => {
+    client = new CharacterClient()
+  })
+
   describe('when fetching a character by id', () => {
     describe('when the character does not exist', () => {
-      let localClient: CharacterClient
-      beforeAll(() => {
-        const axios = Axios.create({
-          baseURL: 'https://eu.finalfantasyxiv.com/lodestone',
-          timeout: 5000,
-        })
-        axios.get = jest.fn().mockImplementation(() => {
-          /* eslint-disable @typescript-eslint/no-throw-literal */
-          throw {
-            response: {
-              status: 404,
-            },
-            isAxiosError: true,
-          }
-        })
-        localClient = new CharacterClient({ axiosInstances: { [language.en]: axios } })
-      })
-
       it('should throw a character not found error', async () => {
-        await expect(localClient.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+        await expect(client.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
       })
     })
   })
+
+  // describe('when fetching a series of characters by id', () => {
+  //   describe('when the character does not exist', () => {
+  //     jest.setTimeout(100000)
+  //     it('should throw a character not found error', async () => {
+  //       const resp = await client.getCharacterRange(11886902, 11886940)
+  //       expect(resp.errored.length).toEqual(0)
+  //     })
+  //   })
+  // })
 })

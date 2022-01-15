@@ -31,9 +31,12 @@ jobs:
           cache: 'npm'
 
       - run: npm install
-      - run: npm run test:ci
+      - run: npm run test:unit:integration
+        name: 'Execute unit tests'
+      - run: npm run test:ci:integration
+        name: 'Execute integration tests'
 
-      - name: Test Report
+      - name: Publish test report
         uses: dorny/test-reporter@v1
         if: github.actor != 'dependabot-bot' && (success() || failure())    # run this step even if previous step failed
         with:
@@ -42,9 +45,11 @@ jobs:
           reporter: jest-junit        # Format of test results
 
       - run: npm run lint
+        name: Run linter
         if: success() || failure()    # run this step even if previous step failed
 
       - run: npm run format:check
+        name: Check formatting
         if: success() || failure()    # run this step even if previous step failed
 
       - name: Upload
@@ -54,6 +59,7 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - run: npm run build
+        name: Execute TypeScript Build
 
 
 

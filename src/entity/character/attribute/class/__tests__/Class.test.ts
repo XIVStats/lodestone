@@ -240,47 +240,4 @@ describe('Class', () => {
       )
     })
   })
-
-  describe('given the translation values provided, and icon mappings [integration]', () => {
-    const testLanguages = [Language.en, Language.enUs, Language.de, Language.fr, Language.ja]
-    let client: CreatureClient
-    const testCharacterId = 1557260
-
-    beforeAll(() => {
-      client = new CreatureClient({
-        axiosInstances: LocalizedClientFactory.createClientsForLanguages(testLanguages),
-      })
-    })
-
-    describe('the icon image value', () => {
-      let $: CheerioAPI
-      beforeAll(async () => {
-        const resp = await client?.axiosInstances?.en?.get(`/character/${testCharacterId}`)
-        $ = client.cheerioInstance.load(resp?.data)
-      })
-
-      it.each(Object.entries(ClassConfig))('for class %s should be correct', (key: string, classItem: IClass) => {
-        const searchString = Class.getDisplayName(classItem, Language.en)
-        expect(
-          $(`[data-tooltip='${searchString}']`)[0].attribs.src.replace('https://img.finalfantasyxiv.com/', '')
-        ).toEqual(classItem.job ? classItem.job.iconMapping : classItem.iconMapping)
-      })
-    })
-
-    describe.each(testLanguages)('the %s translation', (languageUnderTest: Language) => {
-      let $: CheerioAPI
-      beforeAll(async () => {
-        const resp = await client?.axiosInstances?.[languageUnderTest]?.get(`/character/${testCharacterId}`)
-        $ = client.cheerioInstance.load(resp?.data)
-      })
-
-      it.each(Object.entries(ClassConfig))('for class %s should be correct', (key: string, currentClass: IClass) => {
-        const searchString = `https://img.finalfantasyxiv.com/${
-          currentClass.job ? currentClass.job.iconMapping : currentClass.iconMapping
-        }`
-        const expectedString = Class.getDisplayName(currentClass, languageUnderTest)
-        expect($(`.js__tooltip[src='${searchString}']`)[0].attribs['data-tooltip']).toEqual(expectedString)
-      })
-    })
-  })
 })
