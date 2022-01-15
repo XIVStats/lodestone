@@ -3,7 +3,7 @@
 queue_rules:
   - name: default
     conditions:
-      - status-success~=Build, Test & Lint
+      - status-success~=build (14.x)
 
 pull_request_rules:
   - name: automatic merge
@@ -111,4 +111,4 @@ pull_request_rules:
       - author~=dependabot
       - "#approved-reviews-by>=1"
       - "#changes-requested-reviews-by=0"
-      - status-success~=Build, Test & Lint
+      - status-success~=build (14.x)
