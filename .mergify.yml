@@ -88,21 +88,21 @@ pull_request_rules:
       - -merged
       - -closed
   - name: automatic merge of Dependabot PRs
-      actions:
-        comment:
-          message: Thanks Dependabot!
-        queue:
-          name: default
-          method: squash
-          commit_message_template: |-
-            {{ title }} (#{{ number }})
-            {{ body }}
-      conditions:
-        - -title~=(WIP|wip)
-        - -label~=(blocked|do-not-merge)
-        - -merged
-        - -closed
-        - author~=dependabot
-        - "#approved-reviews-by>=1"
-        - "#changes-requested-reviews-by=0"
-        - status-success~=Build, Test & Lint
+    actions:
+      comment:
+        message: Thanks Dependabot!
+      queue:
+        name: default
+        method: squash
+        commit_message_template: |-
+          {{ title }} (#{{ number }})
+          {{ body }}
+    conditions:
+      - -title~=(WIP|wip)
+      - -label~=(blocked|do-not-merge)
+      - -merged
+      - -closed
+      - author~=dependabot
+      - "#approved-reviews-by>=1"
+      - "#changes-requested-reviews-by=0"
+      - status-success~=Build, Test & Lint
