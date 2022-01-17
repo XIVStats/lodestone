@@ -1,5 +1,10 @@
 # See https://doc.mergify.io
 
+queue_rules:
+  - name: default
+    conditions:
+      - status-success~=build
+
 pull_request_rules:
   - name: automatic merge
     actions:
