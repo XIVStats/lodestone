@@ -28,4 +28,4 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 #### Defined in
 
-[client/LodestoneClient.ts:50](https://github.com/XIVStats/lodestone/blob/1c582e7/src/client/LodestoneClient.ts#L50)
+[client/LodestoneClient.ts:50](https://github.com/XIVStats/lodestone/blob/2e97830/src/client/LodestoneClient.ts#L50)

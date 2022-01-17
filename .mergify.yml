@@ -3,7 +3,7 @@
 queue_rules:
   - name: default
     conditions:
-      - status-success~=Build, Test & Lint / build (14.x)
+      - status-success~=build
 
 pull_request_rules:
   - name: automatic merge
