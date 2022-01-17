@@ -24,13 +24,14 @@
  */
 
 module.exports = {
-  plugins: ['@typescript-eslint', 'prettier', 'notice'],
+  plugins: ['@typescript-eslint', 'prettier', 'notice', 'jsdoc'],
   extends: [
     'eslint:recommended',
     'airbnb-typescript',
     'prettier',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:jsdoc/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {

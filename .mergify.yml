@@ -1,15 +1,21 @@
 # See https://doc.mergify.io
 
+queue_rules:
+  - name: default
+    conditions:
+      - status-success~=Build, Test & Lint / build (14.x)
+
 pull_request_rules:
   - name: automatic merge
     actions:
       comment:
         message: Thank you for contributing! Your pull request will be updated from main and then merged automatically (do not update manually, and be sure to [allow changes to be pushed to your fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork)).
-      merge:
-        strict: smart
+      queue:
         method: squash
-        strict_method: merge
-        commit_message: title+body
+        name: default
+        commit_message_template: |-
+          {{ title }} (#{{ number }})
+          {{ body }}
     conditions:
       - base!=release
       - -title~=(WIP|wip)
@@ -25,11 +31,12 @@ pull_request_rules:
     actions:
       comment:
         message: Thank you for contributing! Your pull request will be automatically updated and merged (do not update manually, and be sure to [allow changes to be pushed to your fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork)).
-      merge:
-        strict: smart
+      queue:
+        name: default
         method: squash
-        strict_method: merge
-        commit_message: title+body
+        commit_message_template: |-
+          {{ title }} (#{{ number }})
+          {{ body }}
     conditions:
       - base!=release
       - -title~=(WIP|wip)
@@ -46,12 +53,13 @@ pull_request_rules:
     actions:
       comment:
         message: Thank you for contributing! Your pull request will be automatically updated and merged without squashing (do not update manually, and be sure to [allow changes to be pushed to your fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/allowing-changes-to-a-pull-request-branch-created-from-a-fork)).
-      merge:
-        strict: smart
+      queue:
+        name: default
         # Merge instead of squash
-        method: merge
-        strict_method: merge
-        commit_message: title+body
+        method: rebase
+        commit_message_template: |-
+          {{ title }} (#{{ number }})
+          {{ body }}
     conditions:
       - -title~=(WIP|wip)
       - -label~=(blocked|do-not-merge)
@@ -89,12 +97,12 @@ pull_request_rules:
     actions:
       comment:
         message: Thanks Dependabot!
-      merge:
-        # 'strict: false' disables Mergify keeping the branch up-to-date from master.
-        # It's not necessary: Dependabot will do that itself.
-        # It's not dangerous: GitHub branch protection settings prevent merging stale branches.
-        strict: false
+      queue:
+        name: default
         method: squash
+        commit_message_template: |-
+          {{ title }} (#{{ number }})
+          {{ body }}
     conditions:
       - -title~=(WIP|wip)
       - -label~=(blocked|do-not-merge)
