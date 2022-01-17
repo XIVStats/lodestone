@@ -423,6 +423,7 @@ describe('Character', () => {
 
       if (objectAttributes.length > 0) {
         describe.each(objectAttributes)('should evaluate %s as object', (key, value) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           describe.each(Object.entries(value))('with key %s, an object', (lowerKey, lowerValue) => {
             if (!(lowerValue instanceof Object)) {
               // eslint-disable-next-line @typescript-eslint/restrict-template-expressions

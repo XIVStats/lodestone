@@ -32,6 +32,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:jsdoc/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -47,6 +49,7 @@ module.exports = {
         mustMatch: 'MIT License',
       },
     ],
+    'react/jsx-filename-extension': 'off',
   },
   overrides: [
     {

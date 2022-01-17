@@ -23,10 +23,10 @@
  *
  */
 
-import { IMappableCharacter } from '../interface/IMappableCharacter'
 import Class from '../attribute/class/Class'
+import MappableCharacter from '../MappableCharacter'
 
-const CharacterDomConfig: IMappableCharacter = {
+const CharacterDomConfig: MappableCharacter = {
   name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
   activeClass: {
     selector:
@@ -60,7 +60,6 @@ const CharacterDomConfig: IMappableCharacter = {
     selector: 'div.character__pvpteam__name > h4',
     isGroupLink: true,
   },
-  gear: {},
   gender: {
     selector:
       '#character > div.character__content.selected > div.character__profile.clearfix > div.character__profile__data > div:nth-child(1) > div > div:nth-child(1) > div > p.character-block__name',

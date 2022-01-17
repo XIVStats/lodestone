@@ -23,48 +23,11 @@
  *
  */
 
-import IGearSet from '../attribute/gear/IGearSet'
-import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
-import IItem from '../../item/interface/IItem'
-import IPlayerGroup from '../attribute/group/IPlayerGroup'
-import ClassLevels from '../attribute/class/ClassLevels'
+import ICharacter from './interface/ICharacter'
+import IAttributeMapping from '../../parser/interface/IAttributeMapping'
 
-export default interface ICharacter {
-  readonly name: string
-
-  readonly homeWorld?: string
-
-  readonly dataCenter?: string
-
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: ClassAbbreviation
-
-  readonly classes?: ClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: IPlayerGroup
-
-  readonly pvpTeam?: IPlayerGroup
-
-  readonly minionIds?: string[]
-
-  readonly mounts?: IItem[]
+type MappableCharacter = {
+  [key in keyof ICharacter]: string | IAttributeMapping
 }
+
+export default MappableCharacter

@@ -65,6 +65,7 @@ describe('Creature', () => {
         if (objectAttributes.length > 0) {
           describe.each(objectAttributes)('should evaluate %s as object', (key, value) => {
             // @ts-ignore
+            // eslint-disable-next-line  @typescript-eslint/no-unsafe-argument
             it.each(Object.entries(value))("with key %s equal to '%s'", (lowerKey, lowerValue) => {
               // @ts-ignore
               // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

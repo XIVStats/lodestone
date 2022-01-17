@@ -49,7 +49,11 @@ export default class CharacterClient extends LodestoneClient {
           throw new CharacterFetchError(id, ae)
         }
       } else {
-        throw new CharacterFetchError(id, e)
+        if (e instanceof Error) {
+          throw new CharacterFetchError(id, e)
+        } else {
+          throw e
+        }
       }
     }
   }
@@ -74,13 +78,11 @@ export default class CharacterClient extends LodestoneClient {
         if (onSuccess) {
           onSuccess(result.value.id, result.value)
         }
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       } else if (result.status === 'rejected' && result.reason.code === 'ENOTFOUND') {
         notFoundCharacters.push(result.reason.characterId)
         if (onDeleted) {
           onDeleted(result.reason.characterId)
         }
-        /* eslint-disable @typescript-eslint/no-unsafe-member-access */
       } else if (result.status === 'rejected') {
         failedCharacters.push(result.reason)
         if (onError) {

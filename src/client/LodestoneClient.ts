@@ -70,8 +70,10 @@ export default abstract class LodestoneClient implements IClientProps {
     }
   }
 
-  protected async getPath(path: string, language?: Language): Promise<AxiosResponse> {
-    const promises: Promise<AxiosResponse>[] = [this.parallelismLimit(() => this.getInstanceToUse(language).get(path))]
+  protected async getPath(path: string, language?: Language): Promise<AxiosResponse<string>> {
+    const promises: Promise<AxiosResponse>[] = [
+      this.parallelismLimit(() => this.getInstanceToUse(language).get<string>(path)),
+    ]
     const settledPromises = await Promise.all(promises)
     return settledPromises[0]
   }

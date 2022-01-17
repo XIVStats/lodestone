@@ -49,6 +49,7 @@ describe('Class [integration]', () => {
       let $: CheerioAPI
       beforeAll(async () => {
         const resp = await client?.axiosInstances?.en?.get(`/character/${testCharacterId}`)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         $ = client.cheerioInstance.load(resp?.data)
       })
 
@@ -64,6 +65,7 @@ describe('Class [integration]', () => {
       let $: CheerioAPI
       beforeAll(async () => {
         const resp = await client?.axiosInstances?.[languageUnderTest]?.get(`/character/${testCharacterId}`)
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         $ = client.cheerioInstance.load(resp?.data)
       })
 

@@ -176,7 +176,7 @@ export default class Character implements ICharacter {
   static fromPage(id: number, data: string, cheerio: CheerioAPI, language: Language, gearIdsOnly?: boolean): Character {
     const $ = cheerio.load(data)
 
-    const character = new Character(id, $(CharacterDomConfig.name).text())
+    const character = new Character(id, $(<string>CharacterDomConfig.name).text())
 
     Object.entries(CharacterDomConfig).forEach(([key, value]) => {
       Object.assign(character, { [key]: Character.processAttribute($, value) })
