@@ -1,10 +1,5 @@
 # See https://doc.mergify.io
 
-queue_rules:
-  - name: default
-    conditions:
-      - status-success~=Build, Test & Lint / build (14.x)
-
 pull_request_rules:
   - name: automatic merge
     actions:
