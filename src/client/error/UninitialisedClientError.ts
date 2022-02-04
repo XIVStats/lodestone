@@ -23,14 +23,11 @@
  *
  */
 
-const enum RequestStatus {
-  Success = 'SUCCESS',
-  ParseError = 'UNABLE_TO_PARSE_PROVIDED_DOM',
-  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
-  NotFound = 'NOT_FOUND',
-  TooManyRequests = 'TOO_MANY_REQUESTS',
-  TimedOut = 'REQUEST_TIMED_OUT',
-  OtherError = 'OTHER_ERROR_ENCOUNTERED',
-}
+import { Language } from '../../locale'
 
-export default RequestStatus
+export default class UninitialisedClientError extends Error {
+  constructor(public readonly language: Language) {
+    super(`Client was not initialized for provided language ${language}`)
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}

@@ -23,7 +23,7 @@
  *
  */
 
-import { AxiosInstance, AxiosResponse } from 'axios'
+import Axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import pLimit, { Limit } from 'p-limit'
 import Character from '../entity/character/Character'
@@ -31,6 +31,12 @@ import IClientProps from './interface/IClientProps'
 import Language from '../locale/Language'
 import LocalizedClientFactory from '../locale/LocalizedClientFactory'
 import { OptionalPerLanguageMapping } from '../locale'
+import PageNotFoundError from './error/PageNotFoundError'
+import TooManyRequestsError from './error/TooManyRequestsError'
+import LodestoneMaintenanceError from './error/LodestoneMaintenanceError'
+import RequestTimedOutError from './error/RequestTimedOutError'
+import UnknownError from './error/UnknownError'
+import UninitialisedClientError from './error/UninitialisedClientError'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -60,22 +66,43 @@ export default abstract class LodestoneClient implements IClientProps {
       if (this.axiosInstances?.[language] !== undefined) {
         return <AxiosInstance>this.axiosInstances?.[language]
       }
-      // TODO
-      throw new Error()
+      throw new UninitialisedClientError(language)
     } else {
       if (this.axiosInstances?.[this.defaultLanguage] !== undefined) {
         return <AxiosInstance>this.axiosInstances?.[this.defaultLanguage]
       }
-      throw new Error()
+      // In a type-safe env this should never be hit, a consumer should not be able to init a client where
+      throw new UninitialisedClientError(this.defaultLanguage)
     }
   }
 
-  protected async getPath(path: string, language?: Language): Promise<AxiosResponse<string>> {
+  protected async getPath(entityType: string, path: string, language?: Language): Promise<AxiosResponse<string>> {
     const promises: Promise<AxiosResponse>[] = [
       this.parallelismLimit(() => this.getInstanceToUse(language).get<string>(path)),
     ]
-    const settledPromises = await Promise.all(promises)
-    return settledPromises[0]
+    try {
+      const settledPromises = await Promise.all(promises)
+      return settledPromises[0]
+    } catch (e) {
+      if (Axios.isAxiosError(e)) {
+        const ae: AxiosError = e
+        if (ae.response && ae.response.status) {
+          switch (ae.response.status) {
+            case 404:
+              throw new PageNotFoundError(entityType, path)
+            case 429:
+              throw new TooManyRequestsError(entityType, path)
+            case 503:
+              throw new LodestoneMaintenanceError(entityType, path)
+          }
+        } else if (ae.code === 'ECONNABORTED') {
+          throw new RequestTimedOutError(entityType, path)
+        }
+      } else if (e instanceof UninitialisedClientError) {
+        throw e
+      }
+      throw new UnknownError(entityType, path, new Error())
+    }
   }
 
   // public async getCharacterMounts(id: number, itemIdsOnly?: boolean): Promise<Creature[]> {

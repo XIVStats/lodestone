@@ -23,14 +23,22 @@
  *
  */
 
-const enum RequestStatus {
-  Success = 'SUCCESS',
-  ParseError = 'UNABLE_TO_PARSE_PROVIDED_DOM',
-  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
-  NotFound = 'NOT_FOUND',
-  TooManyRequests = 'TOO_MANY_REQUESTS',
-  TimedOut = 'REQUEST_TIMED_OUT',
-  OtherError = 'OTHER_ERROR_ENCOUNTERED',
-}
+import RequestStatus from '../RequestStatus'
+import RequestFailureCategory from '../RequestFailureCategory'
 
-export default RequestStatus
+export default abstract class LodestoneError extends Error {
+  readonly reason?: string
+
+  protected constructor(
+    entityType: string,
+    public readonly id: string,
+    public readonly status: RequestStatus,
+    public readonly category: RequestFailureCategory,
+    public readonly code?: number,
+    public readonly error?: Error
+  ) {
+    super(`Error of type ${status} fetching ${entityType} with id ${id}`)
+    this.reason = error?.message
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}

@@ -32,31 +32,39 @@ import CharacterFetchTimeoutError from '../../errors/CharacterFetchTimeoutError'
 import CharacterFetchError from '../../errors/CharacterFetchError'
 import ICharacterSetFetchResult from '../interface/ICharacterSetFetchResult'
 import { ICharacterFetchError } from '../interface/ICharacterFetchError'
+import CharacterResponse from '../CharacterResponse'
+import RequestStatus from '../RequestStatus'
+import LodestoneMaintenanceError from '../error/LodestoneMaintenanceError'
+import PageNotFoundError from '../error/PageNotFoundError'
+import TooManyRequestsError from '../error/TooManyRequestsError'
+import RequestTimedOutError from '../error/RequestTimedOutError'
+import ParsingError from '../error/ParsingError'
+import UnknownError from '../error/UnknownError'
 
 export default class CharacterClient extends LodestoneClient {
   public async getCharacter(id: number, language?: Language): Promise<Character> {
+    const response = await this.getPath('Character', `/character/${id}`, language)
     try {
-      const response = await this.getPath(`/character/${id}`, language)
       return Character.fromPage(id, response.data, this.cheerioInstance, language || this.defaultLanguage)
     } catch (e) {
-      if (Axios.isAxiosError(e)) {
-        const ae: AxiosError = e
-        if (ae.response && ae.response?.status === 404) {
-          throw new CharacterNotFoundError(id)
-        } else if (ae.response && ae.code === 'ECONNABORTED') {
-          throw new CharacterFetchTimeoutError(id)
-        } else {
-          throw new CharacterFetchError(id, ae)
-        }
-      } else {
-        if (e instanceof Error) {
-          throw new CharacterFetchError(id, e)
-        } else {
-          throw e
-        }
-      }
+      throw new ParsingError('Character', id.toString(), <Error>e)
     }
   }
+
+  // public async getCharacterAsResponse(id: number, language?: Language): Promise<CharacterResponse> {
+  //   try {
+  //     return { id, status: RequestStatus.Success, value: await this.getCharacter(id, language) }
+  //   } catch (error) {
+  //     switch (error.constructor) {
+  //       case CharacterNotFoundError:
+  //         return { id, status: RequestStatus.NotFound }
+  //       case CharacterFetchTimeoutError:
+  //         return { id, status: RequestStatus.TooManyRequests, error }
+  //       default:
+  //         return { id, status: RequestStatus.OtherError, error }
+  //     }
+  //   }
+  // }
 
   public async getCharacters(
     characterIds: number[],

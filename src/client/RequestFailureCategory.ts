@@ -23,14 +23,11 @@
  *
  */
 
-const enum RequestStatus {
-  Success = 'SUCCESS',
-  ParseError = 'UNABLE_TO_PARSE_PROVIDED_DOM',
-  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
+enum RequestFailureCategory {
   NotFound = 'NOT_FOUND',
-  TooManyRequests = 'TOO_MANY_REQUESTS',
-  TimedOut = 'REQUEST_TIMED_OUT',
-  OtherError = 'OTHER_ERROR_ENCOUNTERED',
+  RequestRejected = 'LODESTONE_REJECTED_REQUEST',
+  RequestFailed = 'REQUEST_FAILED',
+  UnknownCause = 'UNKNOWN_CAUSE',
 }
 
-export default RequestStatus
+export default RequestFailureCategory
