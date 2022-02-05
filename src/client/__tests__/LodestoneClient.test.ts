@@ -32,6 +32,9 @@ import UninitialisedClientError from '../error/UninitialisedClientError'
 import LodestoneMaintenanceError from '../error/LodestoneMaintenanceError'
 import TooManyRequestsError from '../error/TooManyRequestsError'
 import PageNotFoundError from '../error/PageNotFoundError'
+import LodestoneError from '../error/LodestoneError'
+import RequestTimedOutError from '../error/RequestTimedOutError'
+import UnknownError from '../error/UnknownError'
 
 class TestLodestoneClient extends LodestoneClient {
   async getCharacter(id: number, languageToUse?: Language) {
@@ -68,11 +71,11 @@ describe('LodestoneClient', () => {
   }
 
   let client: TestLodestoneClient
-  const overridenDefaultLanguage = language.fr
+  const overriddenDefaultLanguage = language.fr
 
   beforeAll(() => {
     client = new TestLodestoneClient({
-      defaultLanguage: overridenDefaultLanguage,
+      defaultLanguage: overriddenDefaultLanguage,
       axiosInstances: LocalizedClientFactory.createClientsForLanguages([language.en, language.fr]),
     })
   })
@@ -87,7 +90,7 @@ describe('LodestoneClient', () => {
     let brokenClient: TestLodestoneClient
     beforeAll(() => {
       brokenClient = new TestLodestoneClient({
-        defaultLanguage: overridenDefaultLanguage,
+        defaultLanguage: overriddenDefaultLanguage,
         // @ts-ignore
         axiosInstances: {},
       })
@@ -101,14 +104,14 @@ describe('LodestoneClient', () => {
   describe('given a provided path is being fetched', () => {
     it('by default the url for the provided language should be called', async () => {
       // @ts-ignore
-      const spy = (client.axiosInstances[overridenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp))
+      const spy = (client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp))
       await client.getCharacter(11886902)
       expect(spy).toHaveBeenCalledWith('character/11886902')
     })
 
     it('if not specified other language calls should not be made', async () => {
       // @ts-ignore
-      client.axiosInstances[overridenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
+      client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
       // @ts-ignore
       const spy = (client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp))
       await client.getCharacter(11886902)
@@ -121,7 +124,7 @@ describe('LodestoneClient', () => {
 
       beforeEach(async () => {
         // @ts-ignore
-        defaultLangSpy = client.axiosInstances[overridenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
+        defaultLangSpy = client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
         // @ts-ignore
         specifiedLangSpy = client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp)
         await client.getCharacter(11886902, language.en)
@@ -140,7 +143,7 @@ describe('LodestoneClient', () => {
       let resp: AxiosResponse
       beforeAll(async () => {
         // @ts-ignore
-        client.axiosInstances[overridenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
+        client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
         resp = await client.getCharacter(11886902)
       })
 
@@ -152,16 +155,101 @@ describe('LodestoneClient', () => {
         expect(resp.data).toEqual(goodResp.data)
       })
     })
-    describe('when a response is returned but', () => {
-      it.each([
+    describe('when a response is returned but HTTP status code is', () => {
+      describe.each([
         [404, 'requested page cannot be found', PageNotFoundError],
         [429, 'lodestone is throttling our connection attempts', TooManyRequestsError],
         [503, 'lodestone is down for maintenance', LodestoneMaintenanceError],
         // @ts-ignore
-      ])('code %s, which is returned when the %s', async (code: number, description: string, error: Error) => {
+      ])('%s, which is returned when the %s', (code: number, description: string, expectedError: Error) => {
+        let error: unknown
+        beforeAll(async () => {
+          // @ts-ignore
+          client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockRejectedValue(getErrorWithCode(code))
+          try {
+            await client.getCharacter(11886902)
+          } catch (e) {
+            error = e
+          }
+        })
+
+        it(`should throw error of type ${expectedError.name}`, () => {
+          expect(error).toBeInstanceOf(expectedError)
+        })
+
+        it('failed path should be accessible on path key', () => {
+          // @ts-ignore
+          expect(error.path).toEqual('character/11886902')
+        })
+
+        it('failed request type should be accessible on entityType key', () => {
+          // @ts-ignore
+          expect(error.entityType).toEqual('TestCharacter')
+        })
+      })
+    })
+
+    describe('when the client times out', () => {
+      let error: unknown
+
+      beforeAll(async () => {
         // @ts-ignore
-        client.axiosInstances[overridenDefaultLanguage].get = jest.fn().mockRejectedValue(getErrorWithCode(code))
-        await expect(client.getCharacter(11886902, overridenDefaultLanguage)).rejects.toThrow(error)
+        client.axiosInstances[overriddenDefaultLanguage].get = jest
+          .fn()
+          .mockRejectedValue({ code: 'ECONNABORTED', config: {}, isAxiosError: true })
+        try {
+          await client.getCharacter(11886902)
+        } catch (e) {
+          error = e
+        }
+      })
+
+      it('should throw error of type RequestTimedOutError', () => {
+        expect(error).toBeInstanceOf(RequestTimedOutError)
+      })
+
+      it('failed path should be accessible on path key', () => {
+        // @ts-ignore
+        expect(error.path).toEqual('character/11886902')
+      })
+
+      it('failed request type should be accessible on entityType key', () => {
+        // @ts-ignore
+        expect(error.entityType).toEqual('TestCharacter')
+      })
+    })
+
+    describe('when the throws an error that matches the ES Error type', () => {
+      let error: unknown
+
+      beforeAll(async () => {
+        // @ts-ignore
+        client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockRejectedValue(new Error('foo'))
+        try {
+          await client.getCharacter(11886902)
+        } catch (e) {
+          error = e
+        }
+      })
+
+      it('should throw error of type UnknownError', () => {
+        expect(error).toBeInstanceOf(UnknownError)
+      })
+
+      it('failed path should be accessible on path key', () => {
+        // @ts-ignore
+        expect(error.path).toEqual('character/11886902')
+      })
+
+      it('failed request type should be accessible on entityType key', () => {
+        // @ts-ignore
+        expect(error.entityType).toEqual('TestCharacter')
+      })
+
+      it('upstream error should be accessible on the error key', () => {
+        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(error.error.message).toEqual('foo')
       })
     })
   })

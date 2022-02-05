@@ -28,7 +28,7 @@ import RequestStatus from '../RequestStatus'
 import RequestFailureCategory from '../RequestFailureCategory'
 
 export default class PageNotFoundError extends LodestoneError {
-  constructor(entityType: string, id: string) {
-    super(entityType, id, RequestStatus.NotFound, RequestFailureCategory.NotFound, 404)
+  constructor(entityType: string, path: string) {
+    super(entityType, path, RequestStatus.NotFound, RequestFailureCategory.NotFound, 404)
   }
 }

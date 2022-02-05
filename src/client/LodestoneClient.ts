@@ -100,8 +100,11 @@ export default abstract class LodestoneClient implements IClientProps {
         }
       } else if (e instanceof UninitialisedClientError) {
         throw e
+      } else if (e instanceof Error) {
+        throw new UnknownError(entityType, path, e)
       }
-      throw new UnknownError(entityType, path, new Error())
+      //We do not expect this path to be executed
+      throw e
     }
   }
 

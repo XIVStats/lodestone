@@ -30,14 +30,14 @@ export default abstract class LodestoneError extends Error {
   readonly reason?: string
 
   protected constructor(
-    entityType: string,
-    public readonly id: string,
+    public readonly entityType: string,
+    public readonly path: string,
     public readonly status: RequestStatus,
     public readonly category: RequestFailureCategory,
     public readonly code?: number,
     public readonly error?: Error
   ) {
-    super(`Error of type ${status} fetching ${entityType} with id ${id}`)
+    super(`Error of type ${status} fetching ${entityType} with id ${path}`)
     this.reason = error?.message
     Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
   }
