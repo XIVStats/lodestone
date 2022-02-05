@@ -24,11 +24,25 @@
  */
 
 import LodestoneError from './LodestoneError'
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { FailureResponse } from '../Response'
+import { IRejectedRequestFailure } from '../interface/IResponse'
 
-export default class TooManyRequestsError extends LodestoneError {
-  constructor(entityType: string, id: string) {
-    super(entityType, id, RequestStatus.LodestoneMaintenance, RequestFailureCategory.RequestRejected, 429)
+export default class TooManyRequestsError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.TooManyRequests = RequestStatus.TooManyRequests
+
+  private static CATEGORY: RequestFailureCategory.RequestRejected = RequestFailureCategory.RequestRejected
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, TooManyRequestsError.STATUS, TooManyRequestsError.CATEGORY, 429, undefined)
+  }
+
+  public asResponse(): IRejectedRequestFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: TooManyRequestsError.STATUS,
+      failureCategory: TooManyRequestsError.CATEGORY,
+    }
   }
 }

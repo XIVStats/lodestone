@@ -23,15 +23,17 @@
  *
  */
 
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { FailureResponse } from '../Response'
 
-export default abstract class LodestoneError extends Error {
+export default abstract class LodestoneError<TypeOfIdentifier> extends Error {
   readonly reason?: string
 
   protected constructor(
     public readonly entityType: string,
     public readonly path: string,
+    public readonly id: TypeOfIdentifier,
     public readonly status: RequestStatus,
     public readonly category: RequestFailureCategory,
     public readonly code?: number,
@@ -41,4 +43,6 @@ export default abstract class LodestoneError extends Error {
     this.reason = error?.message
     Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
   }
+
+  public abstract asResponse(): FailureResponse<TypeOfIdentifier>
 }

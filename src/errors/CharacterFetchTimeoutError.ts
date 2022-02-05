@@ -23,16 +23,18 @@
  *
  */
 
-export default class CharacterFetchTimeoutError extends Error {
-  readonly characterId: number
+import RequestStatus from '../client/category/RequestStatus'
 
+export default class CharacterFetchTimeoutError extends Error {
   readonly code: string
 
   readonly reason: string
 
-  constructor(characterId: number) {
+  readonly status: RequestStatus
+
+  constructor(readonly characterId: number) {
     super(`Error fetching character with id ${characterId}, timeout exceeded`)
-    this.characterId = characterId
+    this.status = RequestStatus.TooManyRequests
     this.code = 'TIMEOUT_EXCEEDED'
     this.reason = 'timeout exceeded'
     Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain

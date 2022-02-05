@@ -23,25 +23,11 @@
  *
  */
 
-import LodestoneError from './LodestoneError'
-import RequestStatus from '../category/RequestStatus'
-import RequestFailureCategory from '../category/RequestFailureCategory'
-import { IRejectedRequestFailure } from '../interface/IResponse'
-
-export default class RequestTimedOutError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
-  private static STATUS: RequestStatus.TimedOut = RequestStatus.TimedOut
-
-  private static CATEGORY: RequestFailureCategory.RequestRejected = RequestFailureCategory.RequestRejected
-
-  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
-    super(entityType, path, id, RequestTimedOutError.STATUS, RequestTimedOutError.CATEGORY)
-  }
-
-  asResponse(): IRejectedRequestFailure<TypeOfIdentifier> {
-    return {
-      id: this.id,
-      status: RequestTimedOutError.STATUS,
-      failureCategory: RequestTimedOutError.CATEGORY,
-    }
-  }
+enum RequestFailureCategory {
+  NotFound = 'NOT_FOUND',
+  RequestRejected = 'LODESTONE_REJECTED_REQUEST',
+  RequestUncompletable = 'REQUEST_CANNOT_BE_COMPLETED',
+  UnknownCause = 'UNKNOWN_CAUSE',
 }
+
+export default RequestFailureCategory

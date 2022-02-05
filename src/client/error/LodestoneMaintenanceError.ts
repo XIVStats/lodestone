@@ -24,11 +24,24 @@
  */
 
 import LodestoneError from './LodestoneError'
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { ILodestoneMaintenanceFailure, IRejectedRequestFailure } from '../interface/IResponse'
 
-export default class LodestoneMaintenanceError extends LodestoneError {
-  constructor(entityType: string, id: string) {
-    super(entityType, id, RequestStatus.LodestoneMaintenance, RequestFailureCategory.RequestRejected, 503)
+export default class LodestoneMaintenanceError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.LodestoneMaintenance = RequestStatus.LodestoneMaintenance
+
+  private static CATEGORY: RequestFailureCategory.RequestUncompletable = RequestFailureCategory.RequestUncompletable
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, RequestStatus.LodestoneMaintenance, RequestFailureCategory.RequestRejected, 503)
+  }
+
+  public asResponse(): ILodestoneMaintenanceFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: LodestoneMaintenanceError.STATUS,
+      failureCategory: LodestoneMaintenanceError.CATEGORY,
+    }
   }
 }

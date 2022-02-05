@@ -35,10 +35,19 @@ import PageNotFoundError from '../error/PageNotFoundError'
 import LodestoneError from '../error/LodestoneError'
 import RequestTimedOutError from '../error/RequestTimedOutError'
 import UnknownError from '../error/UnknownError'
+import Character from '../../entity/character/Character'
+import RequestStatus from '../category/RequestStatus'
+import Response from '../Response'
+import { ISuccessResponse } from '../interface/IResponse'
 
-class TestLodestoneClient extends LodestoneClient {
-  async getCharacter(id: number, languageToUse?: Language) {
-    return this.getPath('TestCharacter', `character/${id}`, languageToUse)
+interface DummyResult {
+  mutated: boolean
+  resp: AxiosResponse<string>
+}
+
+class TestLodestoneClient extends LodestoneClient<number, DummyResult> {
+  async get(id: number, languageToUse?: Language): Promise<DummyResult> {
+    return { mutated: true, resp: await this.getPath('TestCharacter', `character/${id}`, id, languageToUse) }
   }
 }
 
@@ -82,7 +91,7 @@ describe('LodestoneClient', () => {
 
   describe('when a caller tries to specify a language that is not initialized', () => {
     it('should reject with uninitialised client error', async () => {
-      await expect(client.getCharacter(11886902, language.ja)).rejects.toThrow(UninitialisedClientError)
+      await expect(client.get(11886902, language.ja)).rejects.toThrow(UninitialisedClientError)
     })
   })
 
@@ -97,7 +106,7 @@ describe('LodestoneClient', () => {
     })
 
     it('should reject with uninitialised client error', async () => {
-      await expect(brokenClient.getCharacter(11886902)).rejects.toThrow(UninitialisedClientError)
+      await expect(brokenClient.get(11886902)).rejects.toThrow(UninitialisedClientError)
     })
   })
 
@@ -105,7 +114,7 @@ describe('LodestoneClient', () => {
     it('by default the url for the provided language should be called', async () => {
       // @ts-ignore
       const spy = (client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp))
-      await client.getCharacter(11886902)
+      await client.get(11886902)
       expect(spy).toHaveBeenCalledWith('character/11886902')
     })
 
@@ -114,7 +123,7 @@ describe('LodestoneClient', () => {
       client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
       // @ts-ignore
       const spy = (client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp))
-      await client.getCharacter(11886902)
+      await client.get(11886902)
       expect(spy).toHaveBeenCalledTimes(0)
     })
 
@@ -127,7 +136,7 @@ describe('LodestoneClient', () => {
         defaultLangSpy = client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
         // @ts-ignore
         specifiedLangSpy = client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp)
-        await client.getCharacter(11886902, language.en)
+        await client.get(11886902, language.en)
       })
 
       it('should call the client for the target language', () => {
@@ -144,7 +153,8 @@ describe('LodestoneClient', () => {
       beforeAll(async () => {
         // @ts-ignore
         client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
-        resp = await client.getCharacter(11886902)
+        const result = await client.get(11886902)
+        resp = result.resp
       })
 
       it('should return the response status upstream', () => {
@@ -167,7 +177,7 @@ describe('LodestoneClient', () => {
           // @ts-ignore
           client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockRejectedValue(getErrorWithCode(code))
           try {
-            await client.getCharacter(11886902)
+            await client.get(11886902)
           } catch (e) {
             error = e
           }
@@ -198,7 +208,7 @@ describe('LodestoneClient', () => {
           .fn()
           .mockRejectedValue({ code: 'ECONNABORTED', config: {}, isAxiosError: true })
         try {
-          await client.getCharacter(11886902)
+          await client.get(11886902)
         } catch (e) {
           error = e
         }
@@ -226,7 +236,7 @@ describe('LodestoneClient', () => {
         // @ts-ignore
         client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockRejectedValue(new Error('foo'))
         try {
-          await client.getCharacter(11886902)
+          await client.get(11886902)
         } catch (e) {
           error = e
         }
@@ -253,4 +263,20 @@ describe('LodestoneClient', () => {
       })
     })
   })
+
+  describe('when getting a provided path is being fetched as a response', () => {
+    let result: ISuccessResponse<number, DummyResult>
+
+    beforeAll(async () => {
+      // @ts-ignore
+      client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue('Hello')
+      result = (await client.getAsResponse(1)) as ISuccessResponse<number, DummyResult>
+    })
+
+    it("should yield the result of the derived class' get function on value key", () => {
+      expect(result.value.mutated).toEqual(true)
+    })
+  })
+
+  //TODO: Test the error classes individually, test getAsResponse
 })

@@ -50,7 +50,7 @@ describe('CharacterClient Client', () => {
       })
 
       it('should throw a character not found error', async () => {
-        await expect(localClient.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+        await expect(localClient.get(11886905)).rejects.toThrow(CharacterNotFoundError)
       })
     })
   })

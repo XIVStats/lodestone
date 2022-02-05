@@ -23,25 +23,36 @@
  *
  */
 
-import LodestoneError from './LodestoneError'
 import RequestStatus from '../category/RequestStatus'
 import RequestFailureCategory from '../category/RequestFailureCategory'
-import { IRejectedRequestFailure } from '../interface/IResponse'
 
-export default class RequestTimedOutError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
-  private static STATUS: RequestStatus.TimedOut = RequestStatus.TimedOut
+export interface IResponse<TypeOfIdentifier> {
+  status: RequestStatus
+  id: TypeOfIdentifier
+}
 
-  private static CATEGORY: RequestFailureCategory.RequestRejected = RequestFailureCategory.RequestRejected
+export interface ISuccessResponse<TypeOfIdentifier, TypeOfValue> extends IResponse<TypeOfIdentifier> {
+  status: RequestStatus.Success
+  value: TypeOfValue
+}
 
-  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
-    super(entityType, path, id, RequestTimedOutError.STATUS, RequestTimedOutError.CATEGORY)
-  }
+export interface IRejectedRequestFailure<TypeOfIdentifier> extends IResponse<TypeOfIdentifier> {
+  status: RequestStatus.TooManyRequests | RequestStatus.TimedOut
+  failureCategory: RequestFailureCategory.RequestRejected
+}
 
-  asResponse(): IRejectedRequestFailure<TypeOfIdentifier> {
-    return {
-      id: this.id,
-      status: RequestTimedOutError.STATUS,
-      failureCategory: RequestTimedOutError.CATEGORY,
-    }
-  }
+export interface ILodestoneMaintenanceFailure<TypeOfIdentifier> extends IResponse<TypeOfIdentifier> {
+  status: RequestStatus.LodestoneMaintenance
+  failureCategory: RequestFailureCategory.RequestUncompletable
+}
+
+export interface IUnknownCauseFailure<TypeOfIdentifier> extends IResponse<TypeOfIdentifier> {
+  status: RequestStatus.OtherError | RequestStatus.ParseError
+  failureCategory: RequestFailureCategory.UnknownCause
+  error?: Error
+}
+
+export interface INotFoundResponse<TypeOfIdentifier> extends IResponse<TypeOfIdentifier> {
+  status: RequestStatus.NotFound
+  failureCategory: RequestFailureCategory.NotFound
 }

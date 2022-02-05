@@ -24,11 +24,24 @@
  */
 
 import LodestoneError from './LodestoneError'
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { INotFoundResponse } from '../interface/IResponse'
 
-export default class PageNotFoundError extends LodestoneError {
-  constructor(entityType: string, path: string) {
-    super(entityType, path, RequestStatus.NotFound, RequestFailureCategory.NotFound, 404)
+export default class PageNotFoundError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.NotFound = RequestStatus.NotFound
+
+  private static CATEGORY: RequestFailureCategory.NotFound = RequestFailureCategory.NotFound
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, PageNotFoundError.STATUS, PageNotFoundError.CATEGORY, 404, undefined)
+  }
+
+  public asResponse(): INotFoundResponse<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: PageNotFoundError.STATUS,
+      failureCategory: PageNotFoundError.CATEGORY,
+    }
   }
 }

@@ -49,11 +49,25 @@
  */
 
 import LodestoneError from './LodestoneError'
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { IUnknownCauseFailure } from '../interface/IResponse'
 
-export default class UnknownError extends LodestoneError {
-  constructor(entityType: string, id: string, error: Error) {
-    super(entityType, id, RequestStatus.OtherError, RequestFailureCategory.UnknownCause, undefined, error)
+export default class UnknownError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.OtherError = RequestStatus.OtherError
+
+  private static CATEGORY: RequestFailureCategory.UnknownCause = RequestFailureCategory.UnknownCause
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier, error: Error) {
+    super(entityType, path, id, RequestStatus.OtherError, RequestFailureCategory.UnknownCause, undefined, error)
+  }
+
+  asResponse(): IUnknownCauseFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: UnknownError.STATUS,
+      failureCategory: UnknownError.CATEGORY,
+      error: this.error,
+    }
   }
 }

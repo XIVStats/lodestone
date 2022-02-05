@@ -37,14 +37,26 @@ import LodestoneMaintenanceError from './error/LodestoneMaintenanceError'
 import RequestTimedOutError from './error/RequestTimedOutError'
 import UnknownError from './error/UnknownError'
 import UninitialisedClientError from './error/UninitialisedClientError'
+import Response from './Response'
+import RequestStatus from './category/RequestStatus'
+import LodestoneError from './error/LodestoneError'
+import RequestFailureCategory from './category/RequestFailureCategory'
 
 export type OnSuccessFunction = (id: number, character?: Character) => void
 export type OnErrorFunction = (id: number, error: Error) => void
+export type GetEntityFunction<IdentifierType, TypeOfValue> = (
+  id: IdentifierType,
+  language?: Language
+) => Promise<TypeOfValue>
 
 /**
  * Client for interfacing with the Final Fantasy XIV Lodestone.
+ *
+ * @param id
+ * @param language
+ * @param targetFunction
  */
-export default abstract class LodestoneClient implements IClientProps {
+export default abstract class LodestoneClient<IdentifierType, TypeOfValue> implements IClientProps {
   cheerioInstance: CheerioAPI
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
@@ -76,7 +88,12 @@ export default abstract class LodestoneClient implements IClientProps {
     }
   }
 
-  protected async getPath(entityType: string, path: string, language?: Language): Promise<AxiosResponse<string>> {
+  protected async getPath(
+    entityType: string,
+    path: string,
+    id: IdentifierType,
+    language?: Language
+  ): Promise<AxiosResponse<string>> {
     const promises: Promise<AxiosResponse>[] = [
       this.parallelismLimit(() => this.getInstanceToUse(language).get<string>(path)),
     ]
@@ -89,24 +106,45 @@ export default abstract class LodestoneClient implements IClientProps {
         if (ae.response && ae.response.status) {
           switch (ae.response.status) {
             case 404:
-              throw new PageNotFoundError(entityType, path)
+              throw new PageNotFoundError(entityType, path, id)
             case 429:
-              throw new TooManyRequestsError(entityType, path)
+              throw new TooManyRequestsError(entityType, path, id)
             case 503:
-              throw new LodestoneMaintenanceError(entityType, path)
+              throw new LodestoneMaintenanceError(entityType, path, id)
           }
         } else if (ae.code === 'ECONNABORTED') {
-          throw new RequestTimedOutError(entityType, path)
+          throw new RequestTimedOutError(entityType, path, id)
         }
       } else if (e instanceof UninitialisedClientError) {
         throw e
       } else if (e instanceof Error) {
-        throw new UnknownError(entityType, path, e)
+        throw new UnknownError(entityType, path, id, e)
       }
       //We do not expect this path to be executed
       throw e
     }
   }
+
+  protected abstract get(id: IdentifierType, language?: Language): Promise<TypeOfValue>
+
+  public async getAsResponse(id: IdentifierType, language?: Language): Promise<Response<IdentifierType, TypeOfValue>> {
+    try {
+      return { id, status: RequestStatus.Success, value: await this.get(id, language) }
+    } catch (error) {
+      if (error instanceof LodestoneError) {
+        const lError = error as LodestoneError<IdentifierType>
+        return lError.asResponse()
+      }
+      return {
+        id,
+        status: RequestStatus.OtherError,
+        failureCategory: RequestFailureCategory.UnknownCause,
+        error: <Error>error,
+      }
+    }
+  }
+
+  //TODO: Implement get set - grouped by category
 
   // public async getCharacterMounts(id: number, itemIdsOnly?: boolean): Promise<Creature[]> {
   //   // eslint-disable-next-line no-useless-catch

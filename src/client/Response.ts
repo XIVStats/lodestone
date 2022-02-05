@@ -23,11 +23,25 @@
  *
  */
 
-enum RequestFailureCategory {
-  NotFound = 'NOT_FOUND',
-  RequestRejected = 'LODESTONE_REJECTED_REQUEST',
-  RequestFailed = 'REQUEST_FAILED',
-  UnknownCause = 'UNKNOWN_CAUSE',
-}
+import {
+  ISuccessResponse,
+  ILodestoneMaintenanceFailure,
+  INotFoundResponse,
+  IRejectedRequestFailure,
+  IUnknownCauseFailure,
+} from './interface/IResponse'
 
-export default RequestFailureCategory
+type Response<IdentifierType, ResponseType> =
+  | ISuccessResponse<IdentifierType, ResponseType>
+  | INotFoundResponse<IdentifierType>
+  | IRejectedRequestFailure<IdentifierType>
+  | IUnknownCauseFailure<IdentifierType>
+  | ILodestoneMaintenanceFailure<IdentifierType>
+
+export type FailureResponse<IdentifierType> =
+  | INotFoundResponse<IdentifierType>
+  | IRejectedRequestFailure<IdentifierType>
+  | IUnknownCauseFailure<IdentifierType>
+  | ILodestoneMaintenanceFailure<IdentifierType>
+
+export default Response

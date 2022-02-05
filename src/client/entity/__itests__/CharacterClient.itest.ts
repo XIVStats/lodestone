@@ -37,7 +37,7 @@ describe('Character Client [Integration]', () => {
     describe('when the character does not exist', () => {
       jest.setTimeout(100000)
       it('should throw a character not found error', async () => {
-        await expect(client.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+        await expect(client.get(11886905)).rejects.toThrow(CharacterNotFoundError)
       })
     })
   })

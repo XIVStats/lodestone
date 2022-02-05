@@ -49,11 +49,25 @@
  */
 
 import LodestoneError from './LodestoneError'
-import RequestStatus from '../RequestStatus'
-import RequestFailureCategory from '../RequestFailureCategory'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { IUnknownCauseFailure } from '../interface/IResponse'
 
-export default class ParsingError extends LodestoneError {
-  constructor(entityType: string, id: string, error: Error) {
-    super(entityType, id, RequestStatus.ParseError, RequestFailureCategory.UnknownCause, error)
+export default class ParsingError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.ParseError = RequestStatus.ParseError
+
+  private static CATEGORY: RequestFailureCategory.UnknownCause = RequestFailureCategory.UnknownCause
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier, error: Error) {
+    super(entityType, path, id, ParsingError.STATUS, ParsingError.CATEGORY, undefined, error)
+  }
+
+  asResponse(): IUnknownCauseFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: ParsingError.STATUS,
+      failureCategory: ParsingError.CATEGORY,
+      error: this,
+    }
   }
 }
