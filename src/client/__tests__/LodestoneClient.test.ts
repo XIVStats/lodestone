@@ -37,7 +37,7 @@ import { ISuccessResponse } from '../interface/IResponse'
 import ParsableEntity from '../../parser/ParsableEntity'
 import { CheerioAPI } from 'cheerio'
 import IFactory from '../../parser/IFactory'
-import IClientProps from '../interface/IClientProps'
+import IClientProps from '../interface/ClientProps'
 
 interface IDummy {
   mutated?: boolean
@@ -95,7 +95,7 @@ class DummyFactory implements IFactory<number, IDummy, DummyParams, Dummy> {
 }
 
 class TestLodestoneClient extends LodestoneClient<number, IDummy, DummyParams, Dummy> {
-  constructor(props: IClientProps) {
+  constructor(props: IClientProps<number, IDummy, DummyParams>) {
     super(new DummyFactory(), props)
   }
 }

@@ -28,8 +28,10 @@ import { CheerioAPI } from 'cheerio'
 import { Limit } from 'p-limit'
 import Language from '../../locale/Language'
 import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { OnErrorFunction, OnSuccessFunction } from '../LodestoneClient'
 
-export default interface IClientProps {
+type ClientProps<IdentifierType, TypeOfValue, TypeOfParsingConfig> = {
   cheerioInstance?: CheerioAPI
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
@@ -37,4 +39,12 @@ export default interface IClientProps {
   parallelismLimit?: Limit
 
   defaultLanguage?: Language
+
+  parsingConfig?: TypeOfParsingConfig
+  onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
+  onError?: {
+    [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType>
+  }
 }
+
+export default ClientProps

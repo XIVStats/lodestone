@@ -19,10 +19,6 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 | `TypeOfParsingConfig` | `TypeOfParsingConfig` |
 | `TypeOfValue` | extends `ParsableEntity`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`\> |
 
-## Implements
-
-- `IClientProps`
-
 ## Table of contents
 
 ### Constructors
@@ -49,8 +45,8 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 | Name | Type |
 | :------ | :------ |
 | `factory` | `default`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`, `TypeOfValue`\> |
-| `props?` | `default` |
+| `props?` | `ClientProps`<`IdentifierType`, `TypeOfValue`, `TypeOfParsingConfig`\> |
 
 #### Defined in
 
-[client/LodestoneClient.ts:95](https://github.com/XIVStats/lodestone/blob/dac3561/src/client/LodestoneClient.ts#L95)
+[client/LodestoneClient.ts:93](https://github.com/XIVStats/lodestone/blob/50b9024/src/client/LodestoneClient.ts#L93)

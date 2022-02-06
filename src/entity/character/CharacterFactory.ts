@@ -29,6 +29,7 @@ import { CheerioAPI } from 'cheerio'
 import { Language } from '../../locale'
 import ICharacter from './interface/ICharacter'
 import { AxiosResponse } from 'axios'
+import ParsingError from '../../client/error/ParsingError'
 
 export interface ICharacterParsingParams {
   gearIdsOnly?: boolean
@@ -53,7 +54,11 @@ export default class CharacterFactory implements IFactory<number, ICharacter, IC
     config?: ICharacterParsingParams
   ): Character {
     const instance = new Character(id)
-    instance.initializeFromPage(response.data, cheerio, language, config)
-    return instance
+    try {
+      instance.initializeFromPage(response.data, cheerio, language, config)
+      return instance
+    } catch (e) {
+      throw new ParsingError(this.returnType, this.getUrlForId(id), id, <Error>e)
+    }
   }
 }

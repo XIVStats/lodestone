@@ -26,7 +26,6 @@
 import Axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import pLimit, { Limit } from 'p-limit'
-import IClientProps from './interface/IClientProps'
 import Language from '../locale/Language'
 import LocalizedClientFactory from '../locale/LocalizedClientFactory'
 import { OptionalPerLanguageMapping } from '../locale'
@@ -40,25 +39,13 @@ import Response, { FailureResponse } from './Response'
 import RequestStatus from './category/RequestStatus'
 import LodestoneError from './error/LodestoneError'
 import RequestFailureCategory from './category/RequestFailureCategory'
-import ParsingError from './error/ParsingError'
 import IFactory from '../parser/IFactory'
 import ParsableEntity from '../parser/ParsableEntity'
-import { ISuccessResponse, IUnknownCauseFailure } from './interface/IResponse'
+import { ISuccessResponse } from './interface/IResponse'
+import ClientProps from './interface/ClientProps'
 
 export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
-export type OnErrorFunction<TypeOfIdentifier, TypeOfValue> = (
-  id: TypeOfIdentifier,
-  error: FailureResponse<TypeOfIdentifier>
-) => void
-
-export type GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig> = {
-  language?: Language
-  parsingConfig?: TypeOfParsingConfig
-  onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
-  onError?: {
-    [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType, TypeOfValue>
-  }
-}
+export type OnErrorFunction<TypeOfIdentifier> = (id: TypeOfIdentifier, error: FailureResponse<TypeOfIdentifier>) => void
 
 export type GetSetResult<IdentifierType, TypeOfValue> = {
   succeeded: ISuccessResponse<IdentifierType, TypeOfValue>
@@ -66,6 +53,10 @@ export type GetSetResult<IdentifierType, TypeOfValue> = {
     [key in RequestFailureCategory]: FailureResponse<IdentifierType>
   }
   incomplete: IdentifierType[]
+}
+
+type ErrorHandlerSet<IdentifierType> = {
+  [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType>
 }
 
 /**
@@ -80,8 +71,7 @@ export default abstract class LodestoneClient<
   TypeOfInterface,
   TypeOfParsingConfig,
   TypeOfValue extends ParsableEntity<IdentifierType, TypeOfInterface, TypeOfParsingConfig>
-> implements IClientProps
-{
+> {
   cheerioInstance: CheerioAPI
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
@@ -90,11 +80,19 @@ export default abstract class LodestoneClient<
 
   parallelismLimit: Limit
 
+  //TODO: Add 'cease' flag
+
   public defaultLanguage: Language
+
+  private readonly parsingConfig?: TypeOfParsingConfig
+
+  private readonly onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
+
+  private readonly onError?: ErrorHandlerSet<IdentifierType>
 
   protected constructor(
     factory: IFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>,
-    props?: IClientProps
+    props?: ClientProps<IdentifierType, TypeOfValue, TypeOfParsingConfig>
   ) {
     this.factory = factory
     this.defaultLanguage = props?.defaultLanguage || Language.en
@@ -102,6 +100,10 @@ export default abstract class LodestoneClient<
     this.parallelismLimit = props?.parallelismLimit || pLimit(5)
     this.axiosInstances =
       props?.axiosInstances || LocalizedClientFactory.createClientsForLanguages([this.defaultLanguage])
+
+    this.onError = props?.onError
+    this.onSuccess = props?.onSuccess
+    this.parsingConfig = props?.parsingConfig
   }
 
   private getInstanceToUse(language?: Language): AxiosInstance {
@@ -156,54 +158,52 @@ export default abstract class LodestoneClient<
     }
   }
 
-  async get(id: IdentifierType, language?: Language, config?: TypeOfParsingConfig): Promise<TypeOfValue> {
+  async get(id: IdentifierType, language?: Language): Promise<TypeOfValue> {
     const path = this.factory.getUrlForId(id)
-    const response = await this.getPath(this.factory.returnType, path, id, language)
     try {
-      return this.factory.fromPage(id, response, this.cheerioInstance, language || this.defaultLanguage, config)
+      const response = await this.getPath(this.factory.returnType, path, id, language)
+      const result = this.factory.fromPage(
+        id,
+        response,
+        this.cheerioInstance,
+        language || this.defaultLanguage,
+        this.parsingConfig
+      )
+      if (this.onSuccess) {
+        this.onSuccess(id, result)
+      }
+      return result
     } catch (e) {
-      throw new ParsingError(this.factory.returnType, path, id, <Error>e)
+      if (e instanceof LodestoneError) {
+        this.executeErrorFunctionIfAvailable(id, e.asResponse())
+      }
+      throw e
     }
   }
 
-  private executeErrorFunctionIfAvailable(
-    id: IdentifierType,
-    response: FailureResponse<IdentifierType>,
-    config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
-  ): void {
-    if (config?.onError) {
-      const fnToExecute = config.onError[response.failureCategory]
+  private executeErrorFunctionIfAvailable(id: IdentifierType, response: FailureResponse<IdentifierType>): void {
+    if (this?.onError) {
+      const fnToExecute = this.onError[response.failureCategory]
       if (fnToExecute) {
         fnToExecute(id, response)
       }
     }
   }
 
-  public async getAsResponse(
-    id: IdentifierType,
-    config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
-  ): Promise<Response<IdentifierType, TypeOfValue>> {
+  public async getAsResponse(id: IdentifierType, language?: Language): Promise<Response<IdentifierType, TypeOfValue>> {
     try {
-      const resp = await this.get(id, config?.language, config?.parsingConfig)
-      if (config?.onSuccess) {
-        config.onSuccess(id, resp)
-      }
-      return { id, status: RequestStatus.Success, value: resp }
+      return { id, status: RequestStatus.Success, value: await this.get(id, language) }
     } catch (error) {
       if (error instanceof LodestoneError) {
         const lError = error as LodestoneError<IdentifierType>
-        const errorResponse = lError.asResponse()
-        this.executeErrorFunctionIfAvailable(id, errorResponse, config)
-        return errorResponse
+        return lError.asResponse()
       }
-      const unknownErrorResponse: IUnknownCauseFailure<IdentifierType> = {
+      return {
         id,
         status: RequestStatus.OtherError,
         failureCategory: RequestFailureCategory.UnknownCause,
         error: <Error>error,
       }
-      this.executeErrorFunctionIfAvailable(id, unknownErrorResponse, config)
-      return unknownErrorResponse
     }
   }
 
