@@ -26,28 +26,39 @@
 import { CheerioAPI } from 'cheerio'
 import IItem from '../item/interface/IItem'
 import CreatureCategory from './type/CreatureCategory'
+import ParsableEntity from '../../parser/ParsableEntity'
+import ICreature from './interface/ICreature'
+import Language from '../../locale/Language'
+import { ICreatureParsingParams } from './CreatureFactory'
 
-export default class Creature {
-  constructor(public toolTipId: string, public item: IItem, public type?: CreatureCategory, public name?: string) {}
+export default class Creature extends ParsableEntity<string, ICreature> {
+  item?: IItem
 
-  public asMapping(): { toolTipId: string; itemId: string } {
-    return {
-      toolTipId: this.toolTipId,
-      itemId: this.item.id,
+  name?: string
+
+  toolTipId?: string
+
+  type?: CreatureCategory
+
+  initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: ICreatureParsingParams): void {
+    this.toolTipId = this.id.split('/')[5]
+    const $ = cheerio.load(data)
+    const itemDom = $('a')[0]
+    this.item = {
+      name: !config?.itemIdOnly ? itemDom.attribs['data-tooltip'] : undefined,
+      id: itemDom.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
     }
+    this.type = $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory
+    this.name = !config?.itemIdOnly ? $('h4').text() : undefined
   }
 
-  static fromToolTip(toolTipId: string, data: string, cheerio: CheerioAPI, itemIdOnly?: boolean): Creature {
-    const $ = cheerio.load(data)
-    const item = $('a')[0]
-    return new Creature(
-      toolTipId,
-      {
-        name: !itemIdOnly ? item.attribs['data-tooltip'] : undefined,
-        id: item.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
-      },
-      $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory,
-      !itemIdOnly ? $('h4').text() : undefined
-    )
+  public asMapping(): { toolTipId: string; itemId: string } {
+    if (this.item) {
+      return {
+        toolTipId: this.id,
+        itemId: this.item.id,
+      }
+    }
+    throw new Error('Item value has not been populated')
   }
 }

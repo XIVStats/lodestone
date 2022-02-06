@@ -25,11 +25,12 @@
 
 import LodestoneClient from '../LodestoneClient'
 import Creature from '../../entity/creature/Creature'
+import IClientProps from '../interface/IClientProps'
+import CreatureFactory from '../../entity/creature/CreatureFactory'
+import ICreature from '../../entity/creature/interface/ICreature'
 
-export default class CreatureClient extends LodestoneClient {
-  public async getCreatureToolTip(path: string, itemIdsOnly?: boolean): Promise<Creature> {
-    const shortenedPath = path.replace('/lodestone', '')
-    const response = await this.getPath(shortenedPath)
-    return Creature.fromToolTip(path.split('/tooltip/')[1], response.data, this.cheerioInstance, itemIdsOnly)
+export default class CreatureClient extends LodestoneClient<string, ICreature, Creature> {
+  constructor(props?: IClientProps) {
+    super(new CreatureFactory(), props)
   }
 }

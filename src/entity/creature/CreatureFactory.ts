@@ -23,50 +23,37 @@
  *
  */
 
-import IGearSet from '../attribute/gear/IGearSet'
-import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
-import IItem from '../../item/interface/IItem'
-import IPlayerGroup from '../attribute/group/IPlayerGroup'
-import ClassLevels from '../attribute/class/ClassLevels'
+import IFactory from '../../parser/IFactory'
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../../locale'
+import { AxiosResponse } from 'axios'
+import ICreature from './interface/ICreature'
+import Creature from './Creature'
 
-export default interface ICharacter {
-  readonly id: number
+export interface ICreatureParsingParams {
+  itemIdOnly?: boolean
+}
 
-  readonly name?: string
+export default class CreatureFactory implements IFactory<string, ICreature, Creature> {
+  readonly returnType: string
 
-  readonly homeWorld?: string
+  constructor() {
+    this.returnType = 'Creature'
+  }
 
-  readonly dataCenter?: string
+  getUrlForId(id: string): string {
+    return id.replace('/lodestone', '')
+  }
 
-  readonly race?: string
-
-  readonly clan?: string
-
-  readonly gender?: string
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: ClassAbbreviation
-
-  readonly classes?: ClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string
-
-  readonly grandCompanyRank?: string
-
-  readonly freeCompany?: IPlayerGroup
-
-  readonly pvpTeam?: IPlayerGroup
-
-  readonly minionIds?: string[]
-
-  readonly mounts?: IItem[]
+  public fromPage(
+    path: string,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: ICreatureParsingParams
+  ): Creature {
+    const instance = new Creature(path)
+    instance.initializeFromPage(response.data, cheerio, language, config)
+    return instance
+  }
 }

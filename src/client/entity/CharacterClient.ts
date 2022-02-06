@@ -25,8 +25,6 @@
 
 import LodestoneClient from '../LodestoneClient'
 import Character from '../../entity/character/Character'
-import Language from '../../locale/Language'
-import ParsingError from '../error/ParsingError'
 import ICharacter from '../../entity/character/interface/ICharacter'
 import CharacterFactory from '../../entity/character/CharacterFactory'
 import IClientProps from '../interface/IClientProps'
