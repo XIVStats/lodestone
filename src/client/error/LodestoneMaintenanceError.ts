@@ -26,7 +26,7 @@
 import LodestoneError from './LodestoneError'
 import RequestStatus from '../category/RequestStatus'
 import RequestFailureCategory from '../category/RequestFailureCategory'
-import { ILodestoneMaintenanceFailure, IRejectedRequestFailure } from '../interface/IResponse'
+import { ILodestoneMaintenanceFailure } from '../interface/IResponse'
 
 export default class LodestoneMaintenanceError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
   private static STATUS: RequestStatus.LodestoneMaintenance = RequestStatus.LodestoneMaintenance

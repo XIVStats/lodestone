@@ -100,7 +100,6 @@ class TestLodestoneClient extends LodestoneClient<number, IDummy, Dummy> {
   }
 }
 
-// eslint-disable-next-line jsdoc/require-returns
 /**
  * @param code
  */

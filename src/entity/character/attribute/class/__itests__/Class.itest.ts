@@ -31,16 +31,16 @@ import LocalizedClientFactory from '../../../../../locale/LocalizedClientFactory
 import IClass from '../interface/IClass'
 import ClassConfig from '../../../config/ClassConfig'
 import Class from '../Class'
-import CreatureClient from '../../../../../client/entity/CreatureClient'
+import CharacterClient from '../../../../../client/entity/CharacterClient'
 
 describe('Class [integration]', () => {
   describe('given the translation values provided, and icon mappings', () => {
     const testLanguages = [Language.en, Language.enUs, Language.de, Language.fr, Language.ja]
-    let client: CreatureClient
+    let client: CharacterClient
     const testCharacterId = 1557260
 
     beforeAll(() => {
-      client = new CreatureClient({
+      client = new CharacterClient({
         axiosInstances: LocalizedClientFactory.createClientsForLanguages(testLanguages),
       })
     })
