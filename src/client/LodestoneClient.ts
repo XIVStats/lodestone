@@ -43,14 +43,30 @@ import RequestFailureCategory from './category/RequestFailureCategory'
 import ParsingError from './error/ParsingError'
 import IFactory from '../parser/IFactory'
 import ParsableEntity from '../parser/ParsableEntity'
-import { ISuccessResponse } from './interface/IResponse'
+import { ISuccessResponse, IUnknownCauseFailure } from './interface/IResponse'
 
 export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
-export type OnErrorFunction = (id: number, error: Error) => void
-export type GetEntityFunction<IdentifierType, TypeOfValue> = (
-  id: IdentifierType,
+export type OnErrorFunction<TypeOfIdentifier, TypeOfValue> = (
+  id: TypeOfIdentifier,
+  error: FailureResponse<TypeOfIdentifier>
+) => void
+
+export type GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig> = {
   language?: Language
-) => Promise<TypeOfValue>
+  parsingConfig?: TypeOfParsingConfig
+  onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
+  onError?: {
+    [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType, TypeOfValue>
+  }
+}
+
+export type GetSetResult<IdentifierType, TypeOfValue> = {
+  succeeded: ISuccessResponse<IdentifierType, TypeOfValue>
+  failed: {
+    [key in RequestFailureCategory]: FailureResponse<IdentifierType>
+  }
+  incomplete: IdentifierType[]
+}
 
 /**
  * Client for interfacing with the Final Fantasy XIV Lodestone.
@@ -150,26 +166,54 @@ export default abstract class LodestoneClient<
     }
   }
 
+  private executeErrorFunctionIfAvailable(
+    id: IdentifierType,
+    response: FailureResponse<IdentifierType>,
+    config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
+  ): void {
+    if (config?.onError) {
+      const fnToExecute = config.onError[response.failureCategory]
+      if (fnToExecute) {
+        fnToExecute(id, response)
+      }
+    }
+  }
+
   public async getAsResponse(
     id: IdentifierType,
-    language?: Language,
-    config?: TypeOfParsingConfig
+    config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
   ): Promise<Response<IdentifierType, TypeOfValue>> {
     try {
-      return { id, status: RequestStatus.Success, value: await this.get(id, language, config) }
+      const resp = await this.get(id, config?.language, config?.parsingConfig)
+      if (config?.onSuccess) {
+        config.onSuccess(id, resp)
+      }
+      return { id, status: RequestStatus.Success, value: resp }
     } catch (error) {
       if (error instanceof LodestoneError) {
         const lError = error as LodestoneError<IdentifierType>
-        return lError.asResponse()
+        const errorResponse = lError.asResponse()
+        this.executeErrorFunctionIfAvailable(id, errorResponse, config)
+        return errorResponse
       }
-      return {
+      const unknownErrorResponse: IUnknownCauseFailure<IdentifierType> = {
         id,
         status: RequestStatus.OtherError,
         failureCategory: RequestFailureCategory.UnknownCause,
         error: <Error>error,
       }
+      this.executeErrorFunctionIfAvailable(id, unknownErrorResponse, config)
+      return unknownErrorResponse
     }
   }
+
+  //
+  // public async getSet(
+  //   ids: IdentifierType[],
+  //   config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
+  // ): Promise<GetSetResult<IdentifierType, TypeOfValue>> {
+  //
+  // }
 
   //TODO: Implement get set - grouped by category
 
