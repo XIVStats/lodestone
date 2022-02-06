@@ -23,21 +23,24 @@
  *
  */
 
-export default class CharacterFetchError extends Error {
-  readonly characterId: number
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../locale'
+import ParsableEntity from './ParsableEntity'
+import { AxiosResponse } from 'axios'
 
-  readonly code: string
+export default interface IFactory<
+  TypeOfIdentifier,
+  TypeOfInterface,
+  ReturnType extends ParsableEntity<TypeOfIdentifier, TypeOfInterface>
+> {
+  returnType: string
+  getUrlForId(id: TypeOfIdentifier): string
 
-  readonly error: Error
-
-  readonly reason: string
-
-  constructor(characterId: number, error: Error) {
-    super(`Error fetching character with id ${characterId}, ${error.message}`)
-    this.characterId = characterId
-    this.error = error
-    this.code = 'UNHANDLED_ERROR'
-    this.reason = error.message
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
-  }
+  fromPage(
+    id: TypeOfIdentifier,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: object
+  ): ReturnType
 }

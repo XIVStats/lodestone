@@ -26,7 +26,6 @@
 import LodestoneError from './LodestoneError'
 import RequestStatus from '../category/RequestStatus'
 import RequestFailureCategory from '../category/RequestFailureCategory'
-import { FailureResponse } from '../Response'
 import { IRejectedRequestFailure } from '../interface/IResponse'
 
 export default class TooManyRequestsError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {

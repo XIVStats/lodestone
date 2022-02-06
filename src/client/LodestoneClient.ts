@@ -26,7 +26,6 @@
 import Axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import Cheerio, { CheerioAPI } from 'cheerio'
 import pLimit, { Limit } from 'p-limit'
-import Character from '../entity/character/Character'
 import IClientProps from './interface/IClientProps'
 import Language from '../locale/Language'
 import LocalizedClientFactory from '../locale/LocalizedClientFactory'
@@ -41,8 +40,11 @@ import Response from './Response'
 import RequestStatus from './category/RequestStatus'
 import LodestoneError from './error/LodestoneError'
 import RequestFailureCategory from './category/RequestFailureCategory'
+import ParsingError from './error/ParsingError'
+import IFactory from '../parser/IFactory'
+import ParsableEntity from '../parser/ParsableEntity'
 
-export type OnSuccessFunction = (id: number, character?: Character) => void
+export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
 export type OnErrorFunction = (id: number, error: Error) => void
 export type GetEntityFunction<IdentifierType, TypeOfValue> = (
   id: IdentifierType,
@@ -56,16 +58,24 @@ export type GetEntityFunction<IdentifierType, TypeOfValue> = (
  * @param language
  * @param targetFunction
  */
-export default abstract class LodestoneClient<IdentifierType, TypeOfValue> implements IClientProps {
+export default abstract class LodestoneClient<
+  IdentifierType,
+  TypeOfInterface,
+  TypeOfValue extends ParsableEntity<IdentifierType, TypeOfInterface>
+> implements IClientProps
+{
   cheerioInstance: CheerioAPI
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
+
+  factory: IFactory<IdentifierType, TypeOfInterface, TypeOfValue>
 
   parallelismLimit: Limit
 
   public defaultLanguage: Language
 
-  public constructor(props?: IClientProps) {
+  public constructor(factory: IFactory<IdentifierType, TypeOfInterface, TypeOfValue>, props?: IClientProps) {
+    this.factory = factory
     this.defaultLanguage = props?.defaultLanguage || Language.en
     this.cheerioInstance = props?.cheerioInstance || Cheerio
     this.parallelismLimit = props?.parallelismLimit || pLimit(5)
@@ -125,7 +135,15 @@ export default abstract class LodestoneClient<IdentifierType, TypeOfValue> imple
     }
   }
 
-  protected abstract get(id: IdentifierType, language?: Language): Promise<TypeOfValue>
+  async get(id: IdentifierType, language?: Language): Promise<TypeOfValue> {
+    const path = this.factory.getUrlForId(id)
+    const response = await this.getPath(this.factory.returnType, path, id, language)
+    try {
+      return this.factory.fromPage(id, response, this.cheerioInstance, language || this.defaultLanguage)
+    } catch (e) {
+      throw new ParsingError(this.factory.returnType, path, id, <Error>e)
+    }
+  }
 
   public async getAsResponse(id: IdentifierType, language?: Language): Promise<Response<IdentifierType, TypeOfValue>> {
     try {

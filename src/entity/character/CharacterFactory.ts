@@ -23,15 +23,37 @@
  *
  */
 
-export default class CharacterNotFoundError extends Error {
-  readonly characterId: number
+import IFactory from '../../parser/IFactory'
+import Character from './Character'
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../../locale'
+import ICharacter from './interface/ICharacter'
+import { AxiosResponse } from 'axios'
 
-  readonly code: string
+export interface ICharacterParsingParams {
+  gearIdsOnly?: boolean
+}
 
-  constructor(characterId: number) {
-    super(`Could not find character with id ${characterId}`)
-    this.characterId = characterId
-    this.code = 'ENOTFOUND'
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+export default class CharacterFactory implements IFactory<number, ICharacter, Character> {
+  readonly returnType: string
+
+  constructor() {
+    this.returnType = 'Character'
+  }
+
+  getUrlForId(id: number): string {
+    return `character/${id}`
+  }
+
+  public fromPage(
+    id: number,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: ICharacterParsingParams
+  ): Character {
+    const instance = new Character(id)
+    instance.initializeFromPage(response.data, cheerio, language, config)
+    return instance
   }
 }

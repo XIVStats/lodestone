@@ -31,11 +31,12 @@ import Character from '../Character'
 import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
 import GearCategory from '../attribute/gear/GearCategory'
 import Language from '../../../locale/Language'
+import ICharacter from '../interface/ICharacter'
 
 describe('Character', () => {
   describe('when loading character information from HTML', () => {
     // Character with Free Company, Grand Company, Full Gear, No Shield
-    const expectedCharacterOne: Character = {
+    const expectedCharacterOne: ICharacter = {
       id: 11886902,
       name: "P'tajha Rihll",
       homeWorld: 'Cerberus',
@@ -256,7 +257,7 @@ describe('Character', () => {
     }
 
     // Character with no Grand Company
-    const expectedCharacterTwo: Character = {
+    const expectedCharacterTwo: ICharacter = {
       id: 38531003,
       name: 'Aurora Nyx',
       homeWorld: 'Omega',
@@ -275,7 +276,7 @@ describe('Character', () => {
     }
 
     // Character with a shield
-    const expectedCharacterThree: Character = {
+    const expectedCharacterThree: ICharacter = {
       id: 27218992,
       name: 'Shamir Kotomine',
       activeClass: ClassAbbreviation.GLD,
@@ -305,7 +306,7 @@ describe('Character', () => {
     }
 
     // Character with SGE active
-    const expectedCharacterFour: Character = {
+    const expectedCharacterFour: ICharacter = {
       id: 18001255,
       name: 'Sey Moore',
       activeClass: ClassAbbreviation.SGE,
@@ -333,7 +334,7 @@ describe('Character', () => {
     }
 
     // Character with reaper active
-    const expectedCharacterFive: Character = {
+    const expectedCharacterFive: ICharacter = {
       id: 28309293,
       name: 'Refler Desu',
       activeClass: ClassAbbreviation.RPR,
@@ -361,7 +362,7 @@ describe('Character', () => {
     }
 
     // Character with PvP team, Free Company, Grand Company
-    const expectedCharacterSix: Character = {
+    const expectedCharacterSix: ICharacter = {
       id: 8283,
       name: 'Windows Vista',
       activeClass: ClassAbbreviation.ARM,
@@ -411,7 +412,8 @@ describe('Character', () => {
         readFile(join(__dirname, 'resources', `${charId}.html`), 'utf8', (err, data) => {
           jest.setTimeout(10000)
           const testString = Buffer.from(data)
-          resultantCharacter = Character.fromPage(charId, testString.toString(), Cheerio, Language.en)
+          resultantCharacter = new Character(charId)
+          resultantCharacter.initializeFromPage(testString.toString(), Cheerio, Language.en)
           done()
         })
       })

@@ -28,16 +28,12 @@ import Character from '../../entity/character/Character'
 import Language from '../../locale/Language'
 import ParsingError from '../error/ParsingError'
 import ICharacter from '../../entity/character/interface/ICharacter'
+import CharacterFactory from '../../entity/character/CharacterFactory'
+import IClientProps from '../interface/IClientProps'
 
-export default class CharacterClient extends LodestoneClient<number, ICharacter> {
-  public async get(id: number, language?: Language): Promise<Character> {
-    const path = `/character/${id}`
-    const response = await this.getPath('Character', path, id, language)
-    try {
-      return Character.fromPage(id, response.data, this.cheerioInstance, language || this.defaultLanguage)
-    } catch (e) {
-      throw new ParsingError('Character', path, id, <Error>e)
-    }
+export default class CharacterClient extends LodestoneClient<number, ICharacter, Character> {
+  constructor(props?: IClientProps) {
+    super(new CharacterFactory(), props)
   }
 
   // public async getCharacters(

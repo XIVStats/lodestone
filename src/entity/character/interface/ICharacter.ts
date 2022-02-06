@@ -30,7 +30,8 @@ import IPlayerGroup from '../attribute/group/IPlayerGroup'
 import ClassLevels from '../attribute/class/ClassLevels'
 
 export default interface ICharacter {
-  readonly name: string
+  readonly id: number
+  readonly name?: string
 
   readonly homeWorld?: string
 

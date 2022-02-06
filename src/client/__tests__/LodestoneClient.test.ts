@@ -25,32 +25,82 @@
 
 import LodestoneClient from '../LodestoneClient'
 import { AxiosError, AxiosResponse } from 'axios'
-import language from '../../locale/Language'
 import { LocalizedClientFactory } from '../../locale'
 import Language from '../../locale/Language'
 import UninitialisedClientError from '../error/UninitialisedClientError'
 import LodestoneMaintenanceError from '../error/LodestoneMaintenanceError'
 import TooManyRequestsError from '../error/TooManyRequestsError'
 import PageNotFoundError from '../error/PageNotFoundError'
-import LodestoneError from '../error/LodestoneError'
 import RequestTimedOutError from '../error/RequestTimedOutError'
 import UnknownError from '../error/UnknownError'
-import Character from '../../entity/character/Character'
-import RequestStatus from '../category/RequestStatus'
-import Response from '../Response'
 import { ISuccessResponse } from '../interface/IResponse'
+import ParsableEntity from '../../parser/ParsableEntity'
+import { CheerioAPI } from 'cheerio'
+import IFactory from '../../parser/IFactory'
+import IClientProps from '../interface/IClientProps'
 
-interface DummyResult {
-  mutated: boolean
-  resp: AxiosResponse<string>
+interface IDummy {
+  mutated?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resp?: AxiosResponse<string, any> | undefined
 }
 
-class TestLodestoneClient extends LodestoneClient<number, DummyResult> {
-  async get(id: number, languageToUse?: Language): Promise<DummyResult> {
-    return { mutated: true, resp: await this.getPath('TestCharacter', `character/${id}`, id, languageToUse) }
+class Dummy extends ParsableEntity<number, IDummy> implements IDummy {
+  mutated?: boolean
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  resp?: AxiosResponse<string, any> | undefined
+
+  initializeFromPage(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    data: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    cheerio: CheerioAPI,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    language: Language,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    config?: {
+      foo: boolean
+    }
+  ) {
+    this.mutated = true
   }
 }
 
+class DummyFactory implements IFactory<number, IDummy, Dummy> {
+  readonly returnType: string
+
+  constructor() {
+    this.returnType = 'TestCharacter'
+  }
+
+  getUrlForId(id: number): string {
+    return `character/${id}`
+  }
+
+  public fromPage(
+    id: number,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: {
+      foo: boolean
+    }
+  ): Dummy {
+    const instance = new Dummy(id)
+    instance.initializeFromPage(response.data, cheerio, language, config)
+    instance.resp = response
+    return instance
+  }
+}
+
+class TestLodestoneClient extends LodestoneClient<number, IDummy, Dummy> {
+  constructor(props: IClientProps) {
+    super(new DummyFactory(), props)
+  }
+}
+
+// eslint-disable-next-line jsdoc/require-returns
 /**
  * @param code
  */
@@ -80,18 +130,18 @@ describe('LodestoneClient', () => {
   }
 
   let client: TestLodestoneClient
-  const overriddenDefaultLanguage = language.fr
+  const overriddenDefaultLanguage = Language.fr
 
   beforeAll(() => {
     client = new TestLodestoneClient({
       defaultLanguage: overriddenDefaultLanguage,
-      axiosInstances: LocalizedClientFactory.createClientsForLanguages([language.en, language.fr]),
+      axiosInstances: LocalizedClientFactory.createClientsForLanguages([Language.en, Language.fr]),
     })
   })
 
   describe('when a caller tries to specify a language that is not initialized', () => {
     it('should reject with uninitialised client error', async () => {
-      await expect(client.get(11886902, language.ja)).rejects.toThrow(UninitialisedClientError)
+      await expect(client.get(11886902, Language.ja)).rejects.toThrow(UninitialisedClientError)
     })
   })
 
@@ -122,7 +172,7 @@ describe('LodestoneClient', () => {
       // @ts-ignore
       client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
       // @ts-ignore
-      const spy = (client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp))
+      const spy = (client.axiosInstances[Language.en].get = jest.fn().mockResolvedValue(goodResp))
       await client.get(11886902)
       expect(spy).toHaveBeenCalledTimes(0)
     })
@@ -135,8 +185,8 @@ describe('LodestoneClient', () => {
         // @ts-ignore
         defaultLangSpy = client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
         // @ts-ignore
-        specifiedLangSpy = client.axiosInstances[language.en].get = jest.fn().mockResolvedValue(goodResp)
-        await client.get(11886902, language.en)
+        specifiedLangSpy = client.axiosInstances[Language.en].get = jest.fn().mockResolvedValue(goodResp)
+        await client.get(11886902, Language.en)
       })
 
       it('should call the client for the target language', () => {
@@ -149,7 +199,7 @@ describe('LodestoneClient', () => {
     })
 
     describe('when a response is returned from the call', () => {
-      let resp: AxiosResponse
+      let resp: AxiosResponse | undefined
       beforeAll(async () => {
         // @ts-ignore
         client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
@@ -158,11 +208,11 @@ describe('LodestoneClient', () => {
       })
 
       it('should return the response status upstream', () => {
-        expect(resp.status).toEqual(goodResp.status)
+        expect(resp?.status).toEqual(goodResp.status)
       })
 
       it('should return the response data upstream', () => {
-        expect(resp.data).toEqual(goodResp.data)
+        expect(resp?.data).toEqual(goodResp.data)
       })
     })
     describe('when a response is returned but HTTP status code is', () => {
@@ -265,12 +315,12 @@ describe('LodestoneClient', () => {
   })
 
   describe('when getting a provided path is being fetched as a response', () => {
-    let result: ISuccessResponse<number, DummyResult>
+    let result: ISuccessResponse<number, IDummy>
 
     beforeAll(async () => {
       // @ts-ignore
       client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue('Hello')
-      result = (await client.getAsResponse(1)) as ISuccessResponse<number, DummyResult>
+      result = (await client.getAsResponse(1)) as ISuccessResponse<number, IDummy>
     })
 
     it("should yield the result of the derived class' get function on value key", () => {

@@ -23,20 +23,10 @@
  *
  */
 
-import RequestStatus from '../client/category/RequestStatus'
+import IAttributeMapping from './interface/IAttributeMapping'
 
-export default class CharacterFetchTimeoutError extends Error {
-  readonly code: string
-
-  readonly reason: string
-
-  readonly status: RequestStatus
-
-  constructor(readonly characterId: number) {
-    super(`Error fetching character with id ${characterId}, timeout exceeded`)
-    this.status = RequestStatus.TooManyRequests
-    this.code = 'TIMEOUT_EXCEEDED'
-    this.reason = 'timeout exceeded'
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
-  }
+type MappableEntity<Type> = {
+  [key in keyof Type]: string | IAttributeMapping
 }
+
+export default MappableEntity

@@ -24,9 +24,14 @@
  */
 
 import Class from '../attribute/class/Class'
-import MappableCharacter from '../MappableCharacter'
+import MappableEntity from '../../../parser/MappableEntity'
+import ICharacter from '../interface/ICharacter'
 
-const CharacterDomConfig: MappableCharacter = {
+const CharacterDomConfig: MappableEntity<ICharacter> = {
+  id: {
+    prePopulated: true,
+    selector: '',
+  },
   name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
   activeClass: {
     selector:
