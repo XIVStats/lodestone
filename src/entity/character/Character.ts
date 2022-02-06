@@ -37,7 +37,10 @@ import ParsableEntity from '../../parser/ParsableEntity'
 import { ICharacterParsingParams } from './CharacterFactory'
 import characterDomConfig from './config/CharacterDomConfig'
 
-export default class Character extends ParsableEntity<number, ICharacter> implements ICharacter {
+export default class Character
+  extends ParsableEntity<number, ICharacter, ICharacterParsingParams>
+  implements ICharacter
+{
   name?: string
 
   homeWorld?: string

@@ -31,7 +31,8 @@ import { AxiosResponse } from 'axios'
 export default interface IFactory<
   TypeOfIdentifier,
   TypeOfInterface,
-  ReturnType extends ParsableEntity<TypeOfIdentifier, TypeOfInterface>
+  TypeOfParsingConfig,
+  ReturnType extends ParsableEntity<TypeOfIdentifier, TypeOfInterface, TypeOfParsingConfig>
 > {
   returnType: string
   getUrlForId(id: TypeOfIdentifier): string
@@ -41,6 +42,6 @@ export default interface IFactory<
     response: AxiosResponse<string>,
     cheerio: CheerioAPI,
     language: Language,
-    config?: object
+    config?: TypeOfParsingConfig
   ): ReturnType
 }

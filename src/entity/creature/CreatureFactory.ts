@@ -34,7 +34,7 @@ export interface ICreatureParsingParams {
   itemIdOnly?: boolean
 }
 
-export default class CreatureFactory implements IFactory<string, ICreature, Creature> {
+export default class CreatureFactory implements IFactory<string, ICreature, ICreatureParsingParams, Creature> {
   readonly returnType: string
 
   constructor() {

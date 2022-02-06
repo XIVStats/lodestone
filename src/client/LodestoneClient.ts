@@ -36,13 +36,14 @@ import LodestoneMaintenanceError from './error/LodestoneMaintenanceError'
 import RequestTimedOutError from './error/RequestTimedOutError'
 import UnknownError from './error/UnknownError'
 import UninitialisedClientError from './error/UninitialisedClientError'
-import Response from './Response'
+import Response, { FailureResponse } from './Response'
 import RequestStatus from './category/RequestStatus'
 import LodestoneError from './error/LodestoneError'
 import RequestFailureCategory from './category/RequestFailureCategory'
 import ParsingError from './error/ParsingError'
 import IFactory from '../parser/IFactory'
 import ParsableEntity from '../parser/ParsableEntity'
+import { ISuccessResponse } from './interface/IResponse'
 
 export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
 export type OnErrorFunction = (id: number, error: Error) => void
@@ -61,20 +62,24 @@ export type GetEntityFunction<IdentifierType, TypeOfValue> = (
 export default abstract class LodestoneClient<
   IdentifierType,
   TypeOfInterface,
-  TypeOfValue extends ParsableEntity<IdentifierType, TypeOfInterface>
+  TypeOfParsingConfig,
+  TypeOfValue extends ParsableEntity<IdentifierType, TypeOfInterface, TypeOfParsingConfig>
 > implements IClientProps
 {
   cheerioInstance: CheerioAPI
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
-  factory: IFactory<IdentifierType, TypeOfInterface, TypeOfValue>
+  factory: IFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>
 
   parallelismLimit: Limit
 
   public defaultLanguage: Language
 
-  public constructor(factory: IFactory<IdentifierType, TypeOfInterface, TypeOfValue>, props?: IClientProps) {
+  protected constructor(
+    factory: IFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>,
+    props?: IClientProps
+  ) {
     this.factory = factory
     this.defaultLanguage = props?.defaultLanguage || Language.en
     this.cheerioInstance = props?.cheerioInstance || Cheerio
@@ -135,19 +140,23 @@ export default abstract class LodestoneClient<
     }
   }
 
-  async get(id: IdentifierType, language?: Language): Promise<TypeOfValue> {
+  async get(id: IdentifierType, language?: Language, config?: TypeOfParsingConfig): Promise<TypeOfValue> {
     const path = this.factory.getUrlForId(id)
     const response = await this.getPath(this.factory.returnType, path, id, language)
     try {
-      return this.factory.fromPage(id, response, this.cheerioInstance, language || this.defaultLanguage)
+      return this.factory.fromPage(id, response, this.cheerioInstance, language || this.defaultLanguage, config)
     } catch (e) {
       throw new ParsingError(this.factory.returnType, path, id, <Error>e)
     }
   }
 
-  public async getAsResponse(id: IdentifierType, language?: Language): Promise<Response<IdentifierType, TypeOfValue>> {
+  public async getAsResponse(
+    id: IdentifierType,
+    language?: Language,
+    config?: TypeOfParsingConfig
+  ): Promise<Response<IdentifierType, TypeOfValue>> {
     try {
-      return { id, status: RequestStatus.Success, value: await this.get(id, language) }
+      return { id, status: RequestStatus.Success, value: await this.get(id, language, config) }
     } catch (error) {
       if (error instanceof LodestoneError) {
         const lError = error as LodestoneError<IdentifierType>

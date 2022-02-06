@@ -45,7 +45,11 @@ interface IDummy {
   resp?: AxiosResponse<string, any> | undefined
 }
 
-class Dummy extends ParsableEntity<number, IDummy> implements IDummy {
+export interface DummyParams {
+  foo?: boolean
+}
+
+class Dummy extends ParsableEntity<number, IDummy, DummyParams> implements IDummy {
   mutated?: boolean
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -59,15 +63,13 @@ class Dummy extends ParsableEntity<number, IDummy> implements IDummy {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     language: Language,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    config?: {
-      foo: boolean
-    }
+    config?: DummyParams
   ) {
     this.mutated = true
   }
 }
 
-class DummyFactory implements IFactory<number, IDummy, Dummy> {
+class DummyFactory implements IFactory<number, IDummy, DummyParams, Dummy> {
   readonly returnType: string
 
   constructor() {
@@ -83,9 +85,7 @@ class DummyFactory implements IFactory<number, IDummy, Dummy> {
     response: AxiosResponse<string>,
     cheerio: CheerioAPI,
     language: Language,
-    config?: {
-      foo: boolean
-    }
+    config?: DummyParams
   ): Dummy {
     const instance = new Dummy(id)
     instance.initializeFromPage(response.data, cheerio, language, config)
@@ -94,7 +94,7 @@ class DummyFactory implements IFactory<number, IDummy, Dummy> {
   }
 }
 
-class TestLodestoneClient extends LodestoneClient<number, IDummy, Dummy> {
+class TestLodestoneClient extends LodestoneClient<number, IDummy, DummyParams, Dummy> {
   constructor(props: IClientProps) {
     super(new DummyFactory(), props)
   }

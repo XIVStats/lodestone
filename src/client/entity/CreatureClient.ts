@@ -26,10 +26,10 @@
 import LodestoneClient from '../LodestoneClient'
 import Creature from '../../entity/creature/Creature'
 import IClientProps from '../interface/IClientProps'
-import CreatureFactory from '../../entity/creature/CreatureFactory'
+import CreatureFactory, { ICreatureParsingParams } from '../../entity/creature/CreatureFactory'
 import ICreature from '../../entity/creature/interface/ICreature'
 
-export default class CreatureClient extends LodestoneClient<string, ICreature, Creature> {
+export default class CreatureClient extends LodestoneClient<string, ICreature, ICreatureParsingParams, Creature> {
   constructor(props?: IClientProps) {
     super(new CreatureFactory(), props)
   }

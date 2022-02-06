@@ -26,10 +26,10 @@
 import LodestoneClient from '../LodestoneClient'
 import Character from '../../entity/character/Character'
 import ICharacter from '../../entity/character/interface/ICharacter'
-import CharacterFactory from '../../entity/character/CharacterFactory'
+import CharacterFactory, { ICharacterParsingParams } from '../../entity/character/CharacterFactory'
 import IClientProps from '../interface/IClientProps'
 
-export default class CharacterClient extends LodestoneClient<number, ICharacter, Character> {
+export default class CharacterClient extends LodestoneClient<number, ICharacter, ICharacterParsingParams, Character> {
   constructor(props?: IClientProps) {
     super(new CharacterFactory(), props)
   }

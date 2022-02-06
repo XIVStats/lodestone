@@ -34,7 +34,7 @@ export interface ICharacterParsingParams {
   gearIdsOnly?: boolean
 }
 
-export default class CharacterFactory implements IFactory<number, ICharacter, Character> {
+export default class CharacterFactory implements IFactory<number, ICharacter, ICharacterParsingParams, Character> {
   readonly returnType: string
 
   constructor() {

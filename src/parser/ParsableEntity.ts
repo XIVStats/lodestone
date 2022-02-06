@@ -30,10 +30,10 @@ import IPlayerGroup from '../entity/character/attribute/group/IPlayerGroup'
 import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
 import MappableEntity from './MappableEntity'
 
-export default abstract class ParsableEntity<TypeOfIdentifier, InterfaceType> {
+export default abstract class ParsableEntity<TypeOfIdentifier, InterfaceType, TypeOfParsingConfig> {
   constructor(public readonly id: TypeOfIdentifier) {}
 
-  abstract initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: object): void
+  abstract initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: TypeOfParsingConfig): void
 
   protected static processAttribute(
     $: CheerioAPI,

@@ -31,7 +31,7 @@ import ICreature from './interface/ICreature'
 import Language from '../../locale/Language'
 import { ICreatureParsingParams } from './CreatureFactory'
 
-export default class Creature extends ParsableEntity<string, ICreature> {
+export default class Creature extends ParsableEntity<string, ICreature, ICreatureParsingParams> {
   item?: IItem
 
   name?: string
