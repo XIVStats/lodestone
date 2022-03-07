@@ -23,12 +23,28 @@
  *
  */
 
-const enum RequestStatus {
-  Success = 'SUCCESS',
-  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
-  NotFound = 'NOT_FOUND',
-  Throttled = 'THROTTLED',
-  OtherError = 'OTHER_ERROR_ENCOUNTERED',
+import { AxiosInstance } from 'axios'
+import { CheerioAPI } from 'cheerio'
+import { Limit } from 'p-limit'
+import Language from '../../locale/Language'
+import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { OnErrorFunction, OnSuccessFunction } from '../LodestoneClient'
+
+type ClientProps<IdentifierType, TypeOfValue, TypeOfParsingConfig> = {
+  cheerioInstance?: CheerioAPI
+
+  axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
+
+  parallelismLimit?: Limit
+
+  defaultLanguage?: Language
+
+  parsingConfig?: TypeOfParsingConfig
+  onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
+  onError?: {
+    [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType>
+  }
 }
 
-export default RequestStatus
+export default ClientProps

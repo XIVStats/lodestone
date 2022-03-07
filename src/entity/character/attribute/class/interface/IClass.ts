@@ -45,6 +45,12 @@ export default interface IClass {
    * Role of the class.
    */
   role: Role
+
+  /**
+   * Starting level
+   */
+  startingLevel: number
+
   /**
    * Image thumbnail that maps to this class.
    *

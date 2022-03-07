@@ -23,32 +23,42 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import IFactory from '../../parser/IFactory'
+import Character from './Character'
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../../locale'
+import ICharacter from './interface/ICharacter'
+import { AxiosResponse } from 'axios'
+import ParsingError from '../../client/error/ParsingError'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+export interface ICharacterParsingParams {
+  gearIdsOnly?: boolean
+}
 
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
+export default class CharacterFactory implements IFactory<number, ICharacter, ICharacterParsingParams, Character> {
+  readonly returnType: string
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
+  constructor() {
+    this.returnType = 'Character'
+  }
 
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+  getUrlForId(id: number): string {
+    return `character/${id}`
+  }
+
+  public fromPage(
+    id: number,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: ICharacterParsingParams
+  ): Character {
+    const instance = new Character(id)
+    try {
+      instance.initializeFromPage(response.data, cheerio, language, config)
+      return instance
+    } catch (e) {
+      throw new ParsingError(this.returnType, this.getUrlForId(id), id, <Error>e)
+    }
+  }
+}

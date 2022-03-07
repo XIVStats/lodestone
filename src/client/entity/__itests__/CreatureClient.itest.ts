@@ -23,32 +23,42 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import CreatureClient from '../CreatureClient'
+import Creature from '../../../entity/creature/Creature'
+import CreatureCategory from '../../../entity/creature/type/CreatureCategory'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+describe('Creature Client [Integration]', () => {
+  let client: CreatureClient
 
   beforeAll(() => {
-    client = new CharacterClient()
+    client = new CreatureClient()
   })
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
+  describe('when fetching a creature by path', () => {
+    describe('when the character does exist', () => {
+      let creature: Creature
+      beforeAll(async () => {
+        jest.setTimeout(100000)
+        creature = await client.get(
+          '/lodestone/character/11886902/mount/tooltip/61905fa962115a7ba7a66016246598e546206d03'
+        )
+      })
+
+      it('should should resolve the correct name', () => {
+        expect(creature.name).toEqual('Coeurl')
+      })
+
+      it('should should resolve the correct type', () => {
+        expect(creature.type).toEqual(CreatureCategory.Mount)
+      })
+
+      it('should should resolve the item id', () => {
+        expect(creature.item?.id).toEqual('4d03fbe2414')
+      })
+
+      it('should should resolve the item name', () => {
+        expect(creature.item?.name).toEqual('Coeurl Bell')
       })
     })
   })
-
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
 })

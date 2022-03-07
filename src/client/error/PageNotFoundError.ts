@@ -23,32 +23,25 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import LodestoneError from './LodestoneError'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { INotFoundResponse } from '../interface/IResponse'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+export default class PageNotFoundError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.NotFound = RequestStatus.NotFound
 
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
+  private static CATEGORY: RequestFailureCategory.NotFound = RequestFailureCategory.NotFound
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, PageNotFoundError.STATUS, PageNotFoundError.CATEGORY, 404, undefined)
+  }
 
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+  public asResponse(): INotFoundResponse<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: PageNotFoundError.STATUS,
+      failureCategory: PageNotFoundError.CATEGORY,
+    }
+  }
+}

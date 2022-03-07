@@ -23,15 +23,25 @@
  *
  */
 
-export default class CharacterNotFoundError extends Error {
-  readonly characterId: number
+import LodestoneError from './LodestoneError'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { ILodestoneMaintenanceFailure } from '../interface/IResponse'
 
-  readonly code: string
+export default class LodestoneMaintenanceError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.LodestoneMaintenance = RequestStatus.LodestoneMaintenance
 
-  constructor(characterId: number) {
-    super(`Could not find character with id ${characterId}`)
-    this.characterId = characterId
-    this.code = 'ENOTFOUND'
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  private static CATEGORY: RequestFailureCategory.RequestUncompletable = RequestFailureCategory.RequestUncompletable
+
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, RequestStatus.LodestoneMaintenance, RequestFailureCategory.RequestRejected, 503)
+  }
+
+  public asResponse(): ILodestoneMaintenanceFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: LodestoneMaintenanceError.STATUS,
+      failureCategory: LodestoneMaintenanceError.CATEGORY,
+    }
   }
 }

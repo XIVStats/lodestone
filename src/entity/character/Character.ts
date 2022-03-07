@@ -24,21 +24,24 @@
  */
 
 import { CheerioAPI } from 'cheerio'
-import CharacterDomConfig from './config/CharacterDomConfig'
 import ICharacter from './interface/ICharacter'
 import IGearSet from './attribute/gear/IGearSet'
-import IAttributeMapping from '../../parser/interface/IAttributeMapping'
 import ClassAbbreviation from './attribute/class/category/ClassAbbreviation'
 import GearCategory from './attribute/gear/GearCategory'
 import Level from './attribute/class/Level'
 import IItem from '../item/interface/IItem'
 import IPlayerGroup from './attribute/group/IPlayerGroup'
-import UnparseableGroupIdError from '../../errors/UnparseableGroupIdError'
 import Language from '../../locale/Language'
 import ClassLevels from './attribute/class/ClassLevels'
+import ParsableEntity from '../../parser/ParsableEntity'
+import { ICharacterParsingParams } from './CharacterFactory'
+import characterDomConfig from './config/CharacterDomConfig'
 
-export default class Character implements ICharacter {
-  constructor(readonly id: number, readonly name: string) {}
+export default class Character
+  extends ParsableEntity<number, ICharacter, ICharacterParsingParams>
+  implements ICharacter
+{
+  name?: string
 
   homeWorld?: string
 
@@ -75,51 +78,6 @@ export default class Character implements ICharacter {
   minionIds?: string[] | undefined
 
   mounts?: IItem[] | undefined
-
-  private static processAttribute(
-    $: CheerioAPI,
-    config: string | IAttributeMapping | undefined
-  ): string | IPlayerGroup | undefined {
-    if (typeof config === 'object') {
-      const transformConfig: IAttributeMapping = config
-
-      let text
-      if (config.useHtml) {
-        text = $(config.selector).html() || $(config.selector).text()
-      } else if (config.getAttr) {
-        text = $(config.selector).attr(config.getAttr)
-        if (text === undefined) {
-          throw new Error()
-        }
-      } else if (config.isGroupLink) {
-        const href = $(`${config.selector} > a`)?.attr('href')
-        if (href) {
-          const id = href.split('/')[3]
-          if (!id) {
-            throw new UnparseableGroupIdError($(`${config.selector} > a`).attr('href'))
-          } else
-            return {
-              id,
-              name: $(config.selector).text(),
-            }
-        } else {
-          return undefined
-        }
-      } else {
-        text = $(config.selector).text()
-      }
-
-      if ((text === undefined || text === '') && !config.canBeNull && transformConfig.transformationFunction) {
-        throw new Error('Non-nullable mapping has null value for attribute')
-      } else if (config.canBeNull && (text === undefined || text === '')) {
-        return undefined
-      } else if (transformConfig.transformationFunction) {
-        return transformConfig.transformationFunction(text)
-      }
-      return text
-    }
-    return $(config).text()
-  }
 
   private static processGear($: CheerioAPI, idsOnly?: boolean): IGearSet {
     const elements = $('.ic_reflection_box').toArray()
@@ -173,19 +131,11 @@ export default class Character implements ICharacter {
     return classes
   }
 
-  static fromPage(id: number, data: string, cheerio: CheerioAPI, language: Language, gearIdsOnly?: boolean): Character {
+  initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: ICharacterParsingParams): void {
     const $ = cheerio.load(data)
-
-    const character = new Character(id, $(<string>CharacterDomConfig.name).text())
-
-    Object.entries(CharacterDomConfig).forEach(([key, value]) => {
-      Object.assign(character, { [key]: Character.processAttribute($, value) })
-    })
-
-    character.gear = Character.processGear($, gearIdsOnly)
-    character.classes = Character.processClasses($, language)
-
-    return character
+    this.processAttributes($, characterDomConfig)
+    this.gear = Character.processGear($, config?.gearIdsOnly)
+    this.classes = Character.processClasses($, language)
   }
 
   static getMountTooltipUrlsFromPage(id: number, data: string, cheerio: CheerioAPI): string[] {

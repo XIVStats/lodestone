@@ -24,9 +24,9 @@
  */
 
 import Axios from 'axios'
-import CharacterNotFoundError from '../../../errors/CharacterNotFoundError'
 import CharacterClient from '../CharacterClient'
 import language from '../../../locale/Language'
+import PageNotFoundError from '../../error/PageNotFoundError'
 
 describe('CharacterClient Client', () => {
   describe('when fetching a character by id', () => {
@@ -50,7 +50,7 @@ describe('CharacterClient Client', () => {
       })
 
       it('should throw a character not found error', async () => {
-        await expect(localClient.getCharacter(11886905)).rejects.toThrow(CharacterNotFoundError)
+        await expect(localClient.get(11886905)).rejects.toThrow(PageNotFoundError)
       })
     })
   })

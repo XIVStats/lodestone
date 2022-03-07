@@ -23,18 +23,25 @@
  *
  */
 
-export default class CharacterFetchTimeoutError extends Error {
-  readonly characterId: number
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../locale'
+import ParsableEntity from './ParsableEntity'
+import { AxiosResponse } from 'axios'
 
-  readonly code: string
+export default interface IFactory<
+  TypeOfIdentifier,
+  TypeOfInterface,
+  TypeOfParsingConfig,
+  ReturnType extends ParsableEntity<TypeOfIdentifier, TypeOfInterface, TypeOfParsingConfig>
+> {
+  returnType: string
+  getUrlForId(id: TypeOfIdentifier): string
 
-  readonly reason: string
-
-  constructor(characterId: number) {
-    super(`Error fetching character with id ${characterId}, timeout exceeded`)
-    this.characterId = characterId
-    this.code = 'TIMEOUT_EXCEEDED'
-    this.reason = 'timeout exceeded'
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
-  }
+  fromPage(
+    id: TypeOfIdentifier,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: TypeOfParsingConfig
+  ): ReturnType
 }

@@ -24,6 +24,7 @@
  */
 
 export default interface IAttributeMapping {
+  prePopulated?: boolean
   selector: string
   canBeNull?: boolean
   useHtml?: boolean

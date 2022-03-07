@@ -23,18 +23,25 @@
  *
  */
 
-import { AxiosInstance } from 'axios'
-import { CheerioAPI } from 'cheerio'
-import { Limit } from 'p-limit'
-import Language from '../../locale/Language'
-import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
+import LodestoneError from './LodestoneError'
+import RequestStatus from '../category/RequestStatus'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { IRejectedRequestFailure } from '../interface/IResponse'
 
-export default interface IClientProps {
-  cheerioInstance?: CheerioAPI
+export default class RequestTimedOutError<TypeOfIdentifier> extends LodestoneError<TypeOfIdentifier> {
+  private static STATUS: RequestStatus.TimedOut = RequestStatus.TimedOut
 
-  axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
+  private static CATEGORY: RequestFailureCategory.RequestRejected = RequestFailureCategory.RequestRejected
 
-  parallelismLimit?: Limit
+  constructor(entityType: string, path: string, id: TypeOfIdentifier) {
+    super(entityType, path, id, RequestTimedOutError.STATUS, RequestTimedOutError.CATEGORY)
+  }
 
-  defaultLanguage?: Language
+  asResponse(): IRejectedRequestFailure<TypeOfIdentifier> {
+    return {
+      id: this.id,
+      status: RequestTimedOutError.STATUS,
+      failureCategory: RequestTimedOutError.CATEGORY,
+    }
+  }
 }

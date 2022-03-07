@@ -23,11 +23,14 @@
  *
  */
 
-import ICharacter from './interface/ICharacter'
-import IAttributeMapping from '../../parser/interface/IAttributeMapping'
-
-type MappableCharacter = {
-  [key in keyof ICharacter]: string | IAttributeMapping
+const enum RequestStatus {
+  Success = 'SUCCESS',
+  ParseError = 'UNABLE_TO_PARSE_PROVIDED_DOM',
+  LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
+  NotFound = 'NOT_FOUND',
+  TooManyRequests = 'TOO_MANY_REQUESTS',
+  TimedOut = 'REQUEST_TIMED_OUT',
+  OtherError = 'OTHER_ERROR_ENCOUNTERED',
 }
 
-export default MappableCharacter
+export default RequestStatus

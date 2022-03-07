@@ -23,32 +23,11 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import { Language } from '../../locale'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
-
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
-
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
-
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+export default class UninitialisedClientError extends Error {
+  constructor(public readonly language: Language) {
+    super(`Client was not initialized for provided language ${language}`)
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}

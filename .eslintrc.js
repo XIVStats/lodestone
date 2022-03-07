@@ -53,9 +53,13 @@ module.exports = {
   },
   overrides: [
     {
+      // Disable doc rules for tests, we declare internal functions as helpers we don't need to doc them
       files: ['src/**/*.test.ts'],
       rules: {
         '@typescript-eslint/ban-ts-comment': 'off',
+        'jsdoc/require-returns': 'off',
+        'jsdoc/require-param-type': 'off',
+        'jsdoc/require-param-description': 'off',
       },
     },
   ],
