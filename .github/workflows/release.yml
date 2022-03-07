@@ -21,7 +21,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16'
           cache: 'npm'
@@ -57,7 +57,7 @@ jobs:
         id: package-version
         uses: martinbeentjes/npm-get-version-action@master
       - run: git checkout -b release/${{ steps.package-version.outputs.current-version }}
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         name: Publish new version to GitHub packages
         with:
           registry-url: 'https://npm.pkg.github.com'
