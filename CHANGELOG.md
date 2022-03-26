@@ -1,5 +1,22 @@
 # Changelog
 
+# [0.3.0](https://github.com/XIVStats/lodestone/compare/v0.2.0...v0.3.0) (2022-03-26)
+
+
+### Bug Fixes
+
+* **ci:** fix casing of shared workflow ([d374c0d](https://github.com/XIVStats/lodestone/commit/d374c0dfb0aa17c032f36c90f0562a914d16ff04))
+* **ci:** fix path to workflow again ([664cef4](https://github.com/XIVStats/lodestone/commit/664cef460fcdd4ebd7e2d40d2c6499523a74d48e))
+* **ci:** pass token to shared workflow ([e057366](https://github.com/XIVStats/lodestone/commit/e0573660a9b702eaeba2ab97c0573b606e2de83d))
+* **ci:** update path to reusable workflow ([cacbc8b](https://github.com/XIVStats/lodestone/commit/cacbc8bb7d4d83d3469ad28f76560b4603094f5d))
+* **tests:** switch class tests to use basic character client constructor ([0979a3b](https://github.com/XIVStats/lodestone/commit/0979a3b112e853cdf97f9c6962969dbd4bc8b893))
+
+
+### Features
+
+* **class:** add starting level to each class ([ab7ba84](https://github.com/XIVStats/lodestone/commit/ab7ba84b5d1f354a14309fb5227ddaf56aa95deb)), closes [#38](https://github.com/XIVStats/lodestone/issues/38)
+* **world:** updates to support new data center and world statuses ([603ca2d](https://github.com/XIVStats/lodestone/commit/603ca2dd6b66b48019497a21bc8782613b00226b))
+
 # [0.2.0](https://github.com/XIVStats/lodestone/compare/v0.1.8...v0.2.0) (2022-01-17)
 
 
