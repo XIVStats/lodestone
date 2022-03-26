@@ -1,6 +1,6 @@
 {
 	"name": "@xivstats/lodestone",
-	"version": "0.1.8",
+	"version": "0.2.0",
 	"description": "Module for pulling character profiles from the Final Fantasy XIV Lodestone",
 	"main": "lib/index.js",
 	"files": [
