@@ -20,7 +20,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    uses: xivstats/workflows/.github/workflows/build.yml@main
+    uses: XIVStats/workflows/.github/workflows/build.yml@main
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
