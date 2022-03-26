@@ -45,11 +45,11 @@ describe('Worlds', () => {
     })
 
     it('should return an array of servers of expected length', () => {
-      expect(resultantServers.servers.length).toEqual(68)
+      expect(resultantServers.servers.length).toEqual(73)
     })
 
     it('should return array of data centers of expected length', () => {
-      expect(resultantServers.dataCenters.length).toEqual(8)
+      expect(resultantServers.dataCenters.length).toEqual(9)
     })
 
     describe('when status is not requested', () => {
@@ -77,9 +77,10 @@ describe('Worlds', () => {
     })
 
     describe.each([
-      ['Cerberus', 'Chaos', 'Europe', WorldCategory.Standard, WorldStatus.CreationOfNewCharactersUnavailable],
-      ['Ridill', 'Gaia', 'Japan', WorldCategory.Preferred, WorldStatus.CreationOfNewCharacters],
-      ['Siren', 'Aether', 'North America', WorldCategory.Standard, WorldStatus.CreationOfNewCharacters],
+      ['Cerberus', 'Chaos', 'Europe', WorldCategory.Congested, WorldStatus.CreationOfNewCharactersUnavailable],
+      ['Ridill', 'Gaia', 'Japan', WorldCategory.Standard, WorldStatus.CreationOfNewCharactersUnavailable],
+      ['Ultros', 'Primal', 'North America', WorldCategory.Standard, WorldStatus.CreationOfNewCharacters],
+      ['Bismarck', 'Materia', 'Oceania', WorldCategory.New, WorldStatus.CreationOfNewCharacters],
     ])('servers array should contain %s', (serverName, dataCenter, region, category, status) => {
       let foundServer: World | undefined
 

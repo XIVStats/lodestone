@@ -10,7 +10,7 @@
 
 ### OptionalPerLanguageMapping
 
-Ƭ **OptionalPerLanguageMapping**<`Type`\>: { [key in Language]?: Type}
+Ƭ **OptionalPerLanguageMapping**<`Type`\>: { [key in Language]?: Type }
 
 Supported languages for localized text.
 
@@ -28,4 +28,4 @@ Square Enix labelling - eu=en, na=enUs, de=de, fr=fr, jp=ja
 
 #### Defined in
 
-[locale/type/OptionalPerLanguageMapping.ts:37](https://github.com/XIVStats/lodestone/blob/2e97830/src/locale/type/OptionalPerLanguageMapping.ts#L37)
+[locale/type/OptionalPerLanguageMapping.ts:37](https://github.com/XIVStats/lodestone/blob/3c76f1a/src/locale/type/OptionalPerLanguageMapping.ts#L37)

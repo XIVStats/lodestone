@@ -23,21 +23,10 @@
  *
  */
 
-export default class CharacterFetchError extends Error {
-  readonly characterId: number
+import IAttributeMapping from './interface/IAttributeMapping'
 
-  readonly code: string
-
-  readonly error: Error
-
-  readonly reason: string
-
-  constructor(characterId: number, error: Error) {
-    super(`Error fetching character with id ${characterId}, ${error.message}`)
-    this.characterId = characterId
-    this.error = error
-    this.code = 'UNHANDLED_ERROR'
-    this.reason = error.message
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
-  }
+type MappableEntity<Type> = {
+  [key in keyof Type]: string | IAttributeMapping
 }
+
+export default MappableEntity

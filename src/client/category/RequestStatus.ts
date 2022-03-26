@@ -25,9 +25,11 @@
 
 const enum RequestStatus {
   Success = 'SUCCESS',
+  ParseError = 'UNABLE_TO_PARSE_PROVIDED_DOM',
   LodestoneMaintenance = 'LODESTONE_MAINTENANCE_ENCOUNTERED',
   NotFound = 'NOT_FOUND',
-  Throttled = 'THROTTLED',
+  TooManyRequests = 'TOO_MANY_REQUESTS',
+  TimedOut = 'REQUEST_TIMED_OUT',
   OtherError = 'OTHER_ERROR_ENCOUNTERED',
 }
 

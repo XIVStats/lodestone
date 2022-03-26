@@ -32,6 +32,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:jsdoc/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -47,12 +49,17 @@ module.exports = {
         mustMatch: 'MIT License',
       },
     ],
+    'react/jsx-filename-extension': 'off',
   },
   overrides: [
     {
+      // Disable doc rules for tests, we declare internal functions as helpers we don't need to doc them
       files: ['src/**/*.test.ts'],
       rules: {
         '@typescript-eslint/ban-ts-comment': 'off',
+        'jsdoc/require-returns': 'off',
+        'jsdoc/require-param-type': 'off',
+        'jsdoc/require-param-description': 'off',
       },
     },
   ],

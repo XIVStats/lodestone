@@ -27,6 +27,7 @@ const enum Region {
   Japan = 'Japan',
   NorthAmerica = 'North America',
   Europe = 'Europe',
+  Oceania = 'Oceania',
 }
 
 export default Region

@@ -23,32 +23,37 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import IFactory from '../../parser/IFactory'
+import { CheerioAPI } from 'cheerio'
+import { Language } from '../../locale'
+import { AxiosResponse } from 'axios'
+import ICreature from './interface/ICreature'
+import Creature from './Creature'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+export interface ICreatureParsingParams {
+  itemIdOnly?: boolean
+}
 
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
+export default class CreatureFactory implements IFactory<string, ICreature, ICreatureParsingParams, Creature> {
+  readonly returnType: string
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
+  constructor() {
+    this.returnType = 'Creature'
+  }
 
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+  getUrlForId(id: string): string {
+    return id.replace('/lodestone', '')
+  }
+
+  public fromPage(
+    path: string,
+    response: AxiosResponse<string>,
+    cheerio: CheerioAPI,
+    language: Language,
+    config?: ICreatureParsingParams
+  ): Creature {
+    const instance = new Creature(path)
+    instance.initializeFromPage(response.data, cheerio, language, config)
+    return instance
+  }
+}

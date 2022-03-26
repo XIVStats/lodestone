@@ -1,12 +1,23 @@
-# Class: default
+# Class: default<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue\>
 
 [client/LodestoneClient](../modules/client_LodestoneClient.md).default
 
 Client for interfacing with the Final Fantasy XIV Lodestone.
 
-## Implements
+**`param`**
 
-- `IClientProps`
+**`param`**
+
+**`param`**
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `IdentifierType` | `IdentifierType` |
+| `TypeOfInterface` | `TypeOfInterface` |
+| `TypeOfParsingConfig` | `TypeOfParsingConfig` |
+| `TypeOfValue` | extends `ParsableEntity`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`\> |
 
 ## Table of contents
 
@@ -18,14 +29,24 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 ### constructor
 
-• **new default**(`props?`)
+• `Protected` **new default**<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`, `TypeOfValue`\>(`factory`, `props?`)
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `IdentifierType` | `IdentifierType` |
+| `TypeOfInterface` | `TypeOfInterface` |
+| `TypeOfParsingConfig` | `TypeOfParsingConfig` |
+| `TypeOfValue` | extends `default`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`, `TypeOfValue`\> |
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `props?` | `default` |
+| `factory` | `default`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`, `TypeOfValue`\> |
+| `props?` | `ClientProps`<`IdentifierType`, `TypeOfValue`, `TypeOfParsingConfig`\> |
 
 #### Defined in
 
-[client/LodestoneClient.ts:50](https://github.com/XIVStats/lodestone/blob/2e97830/src/client/LodestoneClient.ts#L50)
+[client/LodestoneClient.ts:93](https://github.com/XIVStats/lodestone/blob/3c76f1a/src/client/LodestoneClient.ts#L93)

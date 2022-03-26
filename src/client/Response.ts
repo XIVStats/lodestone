@@ -23,32 +23,25 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import {
+  ISuccessResponse,
+  ILodestoneMaintenanceFailure,
+  INotFoundResponse,
+  IRejectedRequestFailure,
+  IUnknownCauseFailure,
+} from './interface/IResponse'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+type Response<IdentifierType, ResponseType> =
+  | ISuccessResponse<IdentifierType, ResponseType>
+  | INotFoundResponse<IdentifierType>
+  | IRejectedRequestFailure<IdentifierType>
+  | IUnknownCauseFailure<IdentifierType>
+  | ILodestoneMaintenanceFailure<IdentifierType>
 
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
+export type FailureResponse<IdentifierType> =
+  | INotFoundResponse<IdentifierType>
+  | IRejectedRequestFailure<IdentifierType>
+  | IUnknownCauseFailure<IdentifierType>
+  | ILodestoneMaintenanceFailure<IdentifierType>
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
-
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+export default Response

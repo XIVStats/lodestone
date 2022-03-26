@@ -23,32 +23,28 @@
  *
  */
 
-import CharacterClient from '../CharacterClient'
-import PageNotFoundError from '../../error/PageNotFoundError'
+import { AxiosInstance } from 'axios'
+import { CheerioAPI } from 'cheerio'
+import { Limit } from 'p-limit'
+import Language from '../../locale/Language'
+import OptionalPerLanguageMapping from '../../locale/type/OptionalPerLanguageMapping'
+import RequestFailureCategory from '../category/RequestFailureCategory'
+import { OnErrorFunction, OnSuccessFunction } from '../LodestoneClient'
 
-describe('Character Client [Integration]', () => {
-  let client: CharacterClient
+type ClientProps<IdentifierType, TypeOfValue, TypeOfParsingConfig> = {
+  cheerioInstance?: CheerioAPI
 
-  beforeAll(() => {
-    client = new CharacterClient()
-  })
+  axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
-  describe('when fetching a character by id', () => {
-    describe('when the character does not exist', () => {
-      jest.setTimeout(100000)
-      it('should throw a character not found error', async () => {
-        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-      })
-    })
-  })
+  parallelismLimit?: Limit
 
-  // describe('when fetching a series of characters by id', () => {
-  //   describe('when the character does not exist', () => {
-  //     jest.setTimeout(100000)
-  //     it('should throw a character not found error', async () => {
-  //       const resp = await client.getCharacterRange(11886902, 11886940)
-  //       expect(resp.errored.length).toEqual(0)
-  //     })
-  //   })
-  // })
-})
+  defaultLanguage?: Language
+
+  parsingConfig?: TypeOfParsingConfig
+  onSuccess?: OnSuccessFunction<IdentifierType, TypeOfValue>
+  onError?: {
+    [key in RequestFailureCategory]?: OnErrorFunction<IdentifierType>
+  }
+}
+
+export default ClientProps

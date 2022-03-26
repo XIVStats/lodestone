@@ -23,49 +23,12 @@
  *
  */
 
-import IGearSet from '../attribute/gear/IGearSet'
-import IAttributeMapping from '../../../parser/interface/IAttributeMapping'
-import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
 import IItem from '../../item/interface/IItem'
-import IPlayerGroup from '../attribute/group/IPlayerGroup'
-import ClassLevels from '../attribute/class/ClassLevels'
+import CreatureCategory from '../type/CreatureCategory'
 
-export interface IMappableCharacter {
-  readonly name: string
-
-  readonly homeWorld?: string | IAttributeMapping
-
-  readonly dataCenter?: string | IAttributeMapping
-
-  readonly race?: string | IAttributeMapping
-
-  readonly clan?: string | IAttributeMapping
-
-  readonly gender?: string | IAttributeMapping
-
-  readonly guardian?: string
-
-  readonly nameDay?: string
-
-  readonly activeClass?: ClassAbbreviation | IAttributeMapping
-
-  readonly classes?: ClassLevels
-
-  readonly gear?: IGearSet
-
-  readonly title?: string
-
-  readonly cityState?: string
-
-  readonly grandCompany?: string | IAttributeMapping
-
-  readonly grandCompanyRank?: string | IAttributeMapping
-
-  readonly freeCompany?: IPlayerGroup | IAttributeMapping
-
-  readonly pvpTeam?: IPlayerGroup | IAttributeMapping
-
-  readonly minionIds?: string[]
-
-  readonly mounts?: IItem[]
+export default interface ICreature {
+  id?: string
+  item?: IItem
+  type?: CreatureCategory
+  name?: string
 }

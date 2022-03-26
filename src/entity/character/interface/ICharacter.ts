@@ -24,14 +24,15 @@
  */
 
 import IGearSet from '../attribute/gear/IGearSet'
-import { IMappableCharacter } from './IMappableCharacter'
 import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
 import IItem from '../../item/interface/IItem'
 import IPlayerGroup from '../attribute/group/IPlayerGroup'
 import ClassLevels from '../attribute/class/ClassLevels'
 
-export default interface ICharacter extends IMappableCharacter {
-  readonly name: string
+export default interface ICharacter {
+  readonly id: number
+
+  readonly name?: string
 
   readonly homeWorld?: string
 

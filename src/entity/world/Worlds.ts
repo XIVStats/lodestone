@@ -48,6 +48,9 @@ export default class Worlds {
         case 2:
           region = Region.Europe
           break
+        case 3:
+          region = Region.Oceania
+          break
         default:
           throw Error('Could not find matching region')
       }

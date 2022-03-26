@@ -24,8 +24,10 @@
  */
 
 const enum WorldCategory {
+  New = 'New',
   Preferred = 'Preferred',
   Standard = 'Standard',
+  Congested = 'Congested',
 }
 
 export default WorldCategory
