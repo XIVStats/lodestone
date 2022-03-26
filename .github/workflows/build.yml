@@ -20,7 +20,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    uses: xivstats/.github/.github/workflows/build.yml@main
+    uses: xivstats/.github/workflows/workflows/build.yml@main
 
 
 
