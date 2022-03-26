@@ -20,58 +20,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [ 14.x, 16.x, 17.x]
-        
-    # Allows PRs to write artifacts
-    permissions:
-      checks: write
-      pull-requests: write
-
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      - run: npm install
-      - run: npm run test:ci:unit
-        name: 'Execute unit tests'
-      - run: npm run test:ci:integration
-        name: 'Execute integration tests'
-
-      - name: Publish test report
-        uses: dorny/test-reporter@v1
-        if: github.actor != 'dependabot-bot' && (success() || failure())    # run this step even if previous step failed
-        with:
-          name: JEST Tests            # Name of the check run which will be created
-          path: reports/jest-*.xml    # Path to test results
-          reporter: jest-junit        # Format of test results
-
-      - run: npm run lint
-        name: Run linter
-        if: success() || failure()    # run this step even if previous step failed
-
-      - run: npm run format:check
-        name: Check formatting
-        if: success() || failure()    # run this step even if previous step failed
-
-      - name: Upload
-        uses: codecov/codecov-action@v2.1.0
-        if: success() || failure()    # run this step even if previous step failed
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-      - run: npm run build
-        name: Execute TypeScript Build
+    uses: xivstats/.github/.github/workflows/build.yml@main
 
 
 
