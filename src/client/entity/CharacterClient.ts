@@ -23,69 +23,18 @@
  *
  */
 
-import LodestoneClient from '../LodestoneClient'
 import Character from '../../entity/character/Character'
 import ICharacter from '../../entity/character/interface/ICharacter'
 import CharacterFactory, { ICharacterParsingParams } from '../../entity/character/CharacterFactory'
 import IClientProps from '../interface/ClientProps'
 import IterableIdentifierLodestoneClient from '../IterableIdentifierLodestoneClient'
 
-export default class CharacterClient extends IterableIdentifierLodestoneClient<ICharacter, ICharacterParsingParams, Character> {
+export default class CharacterClient extends IterableIdentifierLodestoneClient<
+  ICharacter,
+  ICharacterParsingParams,
+  Character
+> {
   constructor(props?: IClientProps<number, ICharacter, ICharacterParsingParams>) {
     super(new CharacterFactory(), props)
   }
-
-  // public async getCharacters(
-  //   characterIds: number[],
-  //   onSuccess?: OnSuccessFunction,
-  //   onDeleted?: OnSuccessFunction,
-  //   onError?: OnErrorFunction
-  // ): Promise<ICharacterSetFetchResult> {
-  //   const promises: Promise<Character>[] = []
-  //   characterIds.forEach((currentId) => {
-  //     promises.push(this.get(currentId))
-  //   })
-  //   const successfulCharacters: Character[] = []
-  //   const failedCharacters: ICharacterFetchError[] = []
-  //   const notFoundCharacters: number[] = []
-  //   const results = await Promise.allSettled(promises)
-  //   results.forEach((result) => {
-  //     if (result.status === 'fulfilled') {
-  //       successfulCharacters.push(result.value)
-  //       if (onSuccess) {
-  //         onSuccess(result.value.id, result.value)
-  //       }
-  //     } else if (result.status === 'rejected' && result.reason.code === 'ENOTFOUND') {
-  //       notFoundCharacters.push(result.reason.characterId)
-  //       if (onDeleted) {
-  //         onDeleted(result.reason.characterId)
-  //       }
-  //     } else if (result.status === 'rejected') {
-  //       failedCharacters.push(result.reason)
-  //       if (onError) {
-  //         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-  //         onError(result.reason.id, result.reason.error)
-  //       }
-  //     }
-  //   })
-  //   return {
-  //     found: successfulCharacters,
-  //     notFound: notFoundCharacters,
-  //     errored: failedCharacters,
-  //   }
-  // }
-  //
-  // public async getCharacterRange(
-  //   start: number,
-  //   end: number,
-  //   onSuccess?: OnSuccessFunction,
-  //   onDeleted?: OnSuccessFunction,
-  //   onError?: OnErrorFunction
-  // ): Promise<ICharacterSetFetchResult> {
-  //   const ids: number[] = []
-  //   for (let currentId = start; currentId < end; currentId += 1) {
-  //     ids.push(currentId)
-  //   }
-  //   return this.getCharacters(ids, onSuccess, onDeleted, onError)
-  // }
 }

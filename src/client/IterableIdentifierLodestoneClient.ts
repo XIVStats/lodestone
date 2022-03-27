@@ -32,8 +32,20 @@ export default abstract class IterableIdentifierLodestoneClient<
   TypeOfParsingConfig,
   TypeOfValue extends ParsableEntity<number, TypeOfInterface, TypeOfParsingConfig>
 > extends LodestoneClient<number, TypeOfInterface, TypeOfParsingConfig, TypeOfValue> {
-  public async getSeries(start: number, end: number, language?: Language): Promise<GetSetResult<number, TypeOfValue>> {
-    const array = Array.from({ length: end - start + 1 }, (_, i) => start + i)
+  /**
+   * Fetch a range starting with the specified start ID (inclusive), and ending with the specified stop ID (exclusive).
+   *
+   * @param {number} start first ID to fetch (inclusive)
+   * @param {number} stop last ID to fetch (exclusive)
+   * @param {string} language language to fetch in
+   * @returns {GetSetResult} aggregated result set where failure causes are detailed.
+   */
+  public async getRange(start: number, stop: number, language?: Language): Promise<GetSetResult<number, TypeOfValue>> {
+    /*
+    Conscious choice to make this inclusive lower, exclusive upper to match similar behaviour in Python
+    https://python-reference.readthedocs.io/en/latest/docs/functions/range.html
+     */
+    const array = Array.from({ length: stop - start }, (_, i) => start + i)
     return this.getSet(array, language)
   }
 }
