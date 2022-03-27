@@ -49,4 +49,4 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 #### Defined in
 
-[client/LodestoneClient.ts:93](https://github.com/XIVStats/lodestone/blob/3c76f1a/src/client/LodestoneClient.ts#L93)
+[client/LodestoneClient.ts:94](https://github.com/XIVStats/lodestone/blob/1099398/src/client/LodestoneClient.ts#L94)

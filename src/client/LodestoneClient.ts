@@ -43,14 +43,15 @@ import IFactory from '../parser/IFactory'
 import ParsableEntity from '../parser/ParsableEntity'
 import { ISuccessResponse } from './interface/IResponse'
 import ClientProps from './interface/ClientProps'
+import { val } from 'cheerio/lib/api/attributes'
 
 export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
 export type OnErrorFunction<TypeOfIdentifier> = (id: TypeOfIdentifier, error: FailureResponse<TypeOfIdentifier>) => void
 
 export type GetSetResult<IdentifierType, TypeOfValue> = {
-  succeeded: ISuccessResponse<IdentifierType, TypeOfValue>
+  succeeded: TypeOfValue[]
   failed: {
-    [key in RequestFailureCategory]: FailureResponse<IdentifierType>
+    [key in RequestFailureCategory]: FailureResponse<IdentifierType>[]
   }
   incomplete: IdentifierType[]
 }
@@ -207,15 +208,40 @@ export default abstract class LodestoneClient<
     }
   }
 
-  //
-  // public async getSet(
-  //   ids: IdentifierType[],
-  //   config?: GetSetParams<IdentifierType, TypeOfValue, TypeOfParsingConfig>
-  // ): Promise<GetSetResult<IdentifierType, TypeOfValue>> {
-  //
-  // }
+  public async getSet(ids: IdentifierType[], language?: Language): Promise<GetSetResult<IdentifierType, TypeOfValue>> {
+    const promises: Promise<Response<IdentifierType, TypeOfValue>>[] = []
+    ids.forEach((currentId) => promises.push(this.getAsResponse(currentId, language)))
 
-  //TODO: Implement get set - grouped by category
+    const results = await Promise.allSettled(promises)
+    const response: GetSetResult<IdentifierType, TypeOfValue> = {
+      succeeded: [],
+      failed: {
+        [RequestFailureCategory.NotFound]: [],
+        [RequestFailureCategory.RequestUncompletable]: [],
+        [RequestFailureCategory.UnknownCause]: [],
+        [RequestFailureCategory.RequestRejected]: [],
+      },
+      // Initialize uncompleted values
+      incomplete: ids,
+    }
+
+    results.forEach((result) => {
+      if (result.status === 'fulfilled') {
+        const { value } = result
+        // Item determined as complete remove from incomplete list
+        response.incomplete = response.incomplete.filter((id) => id !== value.id)
+        if (value.status === RequestStatus.Success) {
+          response.succeeded.push(value.value)
+        } else {
+          response.failed[value.failureCategory].push(value)
+        }
+      } else {
+        //TODO: We should never hit this but cover it anyway?
+      }
+    })
+
+    return response
+  }
 
   // public async getCharacterMounts(id: number, itemIdsOnly?: boolean): Promise<Creature[]> {
   //   // eslint-disable-next-line no-useless-catch

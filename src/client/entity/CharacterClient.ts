@@ -28,8 +28,9 @@ import Character from '../../entity/character/Character'
 import ICharacter from '../../entity/character/interface/ICharacter'
 import CharacterFactory, { ICharacterParsingParams } from '../../entity/character/CharacterFactory'
 import IClientProps from '../interface/ClientProps'
+import IterableIdentifierLodestoneClient from '../IterableIdentifierLodestoneClient'
 
-export default class CharacterClient extends LodestoneClient<number, ICharacter, ICharacterParsingParams, Character> {
+export default class CharacterClient extends IterableIdentifierLodestoneClient<ICharacter, ICharacterParsingParams, Character> {
   constructor(props?: IClientProps<number, ICharacter, ICharacterParsingParams>) {
     super(new CharacterFactory(), props)
   }
