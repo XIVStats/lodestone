@@ -25,7 +25,6 @@
 
 import CharacterClient from '../CharacterClient'
 import PageNotFoundError from '../../error/PageNotFoundError'
-import LodestoneMaintenanceError from '../../error/LodestoneMaintenanceError'
 
 describe('Character Client [Integration]', () => {
   let client: CharacterClient
@@ -38,8 +37,7 @@ describe('Character Client [Integration]', () => {
     describe('when the character does not exist', () => {
       jest.setTimeout(100000)
       it('should throw a character not found error', async () => {
-        // await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
-        await expect(client.get(11886902)).rejects.toThrow(LodestoneMaintenanceError)
+        await expect(client.get(11886905)).rejects.toThrow(PageNotFoundError)
       })
     })
   })
