@@ -50,12 +50,12 @@ const CharacterDomConfig: MappableEntity<ICharacter> = {
   },
   homeWorld: {
     selector: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
-    transformationFunction: (value: string) => value.split('(')[0].trim(),
+    transformationFunction: (value: string) => value.split('[')[0].trim(),
   },
   title: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__title',
   dataCenter: {
     selector: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__world',
-    transformationFunction: (value: string) => value.split('(')[1].replace(')', '').trim(),
+    transformationFunction: (value: string) => value.split('[')[1].replace(']', '').trim(),
   },
   freeCompany: {
     selector: 'div.character__freecompany__name > h4',
