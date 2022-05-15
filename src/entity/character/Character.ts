@@ -41,101 +41,66 @@ export default class Character
   extends ParsableEntity<number, ICharacter, ICharacterParsingParams>
   implements ICharacter
 {
-  name?: string
+  readonly name: string
 
-  homeWorld?: string
+  readonly homeWorld: string
 
-  dataCenter?: string
+  readonly dataCenter: string
 
-  race?: string
+  readonly race: string
 
-  clan?: string
+  readonly clan: string
 
-  gender?: string
+  readonly gender: string
 
-  guardian?: string
+  readonly guardian: string
 
-  nameDay?: string
+  readonly nameDay: string
 
-  activeClass?: ClassAbbreviation
+  readonly activeClass: ClassAbbreviation
 
-  classes?: ClassLevels
+  readonly classes: ClassLevels
 
-  gear?: IGearSet | undefined
+  readonly gear: IGearSet
 
-  title?: string | undefined
+  readonly title?: string | undefined
 
-  cityState?: string | undefined
+  readonly cityState: string
 
-  grandCompany?: string | undefined
+  readonly grandCompany?: string | undefined
 
-  grandCompanyRank?: string | undefined
+  readonly grandCompanyRank?: string | undefined
 
-  freeCompany?: IPlayerGroup | undefined
+  readonly freeCompany?: IPlayerGroup | undefined
 
-  pvpTeam?: IPlayerGroup | undefined
+  readonly pvpTeam?: IPlayerGroup | undefined
 
-  minionIds?: string[] | undefined
+  readonly minionIds: string[]
 
-  mounts?: IItem[] | undefined
+  readonly mounts: IItem[]
 
-  private static processGear($: CheerioAPI, idsOnly?: boolean): IGearSet {
-    const elements = $('.ic_reflection_box').toArray()
-    const gear: IGearSet = {}
-    let ringCount = 0
-    elements.forEach((element, index) => {
-      const local$ = $(element)
-      let id = local$.find('.db-tooltip__bt_item_detail > a').attr('href') || ''
+  constructor(id: number, character: ICharacter) {
+    super(id)
+    this.name = character.name
+    this.homeWorld = character.homeWorld
+    this.dataCenter = character.dataCenter
+    this.race = character.race
+    this.clan = character.clan
+    this.gender = character.gender
+    this.guardian = character.guardian
+    this.nameDay = character.nameDay
+    this.activeClass = character.activeClass
+    this.classes = character.classes
+    this.gear = character.gear
+    this.cityState = character.cityState
+    this.minionIds = character.minionIds
+    this.mounts = character.mounts
 
-      let categoryStr = local$.find('.db-tooltip__item__category').text()
-      if (categoryStr !== '') {
-        if (index === 0) {
-          categoryStr = 'Arm'
-        }
-        const category: GearCategory = categoryStr as GearCategory
-        id = id.replace('/lodestone/playguide/db/item/', '').replace('/', '')
-
-        let categoryAsLowerCase: string = category.charAt(0).toLowerCase() + category.slice(1).replace(' ', '')
-        if (category === GearCategory.Ring) {
-          ringCount += 1
-          categoryAsLowerCase = `${categoryAsLowerCase}${ringCount === 1 ? 'One' : 'Two'}`
-        }
-        if (idsOnly) {
-          Object.assign(gear, { [categoryAsLowerCase]: id })
-        } else {
-          Object.assign(gear, {
-            [categoryAsLowerCase]: {
-              category,
-              name: local$.find('.db-tooltip__item__name').text(),
-              id,
-              iLvl: Number(local$.find('.db-tooltip__item__level').text().replace('Creature Level', '').trim()),
-            },
-          })
-        }
-      }
-    })
-    return gear
-  }
-
-  private static processClasses($: CheerioAPI, language: Language): ClassLevels {
-    const classes: ClassLevels = {}
-    const classElements = $('.character__level').find('li').toArray()
-
-    classElements.forEach((classElement) => {
-      const class$ = $(classElement)
-      const classPair = Level.fromDom(class$, language)
-      Object.assign(classes, {
-        [classPair[1]]: classPair[0],
-      })
-    })
-    return classes
-  }
-
-  initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: ICharacterParsingParams): void {
-    const $ = cheerio.load(data)
-    this.processAttributes($, characterDomConfig)
-    this.gear = Character.processGear($, config?.gearIdsOnly)
-    this.classes = Character.processClasses($, language)
+    this.grandCompany = character.grandCompany
+    this.grandCompanyRank = character.grandCompanyRank
+    this.freeCompany = character.freeCompany
+    this.title = character.title
+    this.pvpTeam = character.pvpTeam
   }
 
   static getMountTooltipUrlsFromPage(id: number, data: string, cheerio: CheerioAPI): string[] {

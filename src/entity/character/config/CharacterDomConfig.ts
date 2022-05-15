@@ -32,6 +32,22 @@ const CharacterDomConfig: MappableEntity<ICharacter> = {
     prePopulated: true,
     selector: '',
   },
+  classes: {
+    prePopulated: true,
+    selector: '',
+  },
+  gear: {
+    prePopulated: true,
+    selector: '',
+  },
+  minionIds: {
+    prePopulated: true,
+    selector: '',
+  },
+  mounts: {
+    prePopulated: true,
+    selector: '',
+  },
   name: '#character > div.frame__chara.js__toggle_wrapper > a > div.frame__chara__box > p.frame__chara__name',
   activeClass: {
     selector:

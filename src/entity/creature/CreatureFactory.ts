@@ -23,7 +23,7 @@
  *
  */
 
-import IFactory from '../../parser/IFactory'
+import EntityFactory from '../../parser/EntityFactory'
 import { CheerioAPI } from 'cheerio'
 import { Language } from '../../locale'
 import { AxiosResponse } from 'axios'
@@ -34,7 +34,7 @@ export interface ICreatureParsingParams {
   itemIdOnly?: boolean
 }
 
-export default class CreatureFactory implements IFactory<string, ICreature, ICreatureParsingParams, Creature> {
+export default class CreatureFactory implements EntityFactory<string, ICreature, ICreatureParsingParams, Creature> {
   readonly returnType: string
 
   constructor() {

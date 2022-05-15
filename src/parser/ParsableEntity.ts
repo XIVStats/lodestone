@@ -31,61 +31,7 @@ import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
 import MappableEntity from './MappableEntity'
 
 export default abstract class ParsableEntity<TypeOfIdentifier, InterfaceType, TypeOfParsingConfig> {
+  protected static readonly PLACEHOLDER_VALUE = 'PLACEHOLDER_VALUE'
+
   constructor(public readonly id: TypeOfIdentifier) {}
-
-  abstract initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: TypeOfParsingConfig): void
-
-  protected static processAttribute(
-    $: CheerioAPI,
-    config: string | IAttributeMapping | undefined
-  ): string | IPlayerGroup | undefined {
-    if (typeof config === 'object') {
-      const transformConfig: IAttributeMapping = config
-
-      let text
-      if (config.useHtml) {
-        text = $(config.selector).html() || $(config.selector).text()
-      } else if (config.getAttr) {
-        text = $(config.selector).attr(config.getAttr)
-        if (text === undefined) {
-          throw new Error()
-        }
-      } else if (config.isGroupLink) {
-        const href = $(`${config.selector} > a`)?.attr('href')
-        if (href) {
-          const id = href.split('/')[3]
-          if (!id) {
-            throw new UnparseableGroupIdError($(`${config.selector} > a`).attr('href'))
-          } else
-            return {
-              id,
-              name: $(config.selector).text(),
-            }
-        } else {
-          return undefined
-        }
-      } else {
-        text = $(config.selector).text()
-      }
-
-      if ((text === undefined || text === '') && !config.canBeNull && transformConfig.transformationFunction) {
-        throw new Error('Non-nullable mapping has null value for attribute')
-      } else if (config.canBeNull && (text === undefined || text === '')) {
-        return undefined
-      } else if (transformConfig.transformationFunction) {
-        return transformConfig.transformationFunction(text)
-      }
-      return text
-    }
-    return $(config).text()
-  }
-
-  protected processAttributes($: CheerioAPI, domConfig: MappableEntity<InterfaceType>): void {
-    Object.entries(domConfig).forEach(([key, value]) => {
-      const configForKey: IAttributeMapping = value as IAttributeMapping
-      if (!configForKey.prePopulated) {
-        Object.assign(this, { [key]: ParsableEntity.processAttribute($, configForKey) })
-      }
-    })
-  }
 }

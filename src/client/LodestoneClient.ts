@@ -39,7 +39,7 @@ import Response, { FailureResponse } from './Response'
 import RequestStatus from './category/RequestStatus'
 import LodestoneError from './error/LodestoneError'
 import RequestFailureCategory from './category/RequestFailureCategory'
-import IFactory from '../parser/IFactory'
+import EntityFactory from '../parser/EntityFactory'
 import ParsableEntity from '../parser/ParsableEntity'
 import { ISuccessResponse } from './interface/IResponse'
 import ClientProps from './interface/ClientProps'
@@ -77,7 +77,7 @@ export default abstract class LodestoneClient<
 
   axiosInstances?: OptionalPerLanguageMapping<AxiosInstance>
 
-  factory: IFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>
+  factory: EntityFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>
 
   parallelismLimit: Limit
 
@@ -92,7 +92,7 @@ export default abstract class LodestoneClient<
   private readonly onError?: ErrorHandlerSet<IdentifierType>
 
   protected constructor(
-    factory: IFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>,
+    factory: EntityFactory<IdentifierType, TypeOfInterface, TypeOfParsingConfig, TypeOfValue>,
     props?: ClientProps<IdentifierType, TypeOfValue, TypeOfParsingConfig>
   ) {
     this.factory = factory

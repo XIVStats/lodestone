@@ -36,7 +36,7 @@ import UnknownError from '../error/UnknownError'
 import { ISuccessResponse } from '../interface/IResponse'
 import ParsableEntity from '../../parser/ParsableEntity'
 import { CheerioAPI } from 'cheerio'
-import IFactory from '../../parser/IFactory'
+import EntityFactory from '../../parser/EntityFactory'
 import IClientProps from '../interface/ClientProps'
 
 interface IDummy {
@@ -69,7 +69,7 @@ class Dummy extends ParsableEntity<number, IDummy, DummyParams> implements IDumm
   }
 }
 
-class DummyFactory implements IFactory<number, IDummy, DummyParams, Dummy> {
+class DummyFactory implements EntityFactory<number, IDummy, DummyParams, Dummy> {
   readonly returnType: string
 
   constructor() {

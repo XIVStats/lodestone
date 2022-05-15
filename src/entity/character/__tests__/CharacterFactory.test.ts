@@ -32,11 +32,12 @@ import ClassAbbreviation from '../attribute/class/category/ClassAbbreviation'
 import GearCategory from '../attribute/gear/GearCategory'
 import Language from '../../../locale/Language'
 import ICharacter from '../interface/ICharacter'
+import CharacterFactory from '../CharacterFactory'
 
-describe('Character', () => {
+describe('CharacterFactory', () => {
   describe('when loading character information from HTML', () => {
     // Character with Free Company, Grand Company, Full Gear, No Shield
-    const expectedCharacterOne: ICharacter = {
+    const expectedCharacterOne: Partial<ICharacter> = {
       id: 11886902,
       name: "P'tajha Rihll",
       homeWorld: 'Cerberus',
@@ -257,7 +258,7 @@ describe('Character', () => {
     }
 
     // Character with no Grand Company
-    const expectedCharacterTwo: ICharacter = {
+    const expectedCharacterTwo: Partial<ICharacter> = {
       id: 38531003,
       name: 'Aurora Nyx',
       homeWorld: 'Omega',
@@ -276,7 +277,7 @@ describe('Character', () => {
     }
 
     // Character with a shield
-    const expectedCharacterThree: ICharacter = {
+    const expectedCharacterThree: Partial<ICharacter> = {
       id: 27218992,
       name: 'Shamir Kotomine',
       activeClass: ClassAbbreviation.GLD,
@@ -306,7 +307,7 @@ describe('Character', () => {
     }
 
     // Character with SGE active
-    const expectedCharacterFour: ICharacter = {
+    const expectedCharacterFour: Partial<ICharacter> = {
       id: 18001255,
       name: 'Sey Moore',
       activeClass: ClassAbbreviation.SGE,
@@ -334,7 +335,7 @@ describe('Character', () => {
     }
 
     // Character with reaper active
-    const expectedCharacterFive: ICharacter = {
+    const expectedCharacterFive: Partial<ICharacter> = {
       id: 28309293,
       name: 'Refler Desu',
       activeClass: ClassAbbreviation.RPR,
@@ -362,7 +363,7 @@ describe('Character', () => {
     }
 
     // Character with PvP team, Free Company, Grand Company
-    const expectedCharacterSix: ICharacter = {
+    const expectedCharacterSix: Partial<ICharacter> = {
       id: 8283,
       name: 'Windows Vista',
       activeClass: ClassAbbreviation.ARM,
@@ -403,17 +404,19 @@ describe('Character', () => {
       [18001255, 'Sey Moore', expectedCharacterFour],
       [28309293, 'Refler Desu', expectedCharacterFive],
       [8283, 'Windows Vista', expectedCharacterSix],
-    ])('for character %s - %s', (charId, name, expected) => {
+    ])('for character %s - %s', (charId: number, name: string, expected: Partial<Character>) => {
       let resultantCharacter: Character
       const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')
       const objectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] === 'object')
+      let factory: CharacterFactory
 
       beforeAll((done) => {
+        factory = new CharacterFactory()
+
         readFile(join(__dirname, 'resources', `${charId}.html`), 'utf8', (err, data) => {
           jest.setTimeout(10000)
           const testString = Buffer.from(data)
-          resultantCharacter = new Character(charId)
-          resultantCharacter.initializeFromPage(testString.toString(), Cheerio, Language.en)
+          resultantCharacter = factory.initializeFromPage(charId, testString.toString(), Cheerio, Language.en)
           done()
         })
       })
@@ -426,21 +429,24 @@ describe('Character', () => {
       if (objectAttributes.length > 0) {
         describe.each(objectAttributes)('should evaluate %s as object', (key, value) => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          describe.each(Object.entries(value))('with key %s, an object', (lowerKey, lowerValue) => {
-            if (!(lowerValue instanceof Object)) {
-              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-              it(`with key ${lowerKey} equal to ${lowerValue}`, () => {
+          // @ts-ignore
+          if (value !== 'undefined' || value.length > 0) {
+            describe.each(Object.entries(value))('with key %s, an object', (lowerKey, lowerValue) => {
+              if (!(lowerValue instanceof Object)) {
+                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                it(`with key ${lowerKey} equal to ${lowerValue}`, () => {
+                  // @ts-ignore
+                  expect(resultantCharacter[key][lowerKey]).toEqual(lowerValue)
+                })
+              } else {
                 // @ts-ignore
-                expect(resultantCharacter[key][lowerKey]).toEqual(lowerValue)
-              })
-            } else {
-              // @ts-ignore
-              it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
-                // @ts-ignore
-                expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)
-              })
-            }
-          })
+                it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
+                  // @ts-ignore
+                  expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)
+                })
+              }
+            })
+          }
         })
       }
     })

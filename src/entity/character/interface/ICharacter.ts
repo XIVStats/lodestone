@@ -30,43 +30,43 @@ import IPlayerGroup from '../attribute/group/IPlayerGroup'
 import ClassLevels from '../attribute/class/ClassLevels'
 
 export default interface ICharacter {
-  readonly id: number
+  id: number
 
-  readonly name?: string
+  name: string
 
-  readonly homeWorld?: string
+  homeWorld: string
 
-  readonly dataCenter?: string
+  dataCenter: string
 
-  readonly race?: string
+  race: string
 
-  readonly clan?: string
+  clan: string
 
-  readonly gender?: string
+  gender: string
 
-  readonly guardian?: string
+  guardian: string
 
-  readonly nameDay?: string
+  nameDay: string
 
-  readonly activeClass?: ClassAbbreviation
+  activeClass: ClassAbbreviation
 
-  readonly classes?: ClassLevels
+  classes: ClassLevels
 
-  readonly gear?: IGearSet
+  gear: IGearSet
 
-  readonly title?: string
+  title?: string
 
-  readonly cityState?: string
+  cityState: string
 
-  readonly grandCompany?: string
+  grandCompany?: string
 
-  readonly grandCompanyRank?: string
+  grandCompanyRank?: string
 
-  readonly freeCompany?: IPlayerGroup
+  freeCompany?: IPlayerGroup
 
-  readonly pvpTeam?: IPlayerGroup
+  pvpTeam?: IPlayerGroup
 
-  readonly minionIds?: string[]
+  minionIds: string[]
 
-  readonly mounts?: IItem[]
+  mounts: IItem[]
 }
