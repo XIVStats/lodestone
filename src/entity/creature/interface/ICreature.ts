@@ -27,8 +27,9 @@ import IItem from '../../item/interface/IItem'
 import CreatureCategory from '../type/CreatureCategory'
 
 export default interface ICreature {
-  id?: string
-  item?: IItem
-  type?: CreatureCategory
+  id: string
+  item: IItem
+  type: CreatureCategory
+  toolTipId: string
   name?: string
 }

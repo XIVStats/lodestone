@@ -26,34 +26,41 @@
 import EntityFactory from '../../parser/EntityFactory'
 import { CheerioAPI } from 'cheerio'
 import { Language } from '../../locale'
-import { AxiosResponse } from 'axios'
 import ICreature from './interface/ICreature'
 import Creature from './Creature'
+import CreatureCategory from './type/CreatureCategory'
 
 export interface ICreatureParsingParams {
   itemIdOnly?: boolean
 }
 
-export default class CreatureFactory implements EntityFactory<string, ICreature, ICreatureParsingParams, Creature> {
-  readonly returnType: string
-
+export default class CreatureFactory extends EntityFactory<string, ICreature, ICreatureParsingParams, Creature> {
   constructor() {
-    this.returnType = 'Creature'
+    super('Creature')
   }
 
   getUrlForId(id: string): string {
     return id.replace('/lodestone', '')
   }
 
-  public fromPage(
-    path: string,
-    response: AxiosResponse<string>,
+  initializeFromPage(
+    id: string,
+    data: string,
     cheerio: CheerioAPI,
     language: Language,
     config?: ICreatureParsingParams
   ): Creature {
-    const instance = new Creature(path)
-    instance.initializeFromPage(response.data, cheerio, language, config)
-    return instance
+    const object: Partial<ICreature> = {}
+    object.id = id
+    object.toolTipId = object.id.split('/')[5]
+    const $ = cheerio.load(data)
+    const itemDom = $('a')[0]
+    object.item = {
+      name: !config?.itemIdOnly ? itemDom.attribs['data-tooltip'] : undefined,
+      id: itemDom.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
+    }
+    object.type = $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory
+    object.name = !config?.itemIdOnly ? $('h4').text() : undefined
+    return new Creature(<ICreature>object)
   }
 }

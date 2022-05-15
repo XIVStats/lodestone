@@ -41,9 +41,7 @@ import LodestoneError from './error/LodestoneError'
 import RequestFailureCategory from './category/RequestFailureCategory'
 import EntityFactory from '../parser/EntityFactory'
 import ParsableEntity from '../parser/ParsableEntity'
-import { ISuccessResponse } from './interface/IResponse'
 import ClientProps from './interface/ClientProps'
-import { val } from 'cheerio/lib/api/attributes'
 
 export type OnSuccessFunction<IdentifierType, TypeOfValue> = (id: IdentifierType, value?: TypeOfValue) => void
 export type OnErrorFunction<TypeOfIdentifier> = (id: TypeOfIdentifier, error: FailureResponse<TypeOfIdentifier>) => void
@@ -71,7 +69,7 @@ export default abstract class LodestoneClient<
   IdentifierType,
   TypeOfInterface,
   TypeOfParsingConfig,
-  TypeOfValue extends ParsableEntity<IdentifierType, TypeOfInterface, TypeOfParsingConfig>
+  TypeOfValue extends ParsableEntity<IdentifierType>
 > {
   cheerioInstance: CheerioAPI
 

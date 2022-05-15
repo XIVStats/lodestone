@@ -440,6 +440,7 @@ describe('CharacterFactory', () => {
                 })
               } else {
                 // @ts-ignore
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 it.each(Object.entries(lowerValue))("with key %s equal to '%s'", (lowestKey, lowestValue) => {
                   // @ts-ignore
                   expect(resultantCharacter[key][lowerKey][lowestKey]).toEqual(lowestValue)

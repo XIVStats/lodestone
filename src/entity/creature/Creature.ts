@@ -23,33 +23,26 @@
  *
  */
 
-import { CheerioAPI } from 'cheerio'
 import IItem from '../item/interface/IItem'
 import CreatureCategory from './type/CreatureCategory'
 import ParsableEntity from '../../parser/ParsableEntity'
 import ICreature from './interface/ICreature'
-import Language from '../../locale/Language'
-import { ICreatureParsingParams } from './CreatureFactory'
 
-export default class Creature extends ParsableEntity<string, ICreature, ICreatureParsingParams> {
-  item?: IItem
+export default class Creature extends ParsableEntity<string> {
+  item: IItem
 
   name?: string
 
-  toolTipId?: string
+  toolTipId: string
 
-  type?: CreatureCategory
+  type: CreatureCategory
 
-  initializeFromPage(data: string, cheerio: CheerioAPI, language: Language, config?: ICreatureParsingParams): void {
-    this.toolTipId = this.id.split('/')[5]
-    const $ = cheerio.load(data)
-    const itemDom = $('a')[0]
-    this.item = {
-      name: !config?.itemIdOnly ? itemDom.attribs['data-tooltip'] : undefined,
-      id: itemDom.attribs.href.replace('/lodestone/playguide/db/item/', '').replace('/', ''),
-    }
-    this.type = $('header')[0].attribs.class.replace('__header', '').toUpperCase() as CreatureCategory
-    this.name = !config?.itemIdOnly ? $('h4').text() : undefined
+  constructor(iCreature: ICreature) {
+    super(iCreature.id)
+    this.type = iCreature.type
+    this.item = iCreature.item
+    this.toolTipId = iCreature.toolTipId
+    this.name = iCreature.name
   }
 
   public asMapping(): { toolTipId: string; itemId: string } {

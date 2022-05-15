@@ -30,7 +30,7 @@ import { Language } from '../locale'
 export default abstract class IterableIdentifierLodestoneClient<
   TypeOfInterface,
   TypeOfParsingConfig,
-  TypeOfValue extends ParsableEntity<number, TypeOfInterface, TypeOfParsingConfig>
+  TypeOfValue extends ParsableEntity<number>
 > extends LodestoneClient<number, TypeOfInterface, TypeOfParsingConfig, TypeOfValue> {
   /**
    * Fetch a range starting with the specified start ID (inclusive), and ending with the specified stop ID (exclusive).

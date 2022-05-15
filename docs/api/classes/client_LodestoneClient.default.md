@@ -17,7 +17,7 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 | `IdentifierType` | `IdentifierType` |
 | `TypeOfInterface` | `TypeOfInterface` |
 | `TypeOfParsingConfig` | `TypeOfParsingConfig` |
-| `TypeOfValue` | extends `ParsableEntity`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`\> |
+| `TypeOfValue` | extends `ParsableEntity`<`IdentifierType`\> |
 
 ## Table of contents
 
@@ -38,7 +38,7 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 | `IdentifierType` | `IdentifierType` |
 | `TypeOfInterface` | `TypeOfInterface` |
 | `TypeOfParsingConfig` | `TypeOfParsingConfig` |
-| `TypeOfValue` | extends `default`<`IdentifierType`, `TypeOfInterface`, `TypeOfParsingConfig`, `TypeOfValue`\> |
+| `TypeOfValue` | extends `default`<`IdentifierType`, `TypeOfValue`\> |
 
 #### Parameters
 
@@ -49,4 +49,4 @@ Client for interfacing with the Final Fantasy XIV Lodestone.
 
 #### Defined in
 
-[client/LodestoneClient.ts:94](https://github.com/XIVStats/lodestone/blob/6ff908e/src/client/LodestoneClient.ts#L94)
+[client/LodestoneClient.ts:92](https://github.com/XIVStats/lodestone/blob/520b9dd/src/client/LodestoneClient.ts#L92)

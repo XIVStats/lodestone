@@ -27,7 +27,6 @@ import { CheerioAPI } from 'cheerio'
 import { Language } from '../locale'
 import ParsableEntity from './ParsableEntity'
 import { AxiosResponse } from 'axios'
-import Character from '../entity/character/Character'
 import ParsingError from '../client/error/ParsingError'
 import IAttributeMapping from './interface/IAttributeMapping'
 import IPlayerGroup from '../entity/character/attribute/group/IPlayerGroup'
@@ -38,7 +37,7 @@ export default abstract class EntityFactory<
   TypeOfIdentifier,
   TypeOfInterface,
   TypeOfParsingConfig,
-  ReturnType extends ParsableEntity<TypeOfIdentifier, TypeOfInterface, TypeOfParsingConfig>
+  ReturnType extends ParsableEntity<TypeOfIdentifier>
 > {
   returnType: string
   abstract getUrlForId(id: TypeOfIdentifier): string

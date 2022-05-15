@@ -27,20 +27,12 @@ import { CheerioAPI } from 'cheerio'
 import ICharacter from './interface/ICharacter'
 import IGearSet from './attribute/gear/IGearSet'
 import ClassAbbreviation from './attribute/class/category/ClassAbbreviation'
-import GearCategory from './attribute/gear/GearCategory'
-import Level from './attribute/class/Level'
 import IItem from '../item/interface/IItem'
 import IPlayerGroup from './attribute/group/IPlayerGroup'
-import Language from '../../locale/Language'
 import ClassLevels from './attribute/class/ClassLevels'
 import ParsableEntity from '../../parser/ParsableEntity'
-import { ICharacterParsingParams } from './CharacterFactory'
-import characterDomConfig from './config/CharacterDomConfig'
 
-export default class Character
-  extends ParsableEntity<number, ICharacter, ICharacterParsingParams>
-  implements ICharacter
-{
+export default class Character extends ParsableEntity<number> implements ICharacter {
   readonly name: string
 
   readonly homeWorld: string

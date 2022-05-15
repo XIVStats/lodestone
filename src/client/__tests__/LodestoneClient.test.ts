@@ -42,53 +42,41 @@ import IClientProps from '../interface/ClientProps'
 interface IDummy {
   mutated?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resp?: AxiosResponse<string, any> | undefined
+  resp?: string
 }
 
 export interface DummyParams {
   foo?: boolean
 }
 
-class Dummy extends ParsableEntity<number, IDummy, DummyParams> implements IDummy {
+class Dummy extends ParsableEntity<number> implements IDummy {
   mutated?: boolean
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  resp?: AxiosResponse<string, any> | undefined
-
-  initializeFromPage(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    cheerio: CheerioAPI,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    language: Language,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    config?: DummyParams
-  ) {
-    this.mutated = true
-  }
+  resp?: string | undefined
 }
 
-class DummyFactory implements EntityFactory<number, IDummy, DummyParams, Dummy> {
-  readonly returnType: string
-
+class DummyFactory extends EntityFactory<number, IDummy, DummyParams, Dummy> {
   constructor() {
-    this.returnType = 'TestCharacter'
+    super('TestCharacter')
   }
 
   getUrlForId(id: number): string {
     return `character/${id}`
   }
 
-  public fromPage(
+  public initializeFromPage(
     id: number,
-    response: AxiosResponse<string>,
+    response: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     cheerio: CheerioAPI,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     language: Language,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     config?: DummyParams
   ): Dummy {
     const instance = new Dummy(id)
-    instance.initializeFromPage(response.data, cheerio, language, config)
+    instance.mutated = true
     instance.resp = response
     return instance
   }
@@ -198,7 +186,7 @@ describe('LodestoneClient', () => {
     })
 
     describe('when a response is returned from the call', () => {
-      let resp: AxiosResponse | undefined
+      let resp: string | undefined
       beforeAll(async () => {
         // @ts-ignore
         client.axiosInstances[overriddenDefaultLanguage].get = jest.fn().mockResolvedValue(goodResp)
@@ -207,11 +195,7 @@ describe('LodestoneClient', () => {
       })
 
       it('should return the response status upstream', () => {
-        expect(resp?.status).toEqual(goodResp.status)
-      })
-
-      it('should return the response data upstream', () => {
-        expect(resp?.data).toEqual(goodResp.data)
+        expect(resp).toEqual(goodResp.data)
       })
     })
     describe('when a response is returned but HTTP status code is', () => {

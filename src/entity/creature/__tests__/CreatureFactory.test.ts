@@ -29,19 +29,20 @@ import Cheerio from 'cheerio'
 import Creature from '../Creature'
 import CreatureCategory from '../type/CreatureCategory'
 import { Language } from '../../../locale'
+import CreatureFactory from '../CreatureFactory'
 
-describe('Creature', () => {
+describe('CreatureFactory', () => {
   describe('given a mount tooltip is being loaded', () => {
-    const expectedMountOne: Creature = new Creature(
-      'lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13'
-    )
-    expectedMountOne.toolTipId = '9045c5c5d5d181ee495f0e76af07d6d93c9f0f13'
-    expectedMountOne.item = {
-      id: '85f78cb2a87',
-      name: 'Chocobo Whistle',
-    }
-    expectedMountOne.type = CreatureCategory.Mount
-    expectedMountOne.name = 'Company Chocobo'
+    const expectedMountOne: Creature = new Creature({
+      id: 'lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13',
+      toolTipId: '9045c5c5d5d181ee495f0e76af07d6d93c9f0f13',
+      item: {
+        id: '85f78cb2a87',
+        name: 'Chocobo Whistle',
+      },
+      name: 'Company Chocobo',
+      type: CreatureCategory.Mount,
+    })
     // /lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13
     describe.each([['9045c5c5d5d181ee495f0e76af07d6d93c9f0f13', "P'tajha Rihll", 'Company Chocobo', expectedMountOne]])(
       'for tooltip %s - relating to %s - Mount: %s',
@@ -49,15 +50,19 @@ describe('Creature', () => {
         let resultantCreature: Creature
         const nonObjectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] !== 'object')
         const objectAttributes = Object.entries(expected).filter((pair) => typeof pair[1] === 'object')
+        let factory: CreatureFactory
 
         beforeAll((done) => {
+          factory = new CreatureFactory()
           readFile(join(__dirname, 'resources', 'mount', 'tooltip', `${toolTipId}.html`), 'utf8', (err, data) => {
             jest.setTimeout(10000)
             const testString = Buffer.from(data)
-            resultantCreature = new Creature(
-              'lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13'
+            resultantCreature = factory.initializeFromPage(
+              'lodestone/character/11886902/mount/tooltip/9045c5c5d5d181ee495f0e76af07d6d93c9f0f13',
+              testString.toString(),
+              Cheerio,
+              Language.en
             )
-            resultantCreature.initializeFromPage(testString.toString(), Cheerio, Language.en)
             done()
           })
         })

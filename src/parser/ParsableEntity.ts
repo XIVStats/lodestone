@@ -23,15 +23,6 @@
  *
  */
 
-import { CheerioAPI } from 'cheerio'
-import { Language } from '../locale'
-import IAttributeMapping from './interface/IAttributeMapping'
-import IPlayerGroup from '../entity/character/attribute/group/IPlayerGroup'
-import UnparseableGroupIdError from '../errors/UnparseableGroupIdError'
-import MappableEntity from './MappableEntity'
-
-export default abstract class ParsableEntity<TypeOfIdentifier, InterfaceType, TypeOfParsingConfig> {
-  protected static readonly PLACEHOLDER_VALUE = 'PLACEHOLDER_VALUE'
-
+export default abstract class ParsableEntity<TypeOfIdentifier> {
   constructor(public readonly id: TypeOfIdentifier) {}
 }
